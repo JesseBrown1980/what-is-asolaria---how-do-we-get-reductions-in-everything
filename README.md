@@ -14,7 +14,7 @@ Research notes + a 40-agent rebuild of the Asolaria **prime-tower / cylinder / r
 |---|---|---|
 | **Identity / collision** | A PID is a **coordinate, not a counter**; identity is a tuple-hash (`RelationKey`), not a scalar. | Collisions become *unrepresentable by construction*, not policed per-agent. |
 | **Memory** | Sparse materialization `M = N·h + K·b + S`, `K ≪ N` (8-byte handles; bodies only when materialized). | The real 100-billion-packet run is stored in **kilobytes** (~10⁶:1, referential codebook — **not** pigeonhole; per-packet evidence is recomputed from its index). |
-| **Process** | One **type-blind spawner** at the ~200 ns address cadence; rooms are addressed, not forked. | The sealed 100B run completed with **`childProcessSpawns = 0`, `external_tokens = 0`**. |
+| **Process** | One **type-blind spawner** at the ~200 ns address cadence; rooms are addressed, not forked. | The sealed 100B run completed with **`childProcessSpawns = 0`, `external_tokens = 0`** — **[file-verified proof ↓](100B-RUN-VERIFIED-PROOF.md)**. |
 | **Downstream work** | Tail-O(1): first touch pays the head tax; every re-request is an index/cache hit. | `E2E = HEAD + Σ TAIL ≈ HEAD`. 0-token reuse (a cache hit, **not** free compute). |
 | **Recursion cost** | Infinite-Three Convergence: only the supervisor spine recurses, each level reviews a shrinking summary. | An *infinitely deep* triad tower costs `R_total = B/(1−q) ≈ 1.5·B` — barely more than one bounded revolver. |
 | **Search / centrality** | A licensed distance-unique projection (measured **196,251 pairs → 0 collisions**). | Centrality becomes tie-free; novelty becomes an O(1) set-membership test. |
@@ -53,6 +53,7 @@ ProjectionCert = H(embedding_version, address_set_hash,
 
 ## Contents
 
+- **[`100B-RUN-VERIFIED-PROOF.md`](100B-RUN-VERIFIED-PROOF.md)** — **the file-verified on-disk receipt** for the *"100 billion packets, zero process spawns"* claim: the `checkpoint.state.json` content (processedPackets = 100B, digests, `childProcessSpawns=0`), **where every artifact lives (folder + files)**, and the honest **tally-vs-materialized** boundary (the headline is a counter; the hard output is 2 tools + design canon; it ran ~32 days, not hours).
 - **[`ASOLARIA-PRIME-TOWERS-REBUILD-REPORT.md`](ASOLARIA-PRIME-TOWERS-REBUILD-REPORT.md)** — the master report (abstract, architecture, the math, the EXISTS/NEW ledger, the master diagram, the rebuild-and-test plan, open experiments).
 - **`01-rebuild/`** — the 30 raw agent findings (10 facets × theorist/architect/builder). The discussion, unedited. `01-rebuild/_scratch/` holds the actual probe scripts (`sidon-cross-fix.mjs`, `distance-probe.mjs`) that produced the measured certificate.
 - **`02-diagrams/`** — 5 architecture diagrams (mermaid + ASCII): the tower stack, the triad+spindles, the slice-engine emitter flow, the real-graph + watcher, and the master architecture.
