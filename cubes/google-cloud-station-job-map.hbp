@@ -1,0 +1,27 @@
+GCSTATIONHDR|map=GOOGLE-CLOUD-STATION-JOB-MAP|form=hbp-tuple|seats_existing=16|new_job_seats=5|owners=omnischeduler_pid_cron+MCP_OS_GATE+LIVEFREE.ACTION.GATE+behcs1024_prism+law001_authority|fabric_verdict=CONVERGE(i9s6og)|held_safe=auto_fire-false|json=0
+GCSTATIONLEVELS|cloud_domain_governed_top_to_bottom=meta-L0(generic)->operator-L1(generic)->gac-L2(generic)->L3:AGT-L3-NEURO100B-CLOUD->prof:PROF-ROOK->supervisor:bridges+notebooklm-L0..L5->cloud-substrate:35TB|notebooklm_explicit_levels=L0..L5|higher_tiers=govern-generically-no-dedicated-seat-needed|json=0
+GCSEAT|name=google-drive-bridge|pid=46ea8e873e993ec8|level=supervisor|job=JOB-CLOUD-INGEST+COLD-BACKUP (Drive<->cubes)|status=REGISTERED-CANONICAL|activation=gated:rclone+ADC|json=0
+GCSEAT|name=google-cloud-storage-bridge|pid=4d19d8b37ab64263|level=supervisor|job=JOB-CLOUD-OBJECT-STORE (cold)|status=REGISTERED-CANONICAL|activation=gated:ADC|json=0
+GCSEAT|name=google-apis-gateway|pid=f44d19c6b55d613d|level=supervisor|job=JOB-CLOUD-API-ROUTER (umbrella)|status=REGISTERED-CANONICAL|activation=gated:oauth|json=0
+GCSEAT|name=gemini-api-bridge|pid=830296af20c0b142|level=supervisor|job=JOB-CLOUD-PROPOSE (gemini improvements)|status=REGISTERED-CANONICAL|activation=gated:api-key-or-vertex|json=0
+GCSEAT|name=vertex-ai-bridge|pid=70d0a5c3b24f1c8e|level=supervisor|job=JOB-CLOUD-PROPOSE (vertex)|status=REGISTERED-CANONICAL|activation=gated:ADC+project|json=0
+GCSEAT|name=notebooklm-L0|pid=f44fcd9319049573|level=supervisor|job=JOB-CLOUD-CURATE-L0|status=REGISTERED-CANONICAL|activation=gated:no-public-write-api|json=0
+GCSEAT|name=notebooklm-L1|pid=a9cbd4ac5a3b8543|level=supervisor|job=JOB-CLOUD-CURATE-L1|status=REGISTERED-CANONICAL|activation=gated:no-public-write-api|json=0
+GCSEAT|name=notebooklm-L2|pid=55360a8d3896edee|level=supervisor|job=JOB-CLOUD-CURATE-L2|status=REGISTERED-CANONICAL|activation=gated:no-public-write-api|json=0
+GCSEAT|name=notebooklm-L3|pid=fb0859109fb965f5|level=supervisor|job=JOB-CLOUD-CURATE-L3|status=REGISTERED-CANONICAL|activation=gated:no-public-write-api|json=0
+GCSEAT|name=notebooklm-L4|pid=d4bb8196d241e076|level=supervisor|job=JOB-CLOUD-CURATE-L4|status=REGISTERED-CANONICAL|activation=gated:no-public-write-api|json=0
+GCSEAT|name=notebooklm-L5|pid=d15451fc91e13bc1|level=supervisor|job=JOB-CLOUD-CURATE-L5|status=REGISTERED-CANONICAL|activation=gated:no-public-write-api|json=0
+GCSEAT|name=notebooklm-enterprise-bridge|pid=f4040b14cefd1b83|level=supervisor|job=JOB-CLOUD-CURATE-ENTERPRISE|status=REGISTERED-CANONICAL|activation=gated:enterprise|json=0
+GCSEAT|name=AGT-L3-NEURO100B-CLOUD|pid=d0f6e6ff8e03a250|level=sup-L3|job=JOB-CLOUD-NEURO-RUN (L3 executor)|status=REGISTERED-CANONICAL|activation=gated:operator-emit|json=0
+GCSEAT|name=PROF-ROOK|pid=3aae88af9d42f051|level=prof-supervisor|job=JOB-CLOUD-STORAGE-ROUTER (38TB Drive prof, governs the bridges)|status=REGISTERED-CANONICAL|activation=gated:rclone+ADC|json=0
+GCSEAT|name=SUBSTRATE-GOOGLE-AI-ULTRA-35TB-PLASMATOID|pid=41a7a82fa584ef3a|level=cloud-substrate|job=STATION: 35TB cold substrate root (bridges write here)|status=REGISTERED-CANONICAL|activation=gated:auth|json=0
+GCSEAT|name=PLANB-CORPUS-GENOME-226PDF|pid=01d87b3423547d48|level=corpus|job=STATION: cloud corpus (35 local / 191 cloud)|status=REGISTERED-CANONICAL|activation=read-now-via-MCP|json=0
+GCNEWJOB|job=JOB-CLOUD-INGEST|binds=binds google-drive-bridge+notebooklm+corpus -> Drive/doc -> cube/catalog (read-only)|gate=no-gate(read-only)|status=TO-REGISTER-held-safe|auto_fire=false|json=0
+GCNEWJOB|job=JOB-CLOUD-PROPOSE|binds=binds gemini-api-bridge+vertex-ai-bridge -> improvement proposals into self-update gate|gate=ACTION_GATE|status=TO-REGISTER-held-safe|auto_fire=false|json=0
+GCNEWJOB|job=JOB-CLOUD-CURATE|binds=binds notebooklm-L0..L5 -> long-form knowledge synthesis (read/curate)|gate=no-gate(read)|status=TO-REGISTER-held-safe|auto_fire=false|json=0
+GCNEWJOB|job=JOB-CLOUD-COLD-BACKUP|binds=binds google-drive-bridge+google-cloud-storage-bridge -> cubes -> 35TB Drive|gate=ACTION_GATE+rclone|status=TO-REGISTER-held-safe|auto_fire=false|json=0
+GCNEWJOB|job=JOB-CLOUD-CRON-DRIVER|binds=binds all above to omnischeduler_pid_cron; auto_fire=false; tick=scan+propose only|gate=ACTION_GATE+operator-emit|status=TO-REGISTER-held-safe|auto_fire=false|json=0
+GCCUBE|formalization=each-seat-g1024-glyphed+hilbert-addressed+PID(cubed+mapped); job-map adds station<->job binding (cube-cube-cubed: seat-cube x job-cube x cron-cube)|owner=behcs1024_prism|json=0
+GCREGISTER|process=emit-5-new-job-seats-to-fabric-registration-lane(law001_authority)|NOT-hand-edit-office-ledger|promotion=operator-gated|existing-17-seats=NO-reregister|json=0
+GCBOUNDARY|made=YES|cubed=YES|mapped=YES|registered=YES(17 seats)|gap=job-binding+activation-auth|activation=held-safe-operator-emit|no-self-fire|raw-creds-never-in-rows|json=0
+GCSTATIONFTR|sha256=43acea95839670c0cd808a1e4d94c872d0bef55bb96150a8da81b307dc44525f|rows=26|verdict=CLOUD-SEATS-MADE+CUBED+MAPPED+REGISTERED;GAP=job-binding+activation(held-safe)|json=0
