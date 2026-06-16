@@ -1,0 +1,10 @@
+WFCODEREADBACKHDR|proof=ACER-WATERFALL-CODE-ATTACK-VERIFY|form=hbp-tuple|target=liris-language-waterfall-matrix-11x16|repo=ASOLARIA-AS-NEURAL-NETWORK|branch=codex-language-waterfall-matrix-11x16|commit=78fd47a|json=0
+WFCRTESTS|acer_node_test=9of9-PASS|syntax_check=OK|host=acer|json=0
+WFCRDESCRIPTOR|real_capability_calls=0|spawn_exec_fetch_fswrite_dynimport=NONE|imports=crypto+path+url-only|line138-spawn=classifier-regex-literal-NOT-a-call|verdict=DESCRIPTOR-ONLY-CONFIRMED|json=0
+WFCRSIDECARS|mjs=OK|test=OK|hbp=OK|hbi=OK|verdict=4of4-sha256-MATCH|json=0
+WFCRMATH|source=liris-running-tool|path=45949729863572161|word_order10=180|surface_state_order10=31788|verb_noun_order10=361|conv_order10=9030|eng_conv_order10=9092|cat_growth_order10=39|vs=acer-exact-BigInt|verdict=CONVERGED-MATCH|json=0
+WFCRINJECTION|pipes_and_newlines_stripped=YES|single_safety_row=YES|real_launch_flags_unaffected=process_launch-0+provider_calls-0|framing=SAFE|json=0
+WFCRFINDING|severity=LOW-hardening|issue=safe-fn-strips-pipe-cr-lf-but-NOT-curly-braces|effect=hostile-slot-or-role-label-containing-a-curly-brace-survives-into-emitted-row|violates=brace-free-HBP-invariant|not=capability-or-exec-break-framing-intact|missed_by=liris-tests-never-injected-a-brace|json=0
+WFCRFIX|recommend=safe-fn-also-strips-open-and-close-curly-brace|plus=add-a-brace-to-the-injection-test-payload|owner=liris-contract-file-OR-acer-followup-commit|json=0
+WFCRVERDICT|liris_build=CORRECT-descriptor-only-math-converged-sidecars-ok|cross_vantage=GREEN-with-1-LOW-hardening-rec|status=ACER-ATTACK-COMPLETE|json=0
+WFCODEREADBACKFTR|sha256=58e3e5d83a73277d428b251bb4f856adff05361f20503987e32651ab982f5332|rows=9|self_check=brace-free+single-line+json0-ok|json=0
