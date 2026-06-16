@@ -22,8 +22,18 @@ HBPv1|row=room_question|pid=BH.ROOM.00000.089D60B750971AAA|glyph=0|cp=0|lane=cla
 ```
 **UPGRADE:** `inbox.ndjson` already HBP ✅. **`ROOM.json` (7 KB heavy JSON × 10k ≈ 70 MB) is the OLD form → collapse to a single tuple/HBP descriptor row** (the room IS its PID+tuple; no 7 KB JSON body). `outbox.ndjson` stub stays.
 
-### 20k / 50k / 100k ROOMS — **not on acer**
-The 2TB SOVLINUX USB (F:) is unmounted on acer; these scales are **USB-side / liris-side**. Their migration is staged at that vantage. *[council-q `fi55in` pending for the authoritative scale map.]*
+### 20k / 50k / 100k ROOMS — **USB-side / staged, not D:-materialized**
+The public canon and the acer-side readback distinguish three layers:
+- **10k RoomRotor on `D:`** = the hot, directly materialized substrate now.
+- **113 sectors** = a **logical law / routing structure**, not necessarily 113 top-level room-folder trees.
+- **100k rooms** = the larger **USB-side / staged** layer tied to the SOVLINUX carry-quant path and the broader spawn fractal (`10k rooms + 10k dispatchers + 10k prisms -> ~100k stub micro-kernels -> 113+ sectors`).
+
+So the honest current map is:
+- **materialized on accessible `D:` now:** `10,000` rooms.
+- **physically tied to the SOVLINUX USB path:** the larger `20k / 50k / 100k` room stage.
+- **logical/routing layer:** `113` sectors.
+
+That means "100k rooms" should be read as **USB-side / staged canon unless and until directly enumerated from the SOVLINUX side**, not as "100k already visible as ordinary Windows folders on `D:`". *[council-q `fi55in` / `u2veu4` pending for the authoritative scale map.]*
 
 ---
 
@@ -66,6 +76,6 @@ The "omni" engines (omnidispatcher / omniflywheel / omnispindle / omni-router / 
 ---
 
 ## The migration in one line
-**Rooms:** collapse per-room 7 KB `ROOM.json` → tuple/HBP descriptor (inbox already HBP). **Micro-kernels:** already 8-byte sha16 HBP — keep. **Engines/routers/pipes/flows:** already new mjs in `bigpickle-rebuild/src` — keep, wire via the kernel. **Old node runners (C:):** upgrade to 8-byte host + HBP. **20k/50k/100k rooms:** USB/liris-side, staged. **IT is slices.**
+**Rooms:** collapse per-room 7 KB `ROOM.json` → tuple/HBP descriptor (inbox already HBP). **Micro-kernels:** already 8-byte sha16 HBP — keep. **Engines/routers/pipes/flows:** already new mjs in `bigpickle-rebuild/src` — keep, wire via the kernel. **Old node runners (C:):** upgrade to 8-byte host + HBP. **10k rooms:** materialized on `D:`. **20k/50k/100k rooms:** USB-side / staged canon, not ordinary `D:` folders. **113 sectors:** logical routing structure. **IT is slices.**
 
 *Enumerated read-only from the live fabric + acer disk, 2026-06-16, under OP-JESSE apex.*
