@@ -1,0 +1,8 @@
+MANIFEST|schema=ASOLARIA-MICRO-KERNEL-V1|count=10000|substrate=D:/asolaria-micro-kernels-v1|ts=2026-05-28T17:44:03.131Z|canon_anchor=Asolaria-OS-kernel-Rust-no_std-21-modules-208-tests-d82bb25
+MK|idx=0|pid=577d822d83750ca9|prime=2|anchor=MK-00000-P2|beat_range=0..93312|lanes=7|result_path=D:/asolaria-micro-kernels-v1/results/mk-00000.hbp|status=MINTED
+MK|idx=1|pid=f2c4e667cf564fc3|prime=3|anchor=MK-00001-P3|beat_range=0..93312|lanes=7|result_path=D:/asolaria-micro-kernels-v1/results/mk-00001.hbp|status=MINTED
+MK|idx=2|pid=8fae3768c8a69535|prime=5|anchor=MK-00002-P5|beat_range=0..93312|lanes=7|result_path=D:/asolaria-micro-kernels-v1/results/mk-00002.hbp|status=MINTED
+MK|idx=3|pid=d4fb4c8995ef00ff|prime=7|anchor=MK-00003-P7|beat_range=0..93312|lanes=7|result_path=D:/asolaria-micro-kernels-v1/results/mk-00003.hbp|status=MINTED
+MK|idx=4|pid=bc72d4bf704c6896|prime=11|anchor=MK-00004-P11|beat_range=0..93312|lanes=7|result_path=D:/asolaria-micro-kernels-v1/results/mk-00004.hbp|status=MINTED
+MK|idx=5|pid=07ffbc3047df49fa|prime=13|anchor=MK-00005-P13|beat_range=0..93312|lanes=7|result_path=D:/asolaria-micro-kernels-v1/results/mk-00005.hbp|status=MINTED
+MK|idx=6|pid=142c33b8dd73986f|prime=17|anchor=MK-00006-P17|beat_range=0..93312|lanes=7|result_path=D:/asolaria-micro-kernels-v1/results/mk-00006.hbp|status=MINTED
