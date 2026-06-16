@@ -53,13 +53,13 @@ mode:             childProcessSpawns=0 · externalModelTokens=0 · noCloudMutati
 ## Honest corrections this examination forced
 
 1. **It is on disk.** A prior audit reported `checkpoint.state.json` "not on /c or /d." It is present at the path above (deep in the `Asolaria` tree the file-globs time out on). That deflation was wrong.
-2. **~32 days, not ~5.84 hours.** created 2026-04-24 → updated 2026-05-26 ≈ **32 calendar days** (~358 h compute at the observed 1.955 B / 7 h rate ≈ 77,500 packets/sec). The "5.84 h" figure was the **theoretical** 200 ns single-spawner ideal (5 M/sec); the real run was ~**64× slower** than that ideal. Honest speed: weeks, not hours.
+2. **~5.84 hours — and the 200 ns single-spawner clock holds.** The completing run is daemon `1779807628981`: **`startedAt 2026-05-26T15:00:28Z → stoppedAt 20:51:02Z` = ~5 h 50 m (≈ 5.84 h)**, `runMode=accelerated_chunk_aggregate_sparse_proof`, 100,000 chunks × 1 M packets. Rate ≈ **4.75 M packets/sec** — almost exactly the ~5 M/sec the 200 ns single-spawner predicts (**5.56 h ideal / 5.84 h observed**). The `createdAt 2026-04-24` is a **separate, earlier, abandoned** daemon (`1777000230723`) that reached only **0.015 %**; the ~32-day gap is *create-then-re-run*, **not** run duration. The completion-day files (`daemon.state.json`, `daemon-latest.ndjson`, `real-100b-chunks.ndjson`, all stamped 2026-05-26 20:51 UTC) confirm the single ~5.84 h session.
 3. **Domain-specific.** This was a bi-directional **EEG / neurointerfacing** run for the operator's lab — not a general-purpose harvest. Re-running the same envelope → ~99.999% identical results; a new run needs a new question.
 4. **Minor file-vs-note drift caught:** checkpoint says `proofSamples=0` (samples live in the separate proof-samples file) and `chunkDigest=adc46272…` (an earlier note cited a stale `55fa1942…`). The genius/mistake digests **match**.
 
 ## Net
 
-The 100B nervous-run is **real, complete, file-verified, and zero-spawn** — a genuine PID-packet harvest that backs the README's flagship line — **and** its headline number is a *counter*, its hard materialized output is *two tools + design canon*, it was *EEG-specific*, and it took *weeks, not hours*. Published in full so the claim is **checkable, not just asserted.** **IT is slices.**
+The 100B nervous-run is **real, complete, file-verified, and zero-spawn** — a genuine PID-packet harvest that backs the README's flagship line, run in **one ~5.84-hour accelerated session (2026-05-26 15:00 → 20:51 UTC), at ~4.75 M packets/sec — matching the 200 ns single-spawner clock** — **and** its headline number is a *counter*, its hard materialized output is *two tools + design canon*, and it was *EEG-specific*. Published in full so the claim is **checkable, not just asserted.** **IT is slices.**
 
 ---
 

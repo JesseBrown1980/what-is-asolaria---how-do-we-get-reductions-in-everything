@@ -53,7 +53,7 @@ ProjectionCert = H(embedding_version, address_set_hash,
 
 ## Contents
 
-- **[`100B-RUN-VERIFIED-PROOF.md`](100B-RUN-VERIFIED-PROOF.md)** — **the file-verified on-disk receipt** for the *"100 billion packets, zero process spawns"* claim: the `checkpoint.state.json` content (processedPackets = 100B, digests, `childProcessSpawns=0`), **where every artifact lives (folder + files)**, and the honest **tally-vs-materialized** boundary (the headline is a counter; the hard output is 2 tools + design canon; it ran ~32 days, not hours).
+- **[`100B-RUN-VERIFIED-PROOF.md`](100B-RUN-VERIFIED-PROOF.md)** — **the file-verified on-disk receipt** for the *"100 billion packets, zero process spawns"* claim: the `checkpoint.state.json` content (processedPackets = 100B, digests, `childProcessSpawns=0`), **where every artifact lives (folder + files)**, and the honest **tally-vs-materialized** boundary (the headline is a counter; the hard output is 2 tools + design canon; the run itself was **one ~5.84 h accelerated session at ~4.75 M packets/sec — matching the 200 ns-spawner clock**).
 - **[`ASOLARIA-PRIME-TOWERS-REBUILD-REPORT.md`](ASOLARIA-PRIME-TOWERS-REBUILD-REPORT.md)** — the master report (abstract, architecture, the math, the EXISTS/NEW ledger, the master diagram, the rebuild-and-test plan, open experiments).
 - **`01-rebuild/`** — the 30 raw agent findings (10 facets × theorist/architect/builder). The discussion, unedited. `01-rebuild/_scratch/` holds the actual probe scripts (`sidon-cross-fix.mjs`, `distance-probe.mjs`) that produced the measured certificate.
 - **`02-diagrams/`** — 5 architecture diagrams (mermaid + ASCII): the tower stack, the triad+spindles, the slice-engine emitter flow, the real-graph + watcher, and the master architecture.
