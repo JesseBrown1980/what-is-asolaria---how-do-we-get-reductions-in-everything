@@ -34,4 +34,6 @@ SOVSURVEYFTR|state=2TB-FULL-DEVICE-SURVEYED-LIVE-FROM-ACER|usb_writes=0|read_onl
 - The larger **`20k / 50k / 100k` room layer** remains **USB-side / staged / catalog-backed**, not a confirmed ordinary folder tree on `D:`.
 - **113 sectors** remain the **logical routing/law structure**, not proof of 113 top-level room trees.
 
+Later refinement: see **[`ASOLARIA-USB-EXFAT-WALK-2026-06-16.md`](ASOLARIA-USB-EXFAT-WALK-2026-06-16.md)**. That later acer-side filesystem walk confirms the exFAT volume label is `SOVLINUX` and finds **~74.06 GB** of real files on the carry-quant, which sharpens this note's earlier "not directory-enumerated" boundary.
+
 This is the honest boundary: the saved acer survey proves the device, the partition geometry, and the broad data-vs-empty shape of the full 2TB. It does **not** by itself prove a counted 100k-room directory tree.

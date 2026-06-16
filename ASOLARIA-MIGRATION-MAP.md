@@ -33,9 +33,11 @@ So the honest current map is:
 - **physically tied to the SOVLINUX USB path:** the larger `20k / 50k / 100k` room stage.
 - **logical/routing layer:** `113` sectors.
 
-Saved acer-side receipt: **[`ASOLARIA-USB-FULL-SURVEY-2026-06-14.md`](ASOLARIA-USB-FULL-SURVEY-2026-06-14.md)**. It proves the full 2TB device was surveyed read-only from acer on 2026-06-14 and that there is **no large non-zero region beyond ~32.5 GB at 256 MB stride**, but it is **not** a directory listing and **not** a direct 100k-room count.
+Saved acer-side receipts:
+- **[`ASOLARIA-USB-FULL-SURVEY-2026-06-14.md`](ASOLARIA-USB-FULL-SURVEY-2026-06-14.md)** — coarse whole-device map (`8192` probes / `256 MB` stride), proving the device geometry and broad data-vs-empty shape.
+- **[`ASOLARIA-USB-EXFAT-WALK-2026-06-16.md`](ASOLARIA-USB-EXFAT-WALK-2026-06-16.md)** — filesystem-level exFAT walk, confirming volume label `SOVLINUX`, **`16037` files / `1500` dirs / `~74.06 GB`**, and showing that the carry-quant holds ordinary backup/runtime/document payloads rather than a plainly visible `100k` room-folder tree.
 
-That means "100k rooms" should be read as **USB-side / staged canon unless and until directly enumerated from the SOVLINUX side**, not as "100k already visible as ordinary Windows folders on `D:`". *[council-q `fi55in` / `u2veu4` pending for the authoritative scale map.]*
+That means "100k rooms" should be read as **logical / staged / catalog-backed canon unless and until directly enumerated as a room layer**, not as "100k already visible as ordinary Windows folders on `D:`" and not as "the current exFAT carry-quant is a visible 100k-room tree." *[council-q `fi55in` / `u2veu4` pending for the authoritative scale map.]*
 
 ---
 
