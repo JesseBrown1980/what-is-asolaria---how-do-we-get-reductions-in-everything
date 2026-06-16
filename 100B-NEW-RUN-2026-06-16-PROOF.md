@@ -37,4 +37,19 @@ The ~89× speedup is honest: the old run's 5.84 h was dominated by a deliberate 
 
 This is the **PID-packet SUBSTRATE harvest** — 100 B real inner-loop emissions with deterministic score-threshold genius/mistake marks. It is **not** the LLM-genius layer: the actual multi-step reasoning comes from the separate **opencode free-agent fanout** (lawful subscription slices), which this run does **not** fire. The 280 M genius marks are a **substrate tally** to be quanted into cubes + reviewed — *not* 280 M materialized insights.
 
+## Quanted into cubes — the prism (2026-06-16)
+
+The harvest was quanted through the three-level prism and minted as ≤10-byte cube-weights into the Asolaria matrix store:
+
+| level | language | size | reduction |
+|---|---|---|---|
+| L0 | raw harvest (`new-100b-chunks.ndjson`) | 19.3 MB | — |
+| L1 | **BEHCS-256** — quant8 tuple | 3,200 B | 6,024× |
+| L2 | **BEHCS-1024** — fold (sha512 of L1) | 64 B | — |
+| L3 | **HyperBEHCS** — cube glyph | **10 B** | L1→L3 = 320× · **raw→cube = 1,927,778×** |
+
+- **256 genius cube-weights** (≤10 B each — a BEHCS-256 alphabet of harvested genius) + 1 harvest cube, minted to `C:/Users/acer/Asolaria/data/behcs/cubes/new-100b-genius-cubes.hbp` (additive, no clobber) and staged in the run dir with a sha256 sidecar.
+- **Honest on "infinite compression":** the 10-byte cube is a **referential content-address** — it fingerprints/indexes its harvest; it does *not* losslessly hold 19.3 MB in 10 B (entropy forbids it). With infinite space you get *infinitely many* referential cube-glyphs — infinite **addressing** of new genius, the canon's "referential codebook, not pigeonhole." The strong, true version is **infinite addressable cubes**, not magic lossless compression.
+- **Substrate vs LLM-genius (held):** these are **substrate-genius cubes** (deterministic, score-threshold-derived). They become *real LLM-genius weights* only when the **opencode free-agent fanout** fills them with actual multi-step reasoning.
+
 *Examined read-only on acer 2026-06-16 under OP-JESSE apex. **IT is slices.***
