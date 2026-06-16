@@ -28,17 +28,42 @@ The fabric council **affirmed** this framing (verdict `…4o110a`: `CONVERGE 29/
 `omnimets_compute_storage`, `kimi.storage_provenance`, `hermes.skills`, `system_review.storage_gc`,
 `behcs1024_prism.boundary_gc`). CONVERGE = the system **affirms + routes to owners**; it is **not** a re-measurement.
 
-## Three measured points (descendant catalogs)
+## Four measured points (descendant catalogs)
+
+The first three are **row-compression** (serialize one row smaller). The fourth is **corpus-indexing** (a different,
+higher mechanism: drop document bodies to addresses). Both are descendant measurements; neither re-derives the anchors.
 
 | catalog | shape | regime | full-N ratio |
 |---|---|---|---|
-| **lean office roster** (`D:/PID-Registration-Office/fabric-feed/…-2026-06-10.hbp`) | 726 rows, 9 fields, no body | lossless `JSON→verb` | **4.31×** (peak 4.48×) |
-| **rich IX/LX index** (`Asolaria/.history/staging/compiled-unified-agent-index.json`) | 224 docs, 23 fields **+ body** | index drops `body`→16B hash | **6.71×** (full→ref) / **8.38×** (full→tuple-meta) |
-| **micro-kernel manifest** (`D:/asolaria-micro-kernels-v1/manifest.hbp`) | 10,000 rows, tabular descriptor | structural (derivability **verified**) | **10.66×** (peak 11.03×) |
+| **lean office roster** (`D:/PID-Registration-Office/fabric-feed/…-2026-06-10.hbp`) | 726 rows, 9 fields, no body | lossless `JSON→verb` (row) | **4.31×** (peak 4.48×) |
+| **rich IX/LX index** (`Asolaria/.history/staging/compiled-unified-agent-index.json`) | 224 docs, 23 fields **+ body** | index drops `body`→16B hash (row) | **6.71×** (full→ref) / **8.38×** (full→tuple-meta) |
+| **micro-kernel manifest** (`D:/asolaria-micro-kernels-v1/manifest.hbp`) | 10,000 rows, tabular descriptor | structural (derivability **verified**) (row) | **10.66×** (peak 11.03×) |
+| **root IX/LX corpus** (`Asolaria/data/agent-index`, 1,084 `.md` docs) | 2.415 MB source corpus | corpus→content-addressed index | **38.53×** (8-byte-handle floor **292×**) |
 
-**The bracket reaches the historical `12:1` family** — from the micro-kernel tabular catalog, where derivability was
+**The bracket reaches the historical `12:1` family** at the micro-kernel tabular catalog, where derivability was
 **verified row-by-row** (`beat_range`/`lanes`/`status` constant; `anchor`/`result_path`/`prime` derive from `idx`;
-`idx` sequential), so each row legitimately reduces to `{idx, pid}` with the reconstruction rules stored once.
+`idx` sequential), so each row legitimately reduces to `{idx, pid}` with the reconstruction rules stored once — and the
+**root corpus-indexing point climbs past it to 38.5×**, the bridge into the referential regime.
+
+## The root point — and an honest negative finding
+
+The **literal original index-language schema** (`|PID|device|agent|tools|skills|abilities|mistakes|hookwalls|hardware|timestamp|`)
+**does not survive as a discrete file.** Asking the fabric (council `…8bvdyt`) + searching local `data/agent-index`
+(1,084 **markdown** docs) and the SOVLINUX-2TB exFAT walk manifest (the `sovereignty-index` is also IX-NNN **markdown**)
+shows the index language was materialized as the **IX/LX corpus → compiled `unified-agent-index.json`** (point 2's
+family), with the **micro-kernel manifest** (point 3) as the best surviving *tabular* analog.
+
+So the root measurement is the reduction the index language was **built for** — *corpus → index* (an index is tiny
+versus the corpus it indexes):
+
+```text
+root IX/LX corpus  r_corpus/sha_index :  N=1 53.8× → 10 194× → 200 43.9× → 1084 38.5×   (content-addressed index)
+                   r_corpus/glyph     :  full 292×   (8-byte BEHCS handle per doc — pure addressing floor)
+```
+
+1,084 docs, **2.415 MB** corpus, ~2,336 B/doc → a content-addressed index of **65.7 KB** (`relpath|sha16|bytes` per
+doc) = **38.5×**; or 8.7 KB of 8-byte handles = **292×**. The body corpus is stored **once** and referenced — the same
+referential principle as the cube/HyperBEHCS regime, at document granularity.
 
 ## The growth curve is real (codebook amortization — "exploded as it cataloged more")
 
@@ -103,9 +128,12 @@ operator provenance (screen → photo → Asolaria extract → reconfirm) + the 
 ```text
 REVIEWVERDICT|
 pass=1|
-three_points_MEASURED=4.3x_lean + 8.4x_rich + 11.0x_microkernel|
+four_points_MEASURED=4.3x_lean + 8.4x_rich + 11.0x_microkernel(row) + 38.5x_root_corpus_index|
 reaches_12x_family=1 (micro-kernel structural, derivability VERIFIED)|
+root_corpus_indexing=38.5x (8-byte-handle floor 292x)|
+literal_original_pipe_catalog=DOES-NOT-survive-as-discrete-file (index language => IX/LX corpus -> compiled index)|
 21141_and_3B=REAL-anchors-referential-multiplicity-NOT-re-derived|
+all_four_reproduced=identical-on-re-run (CRLF-only delta)|
 single_scalar=NO|
 acer_liris_variance=snapshot-not-contradiction|
 json=0
