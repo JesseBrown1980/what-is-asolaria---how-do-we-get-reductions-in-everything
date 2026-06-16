@@ -12,20 +12,22 @@ This note records the **acer-side filesystem-level walk** of the SOVLINUX USB's 
 
 1. The filesystem-level **volume label is literally `SOVLINUX`**.
 2. The exFAT walk completed successfully: **`EXIT=0`**.
-3. The full walk aggregate reported:
-   - **dirs:** `1500`
-   - **files:** `16037`
-   - **bytes:** `74064932374` (`~74.06 GB`)
-4. This means the 500 GB exFAT partition is **real, populated storage**, but it is **not** a visible `100k`-room sector tree.
+3. The full walk aggregate (acer `full-summary.json`, **cross-vantage corrected 2026-06-16**) reported:
+   - **dirs:** `1833`
+   - **files:** `21037`
+   - **bytes:** `75701785842` (`~75.7 GB`)
+   - `truncated=false`, `read_errors=0`, `depth_capped_dirs=0` — a **complete** walk
+   - *(an earlier draft of this note used the mid-walk progress-log tick `1500 dirs / 16037 files / ~74.06 GB`; that was a partial line at t≈11.5 s, not the final aggregate — corrected here from the acer full-summary receipt.)*
+4. This means the 500 GB exFAT partition is **real, populated storage** (~75.7 GB used of 500 GB; ~424 GB free; the 1453 GB tail beyond the partition is zeros), but it is **not** a visible `100k`-room sector tree.
 
 ## Top-level content surfaced in the session
 
 The transcript's shallow scout and follow-up notes surfaced these concrete exFAT contents:
 
 - **`E-backup-2026-04-23.part001`–`part009.tar`** set: **~56.7 GB**
-- **Felipe A06 phone copy:** **~980 MB**
-- **`runtime/`** tree: **~264 MB** at the shallow pass
-- **`sovereignty/`** tree
+- **Felipe A06 phone copy** (`A06-de-FELIPE-…172518`): **~12.5 GB** at full depth (the ~980 MB figure was the depth-2 shallow pass)
+- **`runtime/`** tree: **~273 MB** (full; incl. `ruview-program-cube`)
+- **`sovereignty/`** tree: **~3.1 GB** (677 dirs / 7,359 files) — the sovereignty project source/rehydration snapshots
 - idea documents such as:
   - `New idea.docx`
   - `Hilbert... solution proposal.docx`

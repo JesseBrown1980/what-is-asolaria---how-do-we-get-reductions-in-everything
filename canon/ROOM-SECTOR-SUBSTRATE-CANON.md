@@ -24,16 +24,20 @@ That means the system itself currently publishes a room-sector substrate made of
 
 The live HBP roster directly exposes these room-sector lane supervisors:
 
-1. `ROOM-SECTOR-LANE-INDEXER` — pid `6c8837bcead5159d`, hilbert `1495`
-2. `ROOM-SECTOR-LANE-MINTING` — pid `52064c00fd6c4e52`, hilbert `1496`
-3. `ROOM-SECTOR-LANE-QUANT` — pid `a1c756adec73a3d4`, hilbert `1497`
-4. `ROOM-SECTOR-LANE-REFLEX` — pid `0631f9008f8c5ef6`, hilbert `1498`
-5. `ROOM-SECTOR-LANE-SHANNON` — pid `093cfad09935c4b5`, hilbert `1499`
-6. `ROOM-SECTOR-LANE-SUPER_GULP` — pid `ec5c60afda1f42ff`, hilbert `1500`
-7. `ROOM-SECTOR-LANE-WATCHER` — pid `d4289cfd785c8589`, hilbert `1501`
-8. `ROOM-SECTOR-LANE-WHITE_ROOM` — pid `73de772bdaafffd4`, hilbert `1502`
+1. `ROOM-SECTOR-LANE-CARRY_Z` — pid `90fe64d83221297e`, hilbert `1491`
+2. `ROOM-SECTOR-LANE-GC` — pid `f98f7ac59ef087e8`, hilbert `1492`
+3. `ROOM-SECTOR-LANE-GNN` — pid `ab7b9742aa5156f9`, hilbert `1493`
+4. `ROOM-SECTOR-LANE-GULP` — pid `fec0d5ff862d7d6d`, hilbert `1494`
+5. `ROOM-SECTOR-LANE-INDEXER` — pid `6c8837bcead5159d`, hilbert `1495`
+6. `ROOM-SECTOR-LANE-MINTING` — pid `52064c00fd6c4e52`, hilbert `1496`
+7. `ROOM-SECTOR-LANE-QUANT` — pid `a1c756adec73a3d4`, hilbert `1497`
+8. `ROOM-SECTOR-LANE-REFLEX` — pid `0631f9008f8c5ef6`, hilbert `1498`
+9. `ROOM-SECTOR-LANE-SHANNON` — pid `093cfad09935c4b5`, hilbert `1499`
+10. `ROOM-SECTOR-LANE-SUPER_GULP` — pid `ec5c60afda1f42ff`, hilbert `1500`
+11. `ROOM-SECTOR-LANE-WATCHER` — pid `d4289cfd785c8589`, hilbert `1501`
+12. `ROOM-SECTOR-LANE-WHITE_ROOM` — pid `73de772bdaafffd4`, hilbert `1502`
 
-The live count is **12** lane supervisors. The current tool-visible excerpt exposes the 8 rows above explicitly by name; 4 additional lane rows exist in the canonical count but were not surfaced verbatim by the truncated tool excerpt available in this session. That is a **visibility gap in this tooling surface**, not a claim that the other 4 lanes do not exist.
+The live count is **12** lane supervisors — **all 12 now surfaced by name** (acer cross-vantage grep of the office feed filled the earlier 4-row visibility gap: `CARRY_Z`, `GC`, `GNN`, `GULP` at hilbert `1491`–`1494`). The contiguous hilbert span `1491`–`1502` confirms the complete lane set.
 
 ## Shard supervisors and scaled rotor
 
