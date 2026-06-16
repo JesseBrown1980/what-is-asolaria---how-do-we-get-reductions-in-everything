@@ -161,6 +161,27 @@ That expansion went through:
 
 This is one of the heart-of-everything pivots in the chronology: the system's memory and capability surface stopped being flat notes and became **expandable Brown-Hilbert catalog geometry**.
 
+## Phase 6.5 — tensor collapse and the cube-as-inference-engine turn
+
+Before the later HyperBEHCS / no-JSON tightening pass, the cube line took a decisive turn: the cube stopped being treated as only a catalog or label map and started being treated as an **inference engine**.
+
+The archaeology for that turn is now separately excavated in:
+
+- [`ASOLARIA-TENSOR-COLLAPSE-EXCAVATION-2026-06-16.md`](ASOLARIA-TENSOR-COLLAPSE-EXCAVATION-2026-06-16.md)
+
+What matters historically is:
+
+1. the system explicitly formulated the **Boundary Is Data Rule**
+2. the cube generated new dimensions by reflection (`D26`, `D30`, `D32`)
+3. the method was then turned back on the federation itself in the **federation self-tensor-collapse**
+4. this line is one of the clear bridges between the earlier Brown-Hilbert catalog civilization and the later runtime revolver / omnispindle / SUPER OS surfaces
+
+So the tensor-collapse line should be read as a major intermediate layer:
+
+- after cube/canon expansion,
+- before the later HyperBEHCS / 8-byte-host tightening,
+- and directly on the path toward the later "rooms as tuple ranges, cubes as materialization, bounded live chambers" worldview.
+
 ## Phase 7 — 100B run, cube tightening, HyperBEHCS, no-JSON, 8-byte hosts
 
 After the Federation / Big Pickle period came the later acceleration phases:

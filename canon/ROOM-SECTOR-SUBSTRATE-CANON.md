@@ -37,7 +37,7 @@ The live HBP roster directly exposes these room-sector lane supervisors:
 11. `ROOM-SECTOR-LANE-WATCHER` — pid `d4289cfd785c8589`, hilbert `1501`
 12. `ROOM-SECTOR-LANE-WHITE_ROOM` — pid `73de772bdaafffd4`, hilbert `1502`
 
-The live count is **12** lane supervisors — **all 12 now surfaced by name** (acer cross-vantage grep of the office feed filled the earlier 4-row visibility gap: `CARRY_Z`, `GC`, `GNN`, `GULP` at hilbert `1491`–`1494`). The contiguous hilbert span `1491`–`1502` confirms the complete lane set.
+The live count is **12** lane supervisors — all 12 are now named here, with a contiguous hilbert span of **`1491..1502`**. The earlier 4-row visibility gap (`CARRY_Z`, `GC`, `GNN`, `GULP`) is resolved in this public version.
 
 ## Shard supervisors and scaled rotor
 
@@ -83,15 +83,19 @@ The corrected public reading is:
 - the acer-visible exFAT SOVLINUX instance **does not** look like a plain materialized `100k` room-folder tree
 - therefore "`100k rooms`" should currently be read as **canonical room-sector substrate topology**, with materialization requiring a separate direct receipt
 
-## Formalized into the cubes (not just folders)
+## Formalized into cubes, not only folders
 
-A later, deeper check (do **not** assume "no folder tree" = "never formalized") found that the room layer **is** formalized into the cube/codebook + tuple-range model, by three live mechanisms — see the dedicated [`../cubes/`](../cubes/) mapping:
+The public boundary needs one more correction:
+
+- absence of a giant folder tree is **not** absence of formalization
+
+The room layer is formalized into the cube/codebook + tuple-range model by three live mechanisms — see the dedicated [`../cubes/`](../cubes/) mapping:
 
 1. **Tuple-range addressing** — `/api/fabric-revolver` reports `tuple_ranges_are_backend_nodes=true`, `real_worker_slots_are_chambers=true`, `active_chambers=8`. A room is a **BEHCS-1024 tuple-range**; 8 bounded chambers are the real worker slots. N rooms cost 8 chambers + range arithmetic, not N folders.
 2. **Shard-quant cube receipts** — each of the 100 shards folds its 100 rooms (8-dim vectors) via **4 codecs** (Johnson-Lindenstrauss 8→4, turbo uniform 8-bit, polar-pair, triple-spherical) into one `hyperbehcs.quantized_substrate_receipt.v1` (`descriptor_only`, sha16 fingerprint). **100 shard-cubes = the whole 10k layer folded.** Real sample: [`../cubes/sample-shard-quant-cube.annotated.json`](../cubes/sample-shard-quant-cube.annotated.json).
-3. **Genius cube-weights** — the 100B harvest prism-folded BEHCS-256→1024→HyperBEHCS into 256 ≤10-byte cube-weights in the matrix store.
+3. **Tensor-collapse / bounded chamber runtime** — the cube also exists as an inference/collapse surface and later as a bounded chamber runtime over a much larger logical address space.
 
-**Corrected boundary:** the `100k` **is** formalized (named scaled-rotor supervisor + tuple-range/cube model); what is **not** confirmed is a literal `carry-quant-100000` cube store materialized on acer's own drives — the materialized cube instance present on acer is the **10k** (100 shard-cubes). `[OPEN]`: council-q `council-q-1781616593651-mldu1l` pending for the 100k materialized locus.
+**Corrected boundary:** the `100k` **is** formalized (named scaled-rotor supervisor + tuple-range/cube model); what is **not** confirmed is a literal `carry-quant-100000` cube store materialized on acer's own drives. The materialized cube instance present on acer is the **10k** layer (100 shard-cubes), while the larger scaled rotor remains canon plus range-addressed formalization.
 
 ## Related public notes
 
