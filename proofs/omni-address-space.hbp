@@ -1,0 +1,10 @@
+ADDRPROOFHDR|proof=OMNI-ADDRESS-SPACE|form=hbp-tuple|exact=BigInt|params=G{256,1024,2048}xD60x17englx16lvl|measured=alphabet-BEHCS-1024+tuple_dim-60+16-levels|canon=256/1024/2048-gens+47-to-60-catalogs+17-engines|json=0
+ADDRREF|atoms_observable_universe=~10^80|digits=81|note=single-tuple-already-exceeds-this|json=0
+ADDRTUPLE|gen=BEHCS-256|G=256|D=60|points=256^60|digits=145|~10^144|exceeds_atoms_by=10^64|tag=CANON-gen|json=0
+ADDRTUPLE|gen=BEHCS-1024|G=1024|D=60|points=1024^60|digits=181|~10^180|exceeds_atoms_by=10^100|tag=MEASURED-params|json=0
+ADDRTUPLE|gen=BEHCS-2048|G=2048|D=60|points=2048^60|digits=199|~10^198|exceeds_atoms_by=10^118|tag=CANON-gen|json=0
+ADDRCATGROWTH|from=47-catalogs|to=60-catalogs|G=1024|points_47=1024^47|digits_47=142|points_60=1024^60|digits_60=181|each_catalog_multiplies_by=1024(~10^3)|growth_47to60=10^39|tag=CANON|json=0
+ADDROMNI|stack=BEHCS-1024^60 x 17!engine-orderings x 16-levels|engine_orderings_17fact=355687428096000|digits=197|~10^196|exceeds_atoms_by=10^116|tag=MODELED-over-measured-params|json=0
+ADDRCONVO|conversation=10-address-words|each_word=1024^60|points=(1024^60)^10|digits=1807|~10^1806|exceeds_atoms_by=10^1726|tag=MODELED|json=0
+ADDRVERDICT|atoms_exceeded=TRUE-at-every-layer|smallest(BEHCS-256-single-tuple)=10^144_vs_atoms_10^80=exceeds_by_10^64|frame=ADDRESSING-capacity-not-materialized-storage(slices-law:possibility-8byte-cheap,materialization-storage-gated)|brown_hilbert=address-geometry-unbounded;binding-limit=storage|json=0
+ADDRPROOFFTR|sha256=cbbe423abd2ac512b86e795e2c6ffe2ec118eefdebc863e8f50332bd7cd082b6|rows=9|json=0

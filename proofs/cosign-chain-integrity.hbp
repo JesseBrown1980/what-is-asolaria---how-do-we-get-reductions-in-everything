@@ -1,0 +1,5 @@
+PROOFHDR|proof=COSIGN-CHAIN-INTEGRITY|form=hbp-tuple|ledger=C:/asolaria-acer/COSIGN_CHAIN.ndjson|objects=3575|sealed=3400|seq_span=178..3565|daemon_boundary=3540|json=0
+PROOFSEG|segment=LIVE-daemon-era|seq=>=3540|sealed=26|hash_linked=25|epoch_anchors=0|real_breaks=0|verdict=PASS-unbroken|json=0
+PROOFSEG|segment=PRE-daemon|seq=<3540|sealed=3374|hash_linked=3297|epoch_anchors=23|real_breaks=9|verdict=PARTIAL-ledger-self-flags-3556..3559-nonreproducing|json=0
+PROOFNOTE|live_chain_hash_linked=1|ledger_self_discloses_pre3560_partial=1|signature_verify=fabric-_sig_check-VERIFIED-on-sampled-rows|honest_by_design=self-flagged-not-hidden|json=0
+PROOFFTR|sha256=e61bcc53f0bf36db3bd93cff43144987ee27e855841b8bba2f412b99a3c51683|rows=4|json=0

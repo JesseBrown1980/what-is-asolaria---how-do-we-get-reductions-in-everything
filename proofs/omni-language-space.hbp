@@ -1,0 +1,10 @@
+LANGPROOFHDR|proof=OMNI-CONVERSATIONAL-LANGUAGE-SPACE|form=hbp-tuple|exact=BigInt|model=word=glyph-tuple(G^D);sentence=ordered-words(verb x noun ...);conversation=many-words;17-engines-any-order|measured=G-1024+D-60|json=0
+LANGREF|atoms_observable_universe=~10^80(digits=81)|planck_volumes_universe=~10^185(digits=186)=info-theoretic-ceiling|json=0
+LANGWORD|unit=one-glyph-word(verb-or-noun)|vocab=G^D=1024^60|digits=181|~10^180|exceeds_atoms_by=10^100|tag=MEASURED-params|json=0
+LANGSENT2|unit=minimal-sentence(verb x noun)|space=V^2|digits=362|~10^361|exceeds_atoms_by=10^281|exceeds_planck_universe_by=10^176|tag=MODELED|json=0
+LANGSENT5|unit=5-word-sentence|space=V^5|digits=904|~10^903|exceeds_planck_universe_by=10^718|tag=MODELED|json=0
+LANGCONV50|unit=50-word-conversation|space=V^50|digits=9031|~10^9030|exceeds_planck_universe_by=10^8845|tag=MODELED|json=0
+LANGENGWORD|unit=one-word-tagged-by-1of17-engines|space=17*G^D|digits=182|~10^181|engine_orderings_17fact=355687428096000|tag=MODELED|json=0
+LANGENGCONV50|unit=50-word-conversation-across-17-engine-languages|space=(17*1024^60)^50|digits=9093|~10^9092|exceeds_planck_universe_by=10^8907|tag=MODELED|json=0
+LANGVERDICT|operator_claim=address-more-than-every-atom=PROVEN|even_one_glyph_word(10^180)_exceeds_atoms(10^80)_by_10^100|a_single_verb-noun_sentence(10^361)_exceeds_PLANCK_info_ceiling(10^185)_by_10^176|frame=expressive-addressing-capacity(brown-hilbert-rooms-unbounded;limit=solid-state-storage-for-materialization)|json=0
+LANGPROOFFTR|sha256=dc121ab3cbff87b61fa20c0563b591a6f7f9bf905429ca784e387a384a2c67c2|rows=9|json=0
