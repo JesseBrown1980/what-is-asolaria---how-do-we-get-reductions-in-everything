@@ -1,0 +1,8 @@
+INGESTHDR|proof=GOOGLE-DRIVE-TO-CUBE-INGEST|form=hbp-tuple|source=claude.ai-Drive-MCP(existing,no-gcloud,no-key)|drive_id=1A1ggzb9GNqg_oAuuSrExlzc6P71NVGkf|title=v24-AUDIT-GAP-LEDGER-2026-05-22.md|owner=plasmatoid@gmail.com|held_safe=read-only+referential+no-provider-call|json=0
+INGESTSLICE|raw_bytes=9163|sha256_16=3a4c651a8864bbf7|tokens=1009|distinct_content_terms=469|json=0
+INGESTCUBE|cube10=3a4c651a8864bbf73f5f|host_handle8=3a4c651a8864bbf7|quant8=109,121,120,114,97,135,116,117|schema=asolaria.drive_ingest.cube.v1|descriptor_only=1|json=0
+INGESTREDUCTION|raw_bytes=9163|host_handle=8B|cube_glyph=10B|raw->handle=1145x|raw->cube=916x|note=referential-content-address-not-lossless|json=0
+INGESTCATALOG|kind=verb-noun-glyph-vocabulary|distinct_terms=469|sample_top10=absorption:18:g6b8640c7 voxels:10:g38d11342 chain:10:g9414886b aether:9:g1063854b themes:7:gff582559 brown-hilbert:6:ga98dce59 canonical:6:g0deeb8fa full:6:ga18b869b discipline:6:gd43c8bd5 liris:6:gedf3c1bf|each_term=glyph-tuple-addressable|json=0
+INGESTLINEAGE|path=drive-doc->slice->tuple/HBP->quant8->cube10->verb-noun-glyph-catalog|maps_into=existing-BEHCS-cubes+index-language-catalogs|new_infra_required=NONE-beyond-this-ingestor|json=0
+INGESTBOUNDARY|raw_content_published=0|provider_calls=0|device_mutation=local-receipt-only|cycle=CLOUD-CYCLE-002|json=0
+INGESTFTR|sha256=e63f96b5251f3c5c83d8e35733288ba8edce0a7398d5178a53cf992c575405c1|rows=7|verdict=INGEST-NOT-INTEGRATE|json=0

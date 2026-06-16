@@ -1,0 +1,8 @@
+INGESTHDR|proof=GOOGLE-DRIVE-TO-CUBE-INGEST|form=hbp-tuple|source=claude.ai-Drive-MCP(existing,no-gcloud,no-key)|drive_id=1e4xAxic1DHCpcN3i42ds5g3m702op3Wc|title=v24-DESIGN.md|owner=plasmatoid@gmail.com|held_safe=read-only+referential+no-provider-call|json=0
+INGESTSLICE|raw_bytes=8833|sha256_16=05ad95065a134ae2|tokens=912|distinct_content_terms=428|json=0
+INGESTCUBE|cube10=05ad95065a134ae2d1d9|host_handle8=05ad95065a134ae2|quant8=118,122,82,145,96,111,97,139|schema=asolaria.drive_ingest.cube.v1|descriptor_only=1|json=0
+INGESTREDUCTION|raw_bytes=8833|host_handle=8B|cube_glyph=10B|raw->handle=1104x|raw->cube=883x|note=referential-content-address-not-lossless|json=0
+INGESTCATALOG|kind=verb-noun-glyph-vocabulary|distinct_terms=428|sample_top10=build:12:g44575cf5 step:10:g3e64cc41 voxel:10:g9ac00055 builder:9:gdf6b0717 separate:9:g80ed840f v24-staging:9:gd46e8f91 voxels:8:g38d11342 design:7:ga77de8a6 sidecar:7:g6c8b4535 does:7:g961eb436|each_term=glyph-tuple-addressable|json=0
+INGESTLINEAGE|path=drive-doc->slice->tuple/HBP->quant8->cube10->verb-noun-glyph-catalog|maps_into=existing-BEHCS-cubes+index-language-catalogs|new_infra_required=NONE-beyond-this-ingestor|json=0
+INGESTBOUNDARY|raw_content_published=0|provider_calls=0|device_mutation=local-receipt-only|cycle=CLOUD-CYCLE-002|json=0
+INGESTFTR|sha256=85350c6a2e2c9fc6ad1cbe36c09c5005e586967b27776c933a6b86194de668cd|rows=7|verdict=INGEST-NOT-INTEGRATE|json=0

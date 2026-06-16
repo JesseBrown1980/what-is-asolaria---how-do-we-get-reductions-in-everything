@@ -1,0 +1,19 @@
+CYCLE2HDR|receipt=SECOND-HELD-SAFE-CLOUD-CYCLE|id=CLOUD-CYCLE-002|form=hbp-tuple|trigger=operator "do it all in parallel" + "I authorize"|phases=enumerate->ingest-all->propose(workflow)->verify(adversarial)->STAGE|held_safe=auto_fire-false+apply-operator-gated|json=0
+CYCLE2SCOPE|drive_canon_enumerated=169-files(folder 1xorgABBhPJvKzXpkb4vZFl1wsjkE_veb)|readable_ingested_this_cycle=8|encoded-canon=56-hbp+91-sidecar=ALREADY-cubes(referenced-not-reingested)|json=0
+CYCLE2INGEST|slug=cold-backup-proof|raw_bytes=1354|raw->handle=169x|raw->cube=135x|descriptor_only=1|raw_published=0|cube=cubes/drive-ingest-cold-backup-proof.hbp|json=0
+CYCLE2INGEST|slug=v24-design|raw_bytes=8833|raw->handle=1104x|raw->cube=883x|descriptor_only=1|raw_published=0|cube=cubes/drive-ingest-v24-design.hbp|json=0
+CYCLE2INGEST|slug=v24-audit-gap-ledger|raw_bytes=9163|raw->handle=1145x|raw->cube=916x|descriptor_only=1|raw_published=0|cube=cubes/drive-ingest-v24-audit-gap-ledger.hbp|json=0
+CYCLE2INGEST|slug=v23-readme|raw_bytes=5015|raw->handle=627x|raw->cube=502x|descriptor_only=1|raw_published=0|cube=cubes/drive-ingest-v23-readme.hbp|json=0
+CYCLE2INGEST|slug=morning-brief|raw_bytes=5580|raw->handle=698x|raw->cube=558x|descriptor_only=1|raw_published=0|cube=cubes/drive-ingest-morning-brief.hbp|json=0
+CYCLE2INGEST|slug=absorb4-gc-wiring|raw_bytes=9503|raw->handle=1188x|raw->cube=950x|descriptor_only=1|raw_published=0|cube=cubes/drive-ingest-absorb4-gc-wiring.hbp|json=0
+CYCLE2INGEST|slug=v9-pid-voxels|raw_bytes=4354|raw->handle=544x|raw->cube=435x|descriptor_only=1|raw_published=0|cube=cubes/drive-ingest-v9-pid-voxels.hbp|json=0
+CYCLE2INGEST|slug=v24-staging-helper|raw_bytes=2048|raw->handle=256x|raw->cube=205x|descriptor_only=1|raw_published=0|cube=cubes/drive-ingest-v24-staging-helper.hbp|json=0
+CYCLE2MANIFEST|artifact=cubes/cube-manifest.hbp|members=11|distinct_cube10=11|dup_collapsed=0|reuse_ratio=0.1319(sampled-top10)|corpus_raw=57551B->523x|status=BUILT-read-only|json=0
+CYCLE2WORKFLOW|tool=workflow wrbe05lc9|proposers=6 lenses|verify=3 adversarial skeptics each|survived=3/6|grounding=CORRECTED after operator caught false HRM/MTP/Gemma gap (asked fabric, roster=CANONICAL)|json=0
+CYCLE2PROP_SURVIVOR|lens=engine-gap|title=Stage-5 SHANNON_NOVELTY read-only scorer|refuted=0|lowrisk=3|artifact=cloud-cycle-002/shannon-novelty-scorer.mjs(self-test PASS 3DUP/1NEW gated idempotent)|status=STAGED-read-only-preview|apply=wire-into-live-tick=OPERATOR-GATED|json=0
+CYCLE2PROP_SURVIVOR|lens=compression-cube|title=cross-cube catalog-union manifest|refuted=0|lowrisk=3|artifact=cubes/cube-manifest.hbp|status=BUILT-read-only(applied:reversible-receipt)|json=0
+CYCLE2PROP_SURVIVOR|lens=bilateral|title=HBP push-lease lockfile|refuted=0|lowrisk=3|artifact=BILATERAL-LEASE.hbp(state=CLEAR)|status=STAGED-advisory|json=0
+CYCLE2PROP_REJECTED|cosign-reproducibility-scorer(safety-harden)|queue-digest(cloud-automation)|BH-addr-check-tail(addressing-language)|reason=adversarial-verify refuted>=2 or lowrisk<2|json=0
+CYCLE2VOTING|operator_flag=hundreds-of-supervisors-not-voting|finding=cloud-cycle-002/voting-findings.hbp|verdict=mostly-by-design(keyword-domain-gating)+2-real-low-risk-gaps(votes-feed-TODO,thin-keyword-match)|json=0
+CYCLE2BOUNDARY|applied=manifest(read-only-receipt)|staged=scorer+lease+8-ingest-cubes+voting-findings|HELD-operator-gated=wire-scorer-into-live-tick,Drive-bulk-upload,emitter-fire,USB-move,daemon-launch|provider_calls=0|secrets_in_rows=0|raw_content_in_rows=0|json=0
+CYCLE2FTR|sha256=24984f6e1f65d3320fb0a8fe2fdc351bbc000290dce67ac69d21f3436ea7582d|rows=18|json=0
