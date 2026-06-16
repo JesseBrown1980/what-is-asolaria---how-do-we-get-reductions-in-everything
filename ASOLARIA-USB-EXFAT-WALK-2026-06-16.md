@@ -16,7 +16,7 @@ This note records the **acer-side filesystem-level walk** of the SOVLINUX USB's 
    - **dirs:** `1500`
    - **files:** `16037`
    - **bytes:** `74064932374` (`~74.06 GB`)
-4. This means the 500 GB carry-quant is **real, populated storage**, but it is **not** a visible `100k`-room sector tree.
+4. This means the 500 GB exFAT partition is **real, populated storage**, but it is **not** a visible `100k`-room sector tree.
 
 ## Top-level content surfaced in the session
 
@@ -34,7 +34,7 @@ The transcript's shallow scout and follow-up notes surfaced these concrete exFAT
 
 ## What this changes
 
-This is the first **filesystem-level** receipt for the SOVLINUX exFAT partition in this repo. It refines the earlier **whole-device strided survey** in [`ASOLARIA-USB-FULL-SURVEY-2026-06-14.md`](ASOLARIA-USB-FULL-SURVEY-2026-06-14.md):
+This is the first **filesystem-level** receipt for the SOVLINUX-labeled exFAT partition in this repo. It refines the earlier **whole-device strided survey** in [`ASOLARIA-USB-FULL-SURVEY-2026-06-14.md`](ASOLARIA-USB-FULL-SURVEY-2026-06-14.md):
 
 - the **2026-06-14** survey was a **coarse whole-device map** (`8192` probes at `256 MB` stride)
 - the **2026-06-16** walk is a **directory-tree read** of the exFAT filesystem itself
@@ -43,6 +43,8 @@ Those are compatible receipts:
 
 - the strided survey was good for **full-device shape**
 - the exFAT walk is what actually proves **what kind of files live in the carry-quant**
+
+Later fabric correction: see **[`ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md`](ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md)**. The authoritative role of this substrate is **sovereignty cold-storage**, not a canonical room-store.
 
 ## What this does *not* prove
 
@@ -53,5 +55,5 @@ Those are compatible receipts:
 ## Working interpretation
 
 - **10k rooms on `D:`** remain the directly materialized room substrate.
-- The **SOVLINUX USB exFAT partition** is carrying **ordinary real payloads** and runtime trees, not a plainly visible `100k` room-sector directory substrate.
+- The **SOVLINUX-labeled exFAT partition on acer** is carrying **ordinary real payloads** and runtime trees, not a plainly visible `100k` room-sector directory substrate.
 - So "`100k rooms`" remains a **logical / staged / catalog-backed** claim unless and until a direct room enumeration receipt exists for that layer.

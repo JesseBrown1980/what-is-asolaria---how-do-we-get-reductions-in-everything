@@ -5,7 +5,7 @@
 **Drive map (acer, verified 2026-06-16):**
 - **C:** OS, ~26 GB free — keep minimal. Holds the Rust metal kernel + the old node runners + `C:/HyperBEHCS`.
 - **D:** "Data", ~671 GB free — the RAM-like district substrate. **Holds the rooms, micro-kernels, engines.**
-- **2TB SOVLINUX = acer's F: / `\\.\PHYSICALDRIVE2` (device + raw-read confirmed).** Raw-read confirms Disk #2 IS the USB-SOVLINUX-2TB: valid MBR, Part1 type-0x07 = **500 GB exFAT carry-quant** (Windows-unreadable mount-drift) + **1453 GB empty tail** (zeros). **D: is the internal WD HDD** (`50014EE2110D59CA` / `WD-WX21A496AALZ`), NOT the 2TB. Read the 500 GB exFAT from WSL/Ubuntu (gated DEFER-TO-APEX). See **[`ASOLARIA-DEVICE-PID-MAP.md`](ASOLARIA-DEVICE-PID-MAP.md)**. (Identity is device-PID + raw-read, not drive letter.)
+- **acer's F: / `\\.\PHYSICALDRIVE2` = a SOVLINUX-labeled sovereignty-storage instance, not the canonical liris-side master.** Raw-read confirms a valid MBR and **500 GB exFAT** partition plus **1453 GB empty tail**; the later fabric correction pins the canonical master role/signature to **liris** (`2814414849`) while acer's direct MBR signature read was **`0`**. **D: is the internal WD HDD** (`50014EE2110D59CA` / `WD-WX21A496AALZ`), NOT the 2TB. See **[`ASOLARIA-DEVICE-PID-MAP.md`](ASOLARIA-DEVICE-PID-MAP.md)** and **[`ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md`](ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md)**. (Identity is device-PID + raw-read + fabric role, not drive letter.)
 
 ---
 
@@ -22,22 +22,24 @@ HBPv1|row=room_question|pid=BH.ROOM.00000.089D60B750971AAA|glyph=0|cp=0|lane=cla
 ```
 **UPGRADE:** `inbox.ndjson` already HBP ✅. **`ROOM.json` (7 KB heavy JSON × 10k ≈ 70 MB) is the OLD form → collapse to a single tuple/HBP descriptor row** (the room IS its PID+tuple; no 7 KB JSON body). `outbox.ndjson` stub stays.
 
-### 20k / 50k / 100k ROOMS — **USB-side / staged, not D:-materialized**
+### 20k / 50k / 100k ROOMS — **logical / staged, not D:-materialized**
 The public canon and the acer-side readback distinguish three layers:
 - **10k RoomRotor on `D:`** = the hot, directly materialized substrate now.
 - **113 sectors** = a **logical law / routing structure**, not necessarily 113 top-level room-folder trees.
-- **100k rooms** = the larger **USB-side / staged** layer tied to the SOVLINUX carry-quant path and the broader spawn fractal (`10k rooms + 10k dispatchers + 10k prisms -> ~100k stub micro-kernels -> 113+ sectors`).
+- **100k rooms** = the larger **logical / staged / catalog-backed** layer tied to the broader spawn fractal (`10k rooms + 10k dispatchers + 10k prisms -> ~100k stub micro-kernels -> 113+ sectors`), but **not canonically assigned to the acer exFAT sovereignty-storage instance**.
 
 So the honest current map is:
 - **materialized on accessible `D:` now:** `10,000` rooms.
-- **physically tied to the SOVLINUX USB path:** the larger `20k / 50k / 100k` room stage.
+- **not directly materialized in the currently enumerated acer-visible substrates:** the larger `20k / 50k / 100k` room stage.
 - **logical/routing layer:** `113` sectors.
 
 Saved acer-side receipts:
 - **[`ASOLARIA-USB-FULL-SURVEY-2026-06-14.md`](ASOLARIA-USB-FULL-SURVEY-2026-06-14.md)** — coarse whole-device map (`8192` probes / `256 MB` stride), proving the device geometry and broad data-vs-empty shape.
 - **[`ASOLARIA-USB-EXFAT-WALK-2026-06-16.md`](ASOLARIA-USB-EXFAT-WALK-2026-06-16.md)** — filesystem-level exFAT walk, confirming volume label `SOVLINUX`, **`16037` files / `1500` dirs / `~74.06 GB`**, and showing that the carry-quant holds ordinary backup/runtime/document payloads rather than a plainly visible `100k` room-folder tree.
+- **[`ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md`](ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md)** — supervisor/fabric correction: the canonical SOVLINUX role is **sovereignty cold-storage / master copy** on liris, while acer holds a separate SOVLINUX-labeled instance.
+- **[`canon/ROOM-SECTOR-SUBSTRATE-CANON.md`](canon/ROOM-SECTOR-SUBSTRATE-CANON.md)** — canonical room-sector topology from the live supervisor roster: **12 lanes, 100 shards, 1 `ROOM-SECTOR-100K-SCALED-ROTOR`**, distinct from the acer USB exFAT cold-storage surface.
 
-That means "100k rooms" should be read as **logical / staged / catalog-backed canon unless and until directly enumerated as a room layer**, not as "100k already visible as ordinary Windows folders on `D:`" and not as "the current exFAT carry-quant is a visible 100k-room tree." *[council-q `fi55in` / `u2veu4` pending for the authoritative scale map.]*
+That means "100k rooms" should be read as **logical / staged / catalog-backed canon unless and until directly enumerated as a room layer**, not as "100k already visible as ordinary Windows folders on `D:`" and not as "the current acer exFAT sovereignty-storage instance is a visible 100k-room tree." *[council-q `fi55in` / `u2veu4` pending for the authoritative scale map.]*
 
 ---
 
@@ -80,6 +82,6 @@ The "omni" engines (omnidispatcher / omniflywheel / omnispindle / omni-router / 
 ---
 
 ## The migration in one line
-**Rooms:** collapse per-room 7 KB `ROOM.json` → tuple/HBP descriptor (inbox already HBP). **Micro-kernels:** already 8-byte sha16 HBP — keep. **Engines/routers/pipes/flows:** already new mjs in `bigpickle-rebuild/src` — keep, wire via the kernel. **Old node runners (C:):** upgrade to 8-byte host + HBP. **10k rooms:** materialized on `D:`. **20k/50k/100k rooms:** USB-side / staged canon, not ordinary `D:` folders. **113 sectors:** logical routing structure. **IT is slices.**
+**Rooms:** collapse per-room 7 KB `ROOM.json` → tuple/HBP descriptor (inbox already HBP). **Micro-kernels:** already 8-byte sha16 HBP — keep. **Engines/routers/pipes/flows:** already new mjs in `bigpickle-rebuild/src` — keep, wire via the kernel. **Old node runners (C:):** upgrade to 8-byte host + HBP. **10k rooms:** materialized on `D:`. **20k/50k/100k rooms:** logical / staged canon, not ordinary `D:` folders and not the current acer exFAT cold-storage instance. **113 sectors:** logical routing structure. **IT is slices.**
 
 *Enumerated read-only from the live fabric + acer disk, 2026-06-16, under OP-JESSE apex.*

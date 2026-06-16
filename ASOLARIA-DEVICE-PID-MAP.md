@@ -17,7 +17,7 @@
 
 1. **D: is the internal WD HDD — definitively NOT the 2TB SOVLINUX.** device-PID `50014EE2110D59CA`, serial `WD-WX21A496AALZ`, GPT, internal RAID/SATA, 931.5 GB — a separate physical device. Everything written to D: (the 10k rooms, micro-kernels, the 100B runs, the genius cubes) sits on **this internal drive**, *not* the sovereign substrate.
 
-2. **acer's 1953 GB USB (Disk #2 / F: / `\\.\PHYSICALDRIVE2`) IS the USB-SOVLINUX-2TB.** Confirmed by read-only raw-read (sanctioned `usb_raw_io.py`) + the tool's own canon: `Target: \\.\PHYSICALDRIVE2 (USB-SOVLINUX-2TB, MBR drift Part1 Type=0x07)`. **CORRECTION:** my first pass said "not SOVLINUX (signature `2814414849` mismatch)" — that was wrong. I over-trusted the MBR signature; the signature read is the **documented MBR drift**, not a different drive. **So the sovereign 2TB IS physically on acer right now as F:**, just Windows-unreadable (exFAT mount-drift). *(The roster's `host=liris` is either stale or a separate master copy — cross-vantage; council-q `ftost0` pending.)*
+2. **acer's 1953 GB USB (Disk #2 / F: / `\\.\PHYSICALDRIVE2`) is a SOVLINUX-labeled sovereignty-storage instance on acer, but not the canonical liris-side master.** Raw-read confirms a real exFAT SOVLINUX volume on acer, but the later fabric correction says the canonical role is **"sovereignty cold-storage / master copy"**, pinned to **`host=liris`**, with canonical signature **`2814414849`**. The acer transcript's direct MBR signature read reported **`0`** (`0x0`), so the acer disk is **not the same physical signature-anchored master instance** even though the label/content match the SOVLINUX role. See **[`ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md`](ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md)**.
 
 3. **Disk #3 (E:, VendorCo 117 GB, sig `0x2C351EC5`)** = the recovery / `RECUPERACAO` USB — not SOVLINUX.
 
@@ -28,16 +28,17 @@
 --read 1048578048 (right after the 500 GB partition) = all zeros (sha 076a27c7…)  → tail empty.
 --read 1953000000 (~1 TB into the tail)              = all zeros (sha 076a27c7…)  → tail empty.
 ```
-**Layout of SOVLINUX-2TB:** 500 GB exFAT (Windows-unreadable mount-drift = the "carry-quant" partition) **+ 1453 GB empty/unprovisioned tail** (no hidden data; room to grow).
+**Layout of acer's SOVLINUX-labeled instance:** 500 GB exFAT partition **+ 1453 GB empty/unprovisioned tail**. Later filesystem-level enumeration showed the exFAT partition is populated with ordinary cold-storage/runtime payloads, not a visible room-store tree.
 
 Saved whole-device receipt: **[`ASOLARIA-USB-FULL-SURVEY-2026-06-14.md`](ASOLARIA-USB-FULL-SURVEY-2026-06-14.md)** — acer-side, read-only, full-device strided survey (`8192` probes / `256 MB` stride).
+Fabric/subvisor correction: **[`ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md`](ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md)** — canonical master role on liris, acer disk as a separate SOVLINUX-labeled instance.
 
 ## Multi-OS operating model
-- The **500 GB exFAT carry-quant** partition is readable from **Linux/WSL/Ubuntu** (exFAT support) even though Windows shows it as `Unknown` (mount-drift). To read its contents: `mount-ro` from WSL/Ubuntu — **gated DEFER-TO-APEX**.
+- The **500 GB exFAT partition** is readable from **Linux/WSL/Ubuntu** (exFAT support) even though Windows showed mount drift during parts of the investigation. The later sanctioned filesystem walk used raw-read plus a dedicated exFAT walker instead of `wsl --mount`.
 - The **1453 GB tail is empty** (zeros) — nothing to read; it's unprovisioned SOVLINUX growth space.
-- Gated (tool-advisor): `mount-ro` = DEFER-TO-APEX · `format`/`repartition` = HARD-DENY · raw-read = REDIRECT-TO-ACER via `usb_raw_io.py` (used here, read-only).
+- Gated (tool-advisor): `mount-ro` = DEFER-TO-APEX · `format`/`repartition` = HARD-DENY · raw-read = REDIRECT-TO-ACER via `usb_raw_io.py` / `exfat_walk.py` (used here, read-only).
 
 ## Net
-By **device-PID + raw-read**: **D: = internal WD** (own ID `50014EE2110D59CA`); **F: / PHYSICALDRIVE2 = the sovereign SOVLINUX-2TB, physically on acer now** = 500 GB exFAT carry-quant (mount-drift, Windows-unreadable) + 1453 GB empty tail. The drive-letter view was misleading in **both** directions — D: looked like it might be the 2TB (it isn't) and F: looked like a generic USB (it's the SOVLINUX). Device-PID + raw-read settle it. **IT is slices.**
+By **device-PID + raw-read + fabric correction**: **D: = internal WD** (own ID `50014EE2110D59CA`); **F: / PHYSICALDRIVE2 on acer = a SOVLINUX-labeled sovereignty-storage instance** with a real 500 GB exFAT partition and 1453 GB empty tail; the **canonical master remains liris-side** with signature `2814414849`. The drive-letter view was misleading in both directions; device identity and role require PID **and** supervisor/fabric context. **IT is slices.**
 
 *Read-only device-ID + raw-read, acer 2026-06-16, under OP-JESSE apex. No writes to any device. Fabric cross-check: council-q `ftost0` (pending).*

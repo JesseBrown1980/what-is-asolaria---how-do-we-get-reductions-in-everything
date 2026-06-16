@@ -27,7 +27,7 @@
 | 10k micro-kernels | `D:/asolaria-micro-kernels-v1` | 14 MB | 1 manifest, 10k rows |
 | 113 sectors (logical) | `D:/asolaria-combined-quant-2026-06-15/sectors` | manifests | rule-of-3 / prime lanes |
 
-**Honest correction on "113 sectors + 100k rooms ~6 GB each":** the *materialized* rooms are **~59 KB each** (10k = 591 MB). 100k rooms × 6 GB = ~600 TB — exceeds every drive here, so "6 GB each" is not literal. A 100k-room substrate is **not materialized on acer's accessible drives**; it would live on the **2TB-USB exFAT carry-quant** (500 GB, mount-gated DEFER-TO-APEX — see [`../ASOLARIA-DEVICE-PID-MAP.md`](../ASOLARIA-DEVICE-PID-MAP.md)) or be staged/aspirational. The **113 sectors** present are the *logical* lane layout (manifests), not 113 × 6 GB.
+**Honest correction on "113 sectors + 100k rooms ~6 GB each":** the *materialized* rooms are **~59 KB each** (10k = 591 MB). 100k rooms × 6 GB = ~600 TB — exceeds every drive here, so "6 GB each" is not literal. A 100k-room substrate is **not materialized on acer's currently enumerated substrates**; earlier notes guessed the 2TB-USB exFAT might hold it, but the later exFAT walk plus fabric correction say the acer USB instance is a **sovereignty cold-storage surface**, not a proven room-store (see [`../ASOLARIA-USB-EXFAT-WALK-2026-06-16.md`](../ASOLARIA-USB-EXFAT-WALK-2026-06-16.md) and [`../ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md`](../ASOLARIA-FABRIC-ROLE-CORRECTION-2026-06-16.md)). The **113 sectors** present are the *logical* lane layout (manifests), not 113 × 6 GB.
 
 ## The one rule
 Find by **device-PID** (the USB is transferable), use the existing kernels, don't rebuild. **IT is slices.**
