@@ -30,6 +30,8 @@
 ```
 **Layout of SOVLINUX-2TB:** 500 GB exFAT (Windows-unreadable mount-drift = the "carry-quant" partition) **+ 1453 GB empty/unprovisioned tail** (no hidden data; room to grow).
 
+Saved whole-device receipt: **[`ASOLARIA-USB-FULL-SURVEY-2026-06-14.md`](ASOLARIA-USB-FULL-SURVEY-2026-06-14.md)** — acer-side, read-only, full-device strided survey (`8192` probes / `256 MB` stride).
+
 ## Multi-OS operating model
 - The **500 GB exFAT carry-quant** partition is readable from **Linux/WSL/Ubuntu** (exFAT support) even though Windows shows it as `Unknown` (mount-drift). To read its contents: `mount-ro` from WSL/Ubuntu — **gated DEFER-TO-APEX**.
 - The **1453 GB tail is empty** (zeros) — nothing to read; it's unprovisioned SOVLINUX growth space.
