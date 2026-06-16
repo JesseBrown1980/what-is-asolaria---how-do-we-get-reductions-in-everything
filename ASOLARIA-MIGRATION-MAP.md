@@ -5,7 +5,7 @@
 **Drive map (acer, verified 2026-06-16):**
 - **C:** OS, ~26 GB free — keep minimal. Holds the Rust metal kernel + the old node runners + `C:/HyperBEHCS`.
 - **D:** "Data", ~671 GB free — the RAM-like district substrate. **Holds the rooms, micro-kernels, engines.**
-- **2TB SOVLINUX = liris-side (device-PID confirmed).** acer's **F:** is a *separate generic* USB (Disk #2 "General UDisk", 1953 GB, **no serial, signature ≠ SOVLINUX `2814414849`**) — **NOT** the canonical sovereign drive. **D: is the internal WD HDD** (`50014EE2110D59CA` / `WD-WX21A496AALZ`), not the 2TB. See **[`ASOLARIA-DEVICE-PID-MAP.md`](ASOLARIA-DEVICE-PID-MAP.md)** for the full device-PID resolution. (Identity is by device-PID, not drive letter.)
+- **2TB SOVLINUX = acer's F: / `\\.\PHYSICALDRIVE2` (device + raw-read confirmed).** Raw-read confirms Disk #2 IS the USB-SOVLINUX-2TB: valid MBR, Part1 type-0x07 = **500 GB exFAT carry-quant** (Windows-unreadable mount-drift) + **1453 GB empty tail** (zeros). **D: is the internal WD HDD** (`50014EE2110D59CA` / `WD-WX21A496AALZ`), NOT the 2TB. Read the 500 GB exFAT from WSL/Ubuntu (gated DEFER-TO-APEX). See **[`ASOLARIA-DEVICE-PID-MAP.md`](ASOLARIA-DEVICE-PID-MAP.md)**. (Identity is device-PID + raw-read, not drive letter.)
 
 ---
 
