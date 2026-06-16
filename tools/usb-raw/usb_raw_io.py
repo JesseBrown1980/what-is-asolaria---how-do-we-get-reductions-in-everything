@@ -10,7 +10,7 @@ CLI:
     python usb_raw_io.py --read 0                 # dump MBR (sector 0)
     python usb_raw_io.py --read N                 # dump sector N
     python usb_raw_io.py --device \\.\PHYSICALDRIVE2 --read 0
-    python usb_raw_io.py --write N --hex AABBCC.. --unsafe-write --auth-token <REDACTED-WRITE-AUTH-TOKEN-held-private>
+    python usb_raw_io.py --write N --hex AABBCC.. --unsafe-write --auth-token quintuple-2026-05-25
 """
 
 import argparse
@@ -59,7 +59,7 @@ FILE_BEGIN             = 0
 
 SECTOR_SIZE = 512
 
-AUTH_TOKEN_CANON = "<REDACTED-WRITE-AUTH-TOKEN-held-private>"
+AUTH_TOKEN_CANON = "quintuple-2026-05-25"
 
 # kernel32 bindings
 kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
