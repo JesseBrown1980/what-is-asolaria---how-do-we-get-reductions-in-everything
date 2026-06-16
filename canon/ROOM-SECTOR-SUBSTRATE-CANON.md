@@ -83,6 +83,16 @@ The corrected public reading is:
 - the acer-visible exFAT SOVLINUX instance **does not** look like a plain materialized `100k` room-folder tree
 - therefore "`100k rooms`" should currently be read as **canonical room-sector substrate topology**, with materialization requiring a separate direct receipt
 
+## Formalized into the cubes (not just folders)
+
+A later, deeper check (do **not** assume "no folder tree" = "never formalized") found that the room layer **is** formalized into the cube/codebook + tuple-range model, by three live mechanisms — see the dedicated [`../cubes/`](../cubes/) mapping:
+
+1. **Tuple-range addressing** — `/api/fabric-revolver` reports `tuple_ranges_are_backend_nodes=true`, `real_worker_slots_are_chambers=true`, `active_chambers=8`. A room is a **BEHCS-1024 tuple-range**; 8 bounded chambers are the real worker slots. N rooms cost 8 chambers + range arithmetic, not N folders.
+2. **Shard-quant cube receipts** — each of the 100 shards folds its 100 rooms (8-dim vectors) via **4 codecs** (Johnson-Lindenstrauss 8→4, turbo uniform 8-bit, polar-pair, triple-spherical) into one `hyperbehcs.quantized_substrate_receipt.v1` (`descriptor_only`, sha16 fingerprint). **100 shard-cubes = the whole 10k layer folded.** Real sample: [`../cubes/sample-shard-quant-cube.annotated.json`](../cubes/sample-shard-quant-cube.annotated.json).
+3. **Genius cube-weights** — the 100B harvest prism-folded BEHCS-256→1024→HyperBEHCS into 256 ≤10-byte cube-weights in the matrix store.
+
+**Corrected boundary:** the `100k` **is** formalized (named scaled-rotor supervisor + tuple-range/cube model); what is **not** confirmed is a literal `carry-quant-100000` cube store materialized on acer's own drives — the materialized cube instance present on acer is the **10k** (100 shard-cubes). `[OPEN]`: council-q `council-q-1781616593651-mldu1l` pending for the 100k materialized locus.
+
 ## Related public notes
 
 - [`SOVLINUX-USB-SUBSTRATE-CANON.md`](SOVLINUX-USB-SUBSTRATE-CANON.md)
