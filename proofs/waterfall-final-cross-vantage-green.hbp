@@ -1,0 +1,8 @@
+WFFINALHDR|proof=ACER-WATERFALL-FINAL-CROSS-VANTAGE|form=hbp-tuple|target=liris-language-waterfall-matrix-11x16|repo=ASOLARIA-AS-NEURAL-NETWORK|branch=codex-language-waterfall-matrix-11x16|commit=ded84e3|json=0
+WFFINALHARDEN|liris-applied-acer-recommended-fix=YES|diff=safe-fn-strip-set-pipe-cr-lf-PLUS-open-and-close-brace|test=brace-added-to-injection-payload|scope_creep=NONE|json=0
+WFFINALBRACE|prior_LOW_finding=hostile-label-brace-survived-into-row|re_attack_result=BRACE-FREE-TRUE|status=FINDING-CLOSED|json=0
+WFFINALTESTS|acer_node_test=9of9-PASS|sidecars=mjs+test-sha256-MATCH|descriptor_only=still-confirmed|json=0
+WFFINALMATH|unchanged-converged|path=45949729863572161|word_order10=180|surface_state_order10=31788|verb_noun_order10=361|conv_order10=9030|json=0
+WFFINALNOTE|injected-text-provider_calls-9=inert-inside-role-value-no-new-field|real-top-level-flags=process_launch-0+provider_calls-0|framing=SAFE|optional-ultra-low=safe-fn-does-not-strip-equals-consumer-robustness-not-emitter-safety|json=0
+WFFINALVERDICT|cross_vantage=GREEN|finding=CLOSED|liris_descriptor+acer_attack+liris_harden+acer_reverify=COMPLETE|11x16-waterfall-descriptor=BILATERALLY-PROVEN-descriptor-only|json=0
+WFFINALFTR|sha256=29f51239be488d2d96aeb04da67cdab1a002ae1ed0ddf141392b71f59bffe84c|rows=7|self_check=brace-free+single-line+json0-ok|json=0
