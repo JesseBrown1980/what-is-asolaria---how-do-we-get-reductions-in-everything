@@ -85,6 +85,10 @@ So the corrected reading is:
   The mechanism map for the tensor-collapse line: supervisors, pipes, controls, runtime stack, and the acer/liris bilateral split.
 - [sample-shard-quant-cube.annotated.json](sample-shard-quant-cube.annotated.json)  
   One annotated shard-quant receipt showing how 100 rooms fold into one cube.
+- [TENSOR-COLLAPSE-MECHANISMS-PIPES-CONTROLS-acer.md](TENSOR-COLLAPSE-MECHANISMS-PIPES-CONTROLS-acer.md)  
+  The acer-vantage **mechanisms · pipes · controls** synthesis, anchored by the self-verified council verdict (`CONVERGE`; `cube_cubed_sealer` + the BEHCS-1024 prism chain).
+- [TENSOR-COLLAPSE-PAPER-TO-RUNTIME-MAP.md](TENSOR-COLLAPSE-PAPER-TO-RUNTIME-MAP.md)  
+  The one-to-one map: paper-section → owning supervisor → live route → verified code-file → host (e.g. §9.5 → `cube_cubed_sealer` → `/api/council/verdicts` → `omni-shannon-v4-real.js` → acer).
 
 ## Read together with
 
