@@ -1,0 +1,14 @@
+WFVERIFYHDR|proof=ACER-WATERFALL-MATH-ATTACK-VERIFY|form=hbp-tuple|exact=BigInt|target=liris language-waterfall-matrix-11x16|params=G1024xD60x16levx11eng|json=0
+WFVERIFYPARAM|measured=alphabet-BEHCS-1024+tuple_dim-60+16-levels|canon=11-eng-per-level+17-existing+47to60-catalogs+256/1024/2048|json=0
+WFVERIFYPATH|11^16|acer=45949729863572161|liris=45949729863572161|MATCH|json=0
+WFVERIFYWORD|1024^60-order10|acer=180|liris=180|MATCH|json=0
+WFVERIFYSURFSTATE|V^176-order10|acer=31788|liris=31788|MATCH|json=0
+WFVERIFYVERBNOUN|V^2-order10|acer=361|liris=361|MATCH|json=0
+WFVERIFYPATHCODED|11^16*V^2-order10|acer=377|liris=377|MATCH|json=0
+WFVERIFYCONV|V^50-order10|acer=9030|liris=9030|MATCH|json=0
+WFVERIFYENGCONV|(17V)^50-order10|acer=9092|liris=9092|MATCH|json=0
+WFVERIFYSURFCONV|(176V)^50-order10|acer=9143|liris=9143|MATCH|json=0
+WFVERIFYCATGROWTH|1024^(60-47)-order10|acer=39|liris=39|MATCH|json=0
+WFVERIFYEXTRA|full_omni(V*17!*16)-order10=196|surface_count=176|verb_noun_beats_planck10^185_by_order10=176|json=0
+WFVERIFYVERDICT|math_cross_vantage=CONVERGED-ALL-9-MATCH|code_attack=PENDING-liris-push(files-not-on-remote)|boundary=descriptor-only+lossless-gate+bounded-tail-O1+not-auto-compression|json=0
+WFVERIFYFTR|sha256=6048e92ff06dba14fa7b6a4438d0d269f10ad7acffb4c3ddb39502cecf72e7e2|rows=13|all_match=1|json=0
