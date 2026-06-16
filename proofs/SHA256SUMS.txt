@@ -1,4 +1,5 @@
 d1629096bd1788fda09107e0bcfaaf6d69b55d29fc14d2e450b110fad5df55e4 *cosign-chain-integrity.hbp
 0704d2fa6fa0c1c7a367babf87ca556a72b2bd1c9a9f1d5d0bdd29854bec563e *omni-address-space.hbp
 728cd253158a58c79fce78fd0b9e0cc6b02ef3e1c97c49f0a4f9d82071f72df5 *omni-language-space.hbp
+d4bfc81d9fd2f006f8fbba8c1f94a405d5e23283c908315b93adc29d2e759d81 *waterfall-code-acer-attack.hbp
 04ee5ae94763bfb87502b546294efa6c6d85866310f8af87034577e5f90c8c2e *waterfall-math-acer-verify.hbp
