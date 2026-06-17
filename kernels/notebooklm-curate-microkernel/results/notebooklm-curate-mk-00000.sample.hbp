@@ -1,0 +1,4 @@
+MKRESULT|schema=ASOLARIA-NOTEBOOKLM-CURATE-RESULT-V1|pid=2b18bd1c0ae228d1|micro_kernel_pid=232652cbabe02827|host_pid=cc38e33e4ba7dee5|room_pid=8433c5d350f7743f|lane_pid=8351e0ee9f8c3659|mode=read_only_ingest|status=READY_FOR_OPERATOR_BACKUP|json=0
+MKINPUT|pid=2b18bd1c0ae228d1|backup_root_env=NLM_BACKUP_ROOT|receipt_out_env=NLM_RECEIPT_OUT|cookies_repo_scope=forbidden|metadata_parse=0|json=0
+MKOUTPUT|pid=2b18bd1c0ae228d1|rows=NLMHDR+NLMNOTEBOOK+NLMFILE+NLMCUBE+NLMGLYPH+NLMSKIP+NLMFOOT|sidecar=.sha256|brace_safe=1|content_sha_reproducible=1|json=0
+MKNEXT|pid=2b18bd1c0ae228d1|operator_step=run_nlm_login_then_nlm_backup|helper_path=tools/notebooklm/nlm-backup-to-cube.py|future_target=8byte_host_runtime_no_stage_helper|json=0

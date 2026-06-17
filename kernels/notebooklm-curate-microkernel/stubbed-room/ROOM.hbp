@@ -1,0 +1,9 @@
+ROOM|schema=ASOLARIA-STUBBED-ROOM-V1|room_id=notebooklm-curate-room-00000|pid=8433c5d350f7743f|lane=notebooklm_curate|rotation_epoch=0|descriptor_only=1|runtime=0|micro_kernel_pid=232652cbabe02827|host_pid=cc38e33e4ba7dee5|result_path=../results/notebooklm-curate-mk-00000.sample.hbp|promotion_requires_gate=notebooklm_curate_upload_gate|json=0
+ROOMPLANE|room_pid=8433c5d350f7743f|plane=hookwall|binding_pid=caa471c381d6e0fd|role=authority_gate|lane_affinity=notebooklm_curate|descriptor_only=1|live_action_allowed=0|json=0
+ROOMPLANE|room_pid=8433c5d350f7743f|plane=tuple|binding_pid=b1e58778a9eea8af|role=routing_tuple|lane_affinity=notebooklm_curate|descriptor_only=1|live_action_allowed=0|json=0
+ROOMPLANE|room_pid=8433c5d350f7743f|plane=quant|binding_pid=c968eeef7c95e228|role=quant_receipt|lane_affinity=notebooklm_curate|descriptor_only=1|live_action_allowed=0|json=0
+ROOMPLANE|room_pid=8433c5d350f7743f|plane=gnn|binding_pid=551f3becd0eadc6d|role=graph_feed|lane_affinity=notebooklm_curate|descriptor_only=1|live_action_allowed=0|json=0
+ROOMPLANE|room_pid=8433c5d350f7743f|plane=sha|binding_pid=5629d12548fe2a69|role=hash_readback|lane_affinity=notebooklm_curate|descriptor_only=1|live_action_allowed=0|json=0
+ROOMPLANE|room_pid=8433c5d350f7743f|plane=watcher|binding_pid=60cc6c32bd1d7774|role=watch_feed|lane_affinity=notebooklm_curate|descriptor_only=1|live_action_allowed=0|json=0
+ROOMPLANE|room_pid=8433c5d350f7743f|plane=indexer|binding_pid=f4cc6ad5e709e175|role=memory_index|lane_affinity=notebooklm_curate|descriptor_only=1|live_action_allowed=0|json=0
+ROOMBOUNDARY|room_pid=8433c5d350f7743f|process_start_allowed=0|provider_call_allowed=0|route_mutation_allowed=0|remote_writes=0|mcp_tool_calls=0|runtime_authority_grants=0|json=0
