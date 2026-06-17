@@ -1,0 +1,59 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: universal-route-emit
+Kind: bus
+Node: acer
+LIVE: true | Port: none — file-write only; :4949 hookwall and :4920 GNN drain are CONNECTION REFUSED acer-side by design (wave-18B confirmed)
+Last message: seq=3375 ts=2026-05-26T23:36:35.950Z event=LAW_037_ENTERPRISE_SELF_LEARNING_ARCHITECTURE_ADVANCEMENT_LOOP_RATIFIED channel=omni-asolaria/acer/LAW-037/enterprise-self-learning-loop-2026-05-26 (real production); synthetic tick at 2026-05-29T12:56:10Z (cosign_seq=99)
+Message count: 89 total rows (13 real production + 76 synthetic/test); 89 matching rows in both hookwall and gnn-edges sinks
+D11: LIVE — structurally active with real production rows proven
+One-line: universal-route-emit is LIVE: 13 real operator seals (seq 3363-3375, 2026-05-26) written to both hookwall and GNN sinks; cosign daemon :4953 is currently LISTENING; pipe fires via durableNotify in cosign-bridge.mjs on every durable federation event.
+
+--- REAL FINDINGS ---
+
+* Source module exists and is well-formed: D:/bigpickle-rebuild/src/universal-route.mjs exports dualEmitObservation() — appends one row to hookwall-observations.ndjson and one row to gnn-live-edges.ndjson per call. Fail-soft design: observation lane errors are swallowed, never thrown upstream.
+  RECEIPT: D:/bigpickle-rebuild/src/universal-route.mjs:105-198 (dualEmitObservation), lines 90-98 (appendNdjsonSoft)
+
+* Integration point: dualEmitObservation is called inside cosign-bridge.mjs durableNotify() after every successful cosignAppend+redis publish, unless caller explicitly passes opts.universalRoute=false. This makes the pipe fire on every durable federation event.
+  RECEIPT: D:/bigpickle-rebuild/src/cosign-bridge.mjs:49 (import), lines 178-181 (call site)
+
+* Both NDJSON sinks exist and have real data. hookwall-observations.ndjson = 89 rows total (13 real + 76 test-synthetic). gnn-live-edges.ndjson = 89 rows (same split). Both files last written 2026-05-29T09:56:10 local time.
+  RECEIPT: D:/bigpickle-rebuild/data/hookwall-observations.ndjson (89 lines), D:/bigpickle-rebuild/data/gnn-live-edges.ndjson (89 lines)
+
+* 13 real production rows confirmed in hookwall (cosign_seq 3363-3375, ts 2026-05-26T18:29:04Z to 2026-05-26T23:36:35Z). Events include LAW ratifications, 100B stage-1 complete, 1M run complete, HRM-GPU-OK cosign, discovery/prime-pattern, delta-5 edge-class split. These are real operator-driven seals, not synthetic.
+  RECEIPT: D:/bigpickle-rebuild/data/hookwall-observations.ndjson rows 1-13 (seq 3363-3375)
+
+* 76 synthetic/test rows present (cosign_seq=99, ts range 2026-05-29T12:37:13Z to 2026-05-29T12:56:10Z). These use stub values: cosign_row=a1b2c3d4e5f60718, cosign_prev=0000000000000000, channels omni-asolaria/acer/heartbeat/tick and omni-asolaria/acer/x/y, event=tick. Likely from test suite or a manual test run on 2026-05-29.
+  RECEIPT: D:/bigpickle-rebuild/data/hookwall-observations.ndjson lines 14-89 (cosign_seq=99)
+
+* GNN edges schema correct: from=cosign_seq_<N>, to=channel_<slug>, verb=<event>, edgeClass=proof_edge, authorityLevel=dev, weight=1. No prediction_edge or action_edge rows in store yet (all are proof_edge). Default from/to are computed from cosign context when gnnFrom/gnnTo not provided by caller.
+  RECEIPT: D:/bigpickle-rebuild/src/universal-route.mjs:163-178 (gnnEdgeRow construction), D:/bigpickle-rebuild/data/gnn-live-edges.ndjson all rows
+
+* Cosign daemon at :4953 is LIVE (PID 4676 LISTENING on 127.0.0.1:4953). This means durableNotify callers can reach the cosign endpoint, completing the prerequisite for this pipe to fire on new events.
+  RECEIPT: netstat output: TCP 127.0.0.1:4953 LISTENING PID 4676
+
+* 15 unique channels observed, all under the omni-asolaria/acer/ namespace. No cross-vantage (liris) channels in this file — consistent with the acer-vantage-local design documented in cosign-bridge.mjs lines 8-24.
+  RECEIPT: D:/bigpickle-rebuild/data/hookwall-observations.ndjson channel enumeration
+
+* Flow direction resolved: cosign_seq_N (upstream cosign chain event) → channel_<slug> (destination channel). From = the cosign append result; To = the redis pub/sub channel. The pipe is: cosign-chain → universal-route → hookwall-file + gnn-edges-file.
+  RECEIPT: D:/bigpickle-rebuild/src/universal-route.mjs:171-172 (from/to defaults), D:/bigpickle-rebuild/data/gnn-live-edges.ndjson from/to fields
+
+* No HTTP endpoints bound. The module explicitly notes :4949 hookwall and :4920 GNN drain are CONNECTION REFUSED acer-side (wave-18B verified). Direct file writes are the canonical persistence path — no port dependency for this pipe.
+  RECEIPT: D:/bigpickle-rebuild/src/universal-route.mjs:22-26 (design comment)
+
+--- HONEST GAPS ---
+
+* 76 synthetic rows (cosign_seq=99) dominate the ndjson files — origin is unclear. Could be the test suite (tests/universal-route.test.mjs or tests/cosign-bridge.test.mjs) or a manual smoke test. If the test suite writes to the real data/ path rather than a tmp fixture, the files are contaminated with non-production rows.
+  SEVERITY: medium
+
+* Last real production seal was 2026-05-26T23:36:35Z (seq=3375). No new real rows since then (today is 2026-05-31). The pipe is structurally live but no operator-driven events have fired through it in ~5 days.
+  SEVERITY: low
+
+* opts.universalRoute=false opt-out path is undocumented in callers — could mean high-volume inner-loop code silently bypasses the pipe. Not audited across all 25+ seal-*.mjs scripts.
+  SEVERITY: low
+
+* authorityLevel is hardcoded to 'dev' on all rows (DEFAULT_AUTHORITY_LEVEL). No 'prod' or 'staging' rows exist yet. Operator-cosigned seals should arguably carry authorityLevel='prod' but callers do not pass this.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+Already activates on every durableNotify() call through cosign-bridge.mjs. Next real-traffic seal-*.mjs invocation against the live :4953 daemon will append rows immediately. No code change needed — pipe is wired and default-on.

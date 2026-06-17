@@ -1,0 +1,35 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: catalog-registry
+Kind: pipe
+Node: acer
+LIVE: false | Port: none — catalog-registry is an in-process Map, not port-bound; the enclosing router module is consumed by bhOmniflywheelDashboard (:4956) but the catalog stage is never reached in any live request handler
+Last message: N/A — catalog stage has never been exercised in production. Last flywheel pipeline activity was 2026-05-27T18:44:03Z (hookwall + GNN edges), but those runs did not include opts.catalog.
+Message count: 0 (catalogRegistry.size = 0 at process start; no registerCatalog call found in any production path; hookwall ndjson contains 3 rows none with a catalog trail stage)
+D11: DARK
+One-line: catalog-registry (STAGE 4 in bhOmniflywheelRouter.js) is a pure in-process Map with zero callers, zero persistence, and no production code that ever calls registerCatalog or passes opts.catalog to pipeline() — it has never carried live traffic.
+
+--- REAL FINDINGS ---
+
+* catalogRegistry is a pure in-process Map (const catalogRegistry = new Map()) with zero persistence. It is populated only by calling registerCatalog(). No production caller outside bhOmniflywheelRouter.js itself or test files ever calls registerCatalog or lookupCatalog.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js:366-383 (declaration + functions); grep of all *.js in Asolaria/src confirms only bhOmniflywheelRouter.js and *.test.js reference registerCatalog/lookupCatalog
+
+* The catalog stage in pipeline() is opt-in (opts.catalog). No live daemon or coupling module passes opts.catalog — archUpdateSupervisor.js requires the router as 'flywheel' but uses only registerStabilityHarvest/scheduleTick patterns, not pipeline(). bhOmniflywheelDashboard.js exposes 9 routes (health, cnc-harvest, cnc-harvest-json, stability-harvests, gc-sweep, whiteroom-mint-report, room-stats, flywheel-status, hookwall-status) — none include catalog endpoints.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js:991-993 (opts.catalog branch); C:\Users\acer\Asolaria\src\bhOmniflywheelDashboard.js:9-13 (ROUTES array); C:\Users\acer\Asolaria\src\archUpdateSupervisor.js:19 (require alias 'flywheel')
+
+* The hookwall ndjson and GNN edges ndjson — the only disk evidence of real pipeline traffic — were last modified 2026-05-27T18:44:03Z (4 days ago). Total rows: hookwall=3, gnn=7. All 3 hookwall rows and last 5 GNN edges share the same caller AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 targeting citizen:liris. No catalog stage appears in any of those rows — the pipeline runs were invoked without opts.catalog.
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-hookwall.ndjson (mtime 2026-05-27, 3 rows); C:\Users\acer\Asolaria\data\bh-omniflywheel-gnn-edges.ndjson (mtime 2026-05-27, 7 rows)
+
+* No cosign-pending directory exists (C:\Users\acer\Asolaria\data\cosign-pending absent), meaning cncCosignEmit() has never been called in production — its mkdirSync would create it on first call. No CNC snapshot file exists either. The stabilityHarvests array is in-process only with no file equivalent.
+  RECEIPT: dir C:/Users/acer/Asolaria/data/ — no cosign-pending entry; no cnc-snapshot file; stat confirms only bh-omniflywheel-hookwall.ndjson and bh-omniflywheel-gnn-edges.ndjson as flywheel-related data files
+
+--- HONEST GAPS ---
+
+* Cannot confirm whether bhOmniflywheelDashboard (:4956) or archUpdateSupervisor is currently running as a live daemon — no process list was queried. Port :4956 liveness is unverified.
+  SEVERITY: medium
+
+* The catalog-registry pipe name is not declared anywhere as a named pipe concept in config or manifests — it may be a logical label applied by the orchestration caller to STAGE 4 in bhOmniflywheelRouter.js rather than a separate named artifact. No PIPE_NAME constant or registry entry for 'catalog-registry' was found in any file.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+A caller passes opts.catalog: 'some-name' to pipeline() AND first calls registerCatalog('some-name', entries) to populate the Map for that process instance. Because catalogRegistry is in-memory only, both registerCatalog and pipeline() must be in the same Node process. A concrete activation path: (1) call flywheel.registerCatalog('target-routing-table', [...targets]) at daemon startup in archUpdateSupervisor.js or a new coupling module, then (2) pass opts: { catalog: 'target-routing-table' } when routing envelopes through pipeline(). Alternatively, expose a /v1/catalog-count or /v1/catalog-register endpoint in bhOmniflywheelDashboard.js to make it addressable at runtime.

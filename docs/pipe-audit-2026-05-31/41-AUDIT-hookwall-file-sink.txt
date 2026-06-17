@@ -1,0 +1,50 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: hookwall-file-sink
+Kind: bus
+Node: acer
+LIVE: false | Port: :4947=LIVE (server.js API gateway, PID 2388, unrelated to this pipe). :4956=DARK (bhOmniflywheelDashboard not running).
+Last message: 2026-05-27T21:44:03.847Z — GNN-EDGE|src=AGT-FALCON-SISTER-ORGAN-W155-P03-N00016|dst=citizen:liris|w=3|era=new-asolaria
+Message count: hookwall: 3 rows | gnn-edges: 7 rows | all from 2026-05-27 test session
+D11: DARK
+One-line: The hookwall-file-sink pipe wrote 3 rows + 7 GNN edges during a 2026-05-27 test session and has been completely dark for 4 days; no daemon calls pipeline() in production so the file sink never self-activates.
+
+--- REAL FINDINGS ---
+
+* bh-omniflywheel-hookwall.ndjson EXISTS with 3 real rows, all from caller AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 targeting citizen:liris, era=new-asolaria, supervisor=falcon, rotations 1-3
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-hookwall.ndjson — 663 bytes, LastWriteTime 2026-05-27T21:44:03Z, row 1: BH-OMNIFLYWHEEL-OBSERVATION|type=route|caller_pid=AGT-FALCON-SISTER-ORGAN-W155-P03-N00016|target=citizen:liris|era=new-asolaria|supervisor=falcon|meta_supervisor=META-FEDERATION-COMMS|row_hash=6a174806a0ecec2f|rotation=1
+
+* bh-omniflywheel-gnn-edges.ndjson EXISTS with 7 real rows, two distinct callers: AGT-VECTOR-HAPPY-W155-P03-N00008 (4 edges at 2026-05-27T21:36Z) and AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 (3 edges at 2026-05-27T21:44Z)
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-gnn-edges.ndjson — 838 bytes, LastWriteTime 2026-05-27T21:44:03Z, last row: GNN-EDGE|src=AGT-FALCON-SISTER-ORGAN-W155-P03-N00016|dst=citizen:liris|w=3|era=new-asolaria|ts=2026-05-27T21:44:03.847Z
+
+* Both sink files are 4 days stale as of 2026-05-31. Last write was 2026-05-27T21:44:03Z. No writes since then. The pipe has been dark for 4 days.
+  RECEIPT: PowerShell: hookwall age 4.0 days, gnn-edges age 4.0 days. Today is 2026-05-31.
+
+* hookwallEmit() is a library function only — it appends to the ndjson ONLY when called by pipeline() with opts.hookwall !== false. No autonomous loop, no daemon, no scheduled flush fires it independently.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js lines 292-312: hookwallEmit() uses fs.appendFileSync. Lines 1006-1013: pipeline() calls hookwallEmit only when opts.hookwall !== false and pipeline() itself is called.
+
+* bhOmniflywheelRouter.js is required only by: bhOmniflywheelDashboard.js, archUpdateSupervisor.js, hilbertHotelRouter.js (composition comment, not pipeline caller), and test files. None of these are currently running as daemons.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelDashboard.js line 7: const r = require('./bhOmniflywheelRouter.js'). Port :4956 (dashboard) shows no binding in netstat.
+
+* Port :4947 IS live (LISTENING, PID 2388, node.exe started 2026-05-28T13:15:38) with 2 ESTABLISHED connections and 9 TIME_WAIT entries. However this is the Asolaria main API gateway (server.js), NOT bhOmniflywheelRouter — server.js contains zero references to bhOmniflywheelRouter or hookwallEmit.
+  RECEIPT: netstat -ano | :4947 → PID 2388 LISTENING. Get-Process 2388 → node.exe C:\nvm4w\nodejs\node.exe. Select-String server.js -Pattern omniflywheel/hookwall → no matches.
+
+* cosign-pending directory does not exist (cncCosignEmit L9 path never fired since the router module last ran).
+  RECEIPT: Test-Path C:\Users\acer\Asolaria\data\cosign-pending → False
+
+* The 3 hookwall rows and 7 GNN edges were written during round-7 test runs on 2026-05-27 (cross-process snapshot proof). The message timestamps in the GNN file (21:36Z and 21:44Z) match the bhOmniflywheelRouter.js and bhOmniflywheelDashboard.js file LastWriteTime of 2026-05-27 which confirms test-session origin, not live production traffic.
+  RECEIPT: bhOmniflywheelRouter.js LastWriteTime 2026-05-27T20:45:15 (local) / bhOmniflywheelDashboard.js 2026-05-27T19:47:57. GNN edge ts=2026-05-27T21:36..21:44Z matches test window.
+
+--- HONEST GAPS ---
+
+* Cannot confirm which specific Node script drove the test-session emissions on 2026-05-27. The bhOmniflywheelRouter.test.js is the most likely source but the exact test invocation is not in any log file visible on disk.
+  SEVERITY: low
+
+* archUpdateSupervisor.js requires bhOmniflywheelRouter and registers a stability harvest schedule — if it is running as a daemon it would call scheduleTick() but there is no evidence it is currently spawned or that scheduleTick fires hookwallEmit (it does not — stability harvest only populates stabilityHarvests array, not the file sink).
+  SEVERITY: low
+
+* The :4947 node.exe (PID 2388, started 2026-05-28) identity as server.js was inferred from absence of omniflywheel references in server.js. The process's actual loaded modules were not inspected (would require process memory or --inspect).
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+A caller invokes bhOmniflywheelRouter.pipeline(env, { hookwall: true, hookwallOpts: { hookwallPath: '...', gnnPath: '...' } }) in a live process. The file sink is purely passive — it only writes when pipeline() is called with hookwall not disabled. Minimum activation: start bhOmniflywheelDashboard.js on :4956 with a snapshotPath AND a separate process that runs pipeline() against real envelopes, OR run archUpdateSupervisor.js as a daemon (it calls registerStabilityHarvest which wires scheduleTick but does NOT call hookwallEmit — so the dashboard would show harvests but the hookwall ndjson would remain dark unless the calling process also passes opts.hookwall=true to pipeline).

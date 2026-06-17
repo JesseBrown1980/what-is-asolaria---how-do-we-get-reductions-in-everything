@@ -1,0 +1,50 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: bhOmniflywheel-dashboard
+Kind: http
+Node: acer
+LIVE: false | Port: :4956 NOT bound
+Last message: 2026-05-27T22:50:28.312Z — snapshot_ts in C:\\Users\\acer\\AppData\\Local\\Temp\\bh-cnc-cross-process.hbp.json; hbp_row: CNC-OMNIFLYWHEEL-HARVEST|ts=2026-05-27T22:50:28.312Z|flywheel_rotations=5|spin_rate_per_sec=5|active_rooms=5|total_ghosts=1|total_minted=5|unique_patterns=16
+Message count: 0 live; 6 real envelopes (5 mints + 1 ghost) captured in stale snapshot from 2026-05-27T22:50:28Z (PID 30296, port 4960 test run)
+D11: DARK — port :4956 has zero listeners. The module has never been daemonized: no startup script, no boot entry, no daemon log. It was started exactly once as a transient test process on port :4960 (not :4956) during Round-7 Patch-13 cross-process smoke test on 2026-05-27T22:50:28Z. That process is long dead. A 4-day-stale snapshot file remains at C:\\Users\\acer\\AppData\\Local\\Temp\\bh-cnc-cross-process.hbp.
+One-line: DARK — :4956 unbound, module never daemonized; last ran on :4960 as a Round-7 test process on 2026-05-27, now gone.
+
+--- REAL FINDINGS ---
+
+* Port :4956 NOT bound — no listener on 127.0.0.1:4956 at audit time
+  RECEIPT: netstat -ano | grep :4956 → no output (DARK)
+
+* Module is a library-only export: no daemon/startup script imports or requires bhOmniflywheelDashboard.js outside of its own test file. The module exposes start() but nothing calls it at boot.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelDashboard.js:110 — start() defined; grep for require/import across all .js/.mjs/.cmd/.ps1 found zero callers outside bhOmniflywheelDashboard.test.js and spawnPathForecaster.test.js
+
+* The ONLY recorded live launch was on port :4960 (not :4956), run as a cross-process test from Round-7 Patch 13, on 2026-05-27T22:50:28Z by PID 30296. Log line: '[bh-dashboard] LISTEN http://127.0.0.1:4960 — 10 routes — snapshot=C:\Users\acer\AppData\Local\Temp\bh-cnc-cross-process.hbp'
+  RECEIPT: C:\Users\acer\AppData\Local\Temp\bh-dash-xproc.log — single line, last-write 2026-05-27
+
+* Frozen snapshot file exists at C:\Users\acer\AppData\Local\Temp\bh-cnc-cross-process.hbp, last written 2026-05-27T22:50:28Z (4 days stale today 2026-05-31). Contains real data: 5 rotations, 5 mints, 16 unique_patterns, 1 ghost (TTL_EXPIRED), era=new-asolaria, 5 whiteroom entries with valid sha16 hashes
+  RECEIPT: C:\Users\acer\AppData\Local\Temp\bh-cnc-cross-process.hbp.json — schema=BH-CNC-SNAPSHOT-V1, snapshot_ts=2026-05-27T22:50:28.312Z, process_pid=30296
+
+* The federation probe list in asolaria-dashboard-daemon-4944.js includes :4956 in its health-check sweep, confirming :4956 is a registered federation citizen slot — but it returns alive=false in any probe while dark
+  RECEIPT: C:\Users\acer\Asolaria\tools\asolaria-dashboard-daemon-4944.js:137 — ports = [4944,...,4956,4958]
+
+* Upstream data (bhOmniflywheelRouter.js) is real and functional: snapshot proves 5 real envelopes routed, 5 novel-pattern-cluster mints across bands helm/vector/forge/falcon/livefree, 1 TTL_EXPIRED ghost. The pipeline module itself is tested and proven (123/123 tests per Round-7 memory).
+  RECEIPT: C:\Users\acer\AppData\Local\Temp\bh-cnc-cross-process.hbp.json — whiterooms.recent[0..4] all with valid sha16, minted_at=2026-05-27T22:50:28Z
+
+* No daemon log file named bh-dashboard-*.log or omniflywheel-dashboard-*.log exists anywhere under C:\Users\acer\Asolaria\logs\. The dashboard has never been daemonized.
+  RECEIPT: ls C:\Users\acer\Asolaria\logs\ — no flywheel or 4956 log files present; only dashboard logs are dashboard-http-server-2026-05-12* and operator-dashboard.boot.log (different component, :4949)
+
+* From→To topology: FEDENV-v1 envelopes (any caller PID) → bhOmniflywheelRouter.pipeline() → in-process state → dashboard HTTP responses on :4956. In snapshot mode: separate process writes snapshot file → dashboard reads file → serves stale-but-cross-process data.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelDashboard.js:7,17-29 — requires bhOmniflywheelRouter.js; _readSnapshot path reads cncHarvestFromFile()
+
+--- HONEST GAPS ---
+
+* Start-Asolaria-OneButton.ps1 and Start-Asolaria.ps1 were not read (only .cmd wrappers checked). These PowerShell scripts may launch daemons not visible in the .cmd files — :4956 could be wired there without appearing in any grep of .js files.
+  SEVERITY: medium
+
+* The snapshot file is 4 days old (2026-05-27T22:50:28Z, today 2026-05-31). If :4956 was alive and serving snapshot-mode between 2026-05-27 and now then went dark, that would not show in this audit. No rolling dashboard log to confirm.
+  SEVERITY: low
+
+* port :4960 was the actual launch port in the cross-process test (not :4956). It is unclear whether the operator intentionally chose 4960 for the round-7 test or if 4956 was EADDRINUSE at the time. The log line captures only the one launch at 4960.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+Run: node C:\\Users\\acer\\Asolaria\\src\\bhOmniflywheelDashboard.js 4956 --snapshot=C:\\Users\\acer\\AppData\\Local\\Temp\\bh-cnc-cross-process.hbp — OR add a daemon entry (pm2/nohup/ps1 launcher) that calls require('./src/bhOmniflywheelDashboard').start(4956, '127.0.0.1', { snapshotPath: process.env.BH_CNC_SNAPSHOT_PATH }) and wire it into the OneButton startup stack. For live-mode (not snapshot), the caller process must also invoke bhOmniflywheelRouter.pipeline() to build in-process state before the dashboard reflects real traffic.

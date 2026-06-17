@@ -1,0 +1,47 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: port-router-dispatch
+Kind: router
+Node: acer
+LIVE: false | Port: none — PortRouter is a namespace-label trie, not a TCP socket binder; 'port' = prefix-tree root label per Foundation v1 canon
+Last message: N/A — no dispatch traffic recorded
+Message count: 0 real dispatch messages found. 89 hookwall-observations and 89 gnn-live-edges exist but none from port-router (all from universal-route-default gate, last ts 2026-05-29T12:56:10Z).
+D11: DARK
+One-line: PortRouter is a fully-implemented, test-proven, 724K-ops/sec in-memory prefix-walk trie with zero production callers — dark, never dispatched outside bench/tests.
+
+--- REAL FINDINGS ---
+
+* PortRouter class fully implemented: trie-based O(K) prefix-walk, register(label, handler) + route(label) + routeWithTrace(label) + transportCount=1. 64 lines, no I/O, pure in-memory.
+  RECEIPT: D:\bigpickle-rebuild\src\port-router.mjs:1-63 (full file)
+
+* All 4 unit tests pass (4/4 green): depth-K node-visit count correct, O(K) sibling-proof sub-millisecond, transportCount===1, unknown labels return null not throw.
+  RECEIPT: D:\bigpickle-rebuild\tests\layer1-port-prefix-walk.test.mjs:1-54 — node --test output: pass 4 fail 0
+
+* Bench confirms 724,668 ops/sec for PortRouter.route at depth-3 with 1K siblings — 11x above the 63K/sec Foundation v1 ceiling. No throughput bottleneck.
+  RECEIPT: D:\bigpickle-rebuild\tests\bench\throughput.mjs:46-49 — bench output line: PortRouter.route (depth 3, 1K siblings) 500000 iters 689.97ms 724668 ops/sec
+
+* PortRouter is imported only in src/port-router.mjs itself, tests/layer1-port-prefix-walk.test.mjs, and tests/bench/throughput.mjs. Zero production callers in src/, bin/, or any fire-*.mjs / seal-*.mjs script.
+  RECEIPT: grep across D:\bigpickle-rebuild\ — only 3 files match PortRouter|port-router
+
+* No ndjson store, no log file, no run directory bears any port-router or dispatch-via-label trace. The hookwall-observations.ndjson (89 lines) and gnn-live-edges.ndjson (89 lines) last timestamps are 2026-05-29T12:56:10Z — none reference PortRouter dispatch.
+  RECEIPT: D:\bigpickle-rebuild\data\hookwall-observations.ndjson tail-5; D:\bigpickle-rebuild\data\gnn-live-edges.ndjson tail-5 — gate field is universal-route-default, not port-router
+
+* From→To: callers → registered label handlers (caller passes dotted label string e.g. '50001.a.b.c'; router walks trie and returns matching handler function). No network ports involved — 'port' is a namespace tree root label, not TCP.
+  RECEIPT: D:\bigpickle-rebuild\src\port-router.mjs:27-39 (register) and :42-62 (route/routeWithTrace); SPEC.md:11 'Port = label in N^K prefix tree. Single socket multiplexes infinite labels.'
+
+* SPEC.md cosign gate clause: 'No promotion to live until: dual-apex cosign (OP-JESSE + OP-RAYSSA) + tests green + packet-first startup gate written.' Tests are green but dual-apex cosign and packet-first startup gate are not present in repo.
+  RECEIPT: D:\bigpickle-rebuild\SPEC.md:59-62
+
+--- HONEST GAPS ---
+
+* No caller in src/ or any fire/seal script imports PortRouter. Cannot confirm any real-time dispatch has ever flowed through this module in production — only bench + unit test invocations exist.
+  SEVERITY: high
+
+* Packet-first startup gate (required by SPEC cosign clause) is not present anywhere in the repo. Cannot verify it is written.
+  SEVERITY: medium
+
+* Dual-apex cosign (OP-JESSE + OP-RAYSSA) for promotion to live is declared required in SPEC.md but no cosign receipt referencing port-router was found in data/ or any ndjson store.
+  SEVERITY: medium
+
+--- WOULD ACTIVATE IF ---
+A production caller in src/ (e.g. hookwall.mjs, federation-overlay-server.mjs, or any fire-*.mjs script) imports PortRouter, registers label handlers, and calls router.route(label) on live envelopes. Additionally: dual-apex cosign (OP-JESSE + OP-RAYSSA) must be recorded and packet-first startup gate must be written per SPEC.md:59-62 before promotion to live is permitted.
