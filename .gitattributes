@@ -1,0 +1,2 @@
+# HBP proof/cube artifacts: byte-identity matters — footer sha256 is over the LF-joined body.
+*.hbp -text eol=lf
