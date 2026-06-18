@@ -27,6 +27,16 @@ Read via the Asolaria raw tool `tools/usb-raw/usb_raw_io.py` (NOT Windows FS —
 - **`D:` maps to this USB** (operator-confirmed + `feedback_drive_d_is_2tb_sovereignty_usb`): the `D:` drive letter *is* the SOVLINUX USB, not a separate local "Data" drive — its raw device is the 2 TB `PHYSICALDRIVE2`.
 - **Boot topology:** the system boots the **USB kernel (SOVLINUX) → Linux → Ubuntu → WSL** and runs on top of it. That is why drive letters shift and the old recovery-USB `E:` is now unmounted — and why the stale scheduled task `AsolariaConnectionVaultMonitor` (`node.exe E:\sovereignty\src\connectionVaultMonitor.js`) throws MODULE_NOT_FOUND: `E:` is gone and the file relocated to `C:\Users\acer\Asolaria\sovereignty\src\`. That task is an **un-retired Windows-node pipe** (pipe-modernization target), not a real loss.
 
+## v1.2 — apex ladder + second L6 ledger (operator clarification)
+
+**Apex / operator ladder (layer 4):** `00` SPECIAL-OP-JESSE (L0 seat `AGT-L0-SPECIAL-OP-JESSE-H12D3`) · `01` OP-JESSE · `02` OP-RAYSSA · `03` OP-FELIPE · `04` OP-DAN · `05` OP-AMY — the **five OPs (01–05) are the quintuple cosign signers** (jesse/rayssa/felipe/dan/amy). Above them: **APEX-HUMAN-JESSE = HUMAN-1**, the real-human apex, distinct from the L0 special-op seat. (CANON — matches the roster.)
+
+**Layer 6 now carries TWO premade ledgers (count separately, never sum):**
+- **100,000,000,000** packet-run registry (the 100B substrate checkpoint).
+- **10,000,000,000** human-PID premade registry — PID addressing for every human on the planet, with addressing to spare. (OPERATOR-STATED CANON.)
+
+Both are **address-capacity, not live agents.**
+
 ## Honest boundary
 
 Nothing fired this census (E=0); capacity never reported as live; read-only on the USB (no format/repartition). Cross-confirm: the roster grep matched the reductions 16-level class table **exactly** (two independent surfaces → the hierarchy is CANON, not inference). Self-flagged open gaps (absence flagged, not deflated): per-PID 100B marks-join not yet built · MTP = 0 roster rows (kernel-CANON, registration lane) · AoT = 0 explicit rows (naming gap) · GNN heal lanes `:4792/:4793` down · only L0–L5 materialized as voxels (16 literal per-level dashboards UNVERIFIED).
