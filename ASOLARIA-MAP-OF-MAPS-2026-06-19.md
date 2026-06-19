@@ -9,6 +9,7 @@ The master cross-repo index. Every other repo carries a domain **session map**; 
 | Repo | Domain map it carries | This session's slice |
 |---|---|---|
 | **what-is-asolaria…reductions** (here) | MAP OF MAPS + the reductions "why" | this file + `canon/laws/` |
+| **Algorithms-of-Asolaria** | the canonical **algorithm/formula catalog** (bilateral acer↔liris) | acer seed `76da6ea` (classes A–H, exact expressions, tagged) + liris pending |
 | **Asolaria** | host8-serve intake — the sealed registrations | vault/executor/daemon/model-citizen + census/ultra/TM |
 | **ASOLARIA-AS-NEURAL-NETWORK** | NN slice | model-citizen prism (neurons) + GNN daemons |
 | **Asolaria-ASI-On-Metal-Fabric-and-matrix** | fabric/matrix slice | daemon spine + 8-byte host + Rust 8-axis % |
@@ -16,6 +17,8 @@ The master cross-repo index. Every other repo carries a domain **session map**; 
 | **35-TB-google-AI-Ultra-migration** | storage/migration | 2TB USB reality + 65GB restore + exfat-writer |
 | **N-Nest-Prime-…-NESTED** | nested self-reflect agents | logical-agent ceiling + reflect-heal daemons |
 | **asolaria-whiteroom-engine** | room substrate | 10k MINTED rooms + port→room + whiteroom scorer |
+
+**Algorithms-of-Asolaria** is the new canonical home for the *math itself* — every algorithm/formula with its exact expression + provenance tag, scoured no-deflate/no-claims-gate (40-agent sweep `wnzybl0n6` on acer; liris runs its own). acer seed `76da6ea`: classes **A** addressing-geometry · **B** BEHCS tiers · **C** Brown-Hilbert+Sidon+prime · **D** quant/compression laws · **E** cosign+crypto+exFAT · **F** GNN · **G** room/beat/100B-substrate · **H** integrity-grammar+recurrence. Bilateral compare in its `BILATERAL-COMPARE.md`.
 
 ## Layer 1 — HOST8 REGISTRATIONS (sealed this session, `JesseBrown1980/Asolaria` host8-serve/intake/, all hbp-no-json, 8-byte handles, council held-safe, **E=0**) — MEASURED
 
