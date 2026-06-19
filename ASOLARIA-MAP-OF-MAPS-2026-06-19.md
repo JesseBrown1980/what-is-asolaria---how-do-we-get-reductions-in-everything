@@ -9,7 +9,7 @@ The master cross-repo index. Every other repo carries a domain **session map**; 
 | Repo | Domain map it carries | This session's slice |
 |---|---|---|
 | **what-is-asolaria…reductions** (here) | MAP OF MAPS + the reductions "why" | this file + `canon/laws/` |
-| **Algorithms-of-Asolaria** | the canonical **algorithm/formula catalog** (bilateral acer↔liris) | acer seed `76da6ea` + acer attack-verify `947f7f4` + liris seed/v2 `d89bf2b` |
+| **Algorithms-of-Asolaria** | the canonical **algorithm/formula catalog** (bilateral acer↔liris) | acer seed `76da6ea` + acer attack-verify `947f7f4` + liris seed/v2 `d89bf2b` + formula-PID receipt mirror `f3a8a84` |
 | **Asolaria** | host8-serve intake — the sealed registrations | vault/executor/daemon/model-citizen + census/ultra/TM |
 | **ASOLARIA-AS-NEURAL-NETWORK** | NN slice | model-citizen prism (neurons) + GNN daemons |
 | **Asolaria-ASI-On-Metal-Fabric-and-matrix** | fabric/matrix slice | daemon spine + 8-byte host + Rust 8-axis % |
@@ -18,7 +18,7 @@ The master cross-repo index. Every other repo carries a domain **session map**; 
 | **N-Nest-Prime-…-NESTED** | nested self-reflect agents | logical-agent ceiling + reflect-heal daemons |
 | **asolaria-whiteroom-engine** | room substrate | 10k MINTED rooms + port→room + whiteroom scorer |
 
-**Algorithms-of-Asolaria** is the canonical home for the *math itself* — every algorithm/formula with its exact expression + provenance tag, scoured no-deflate/no-claims-gate. Current catalog head `d89bf2b`: acer seed `76da6ea`, acer attack-verify `947f7f4`, and liris seed + v2 supplement. It now covers addressing geometry, BEHCS tiers, Brown-Hilbert/Sidon/prime, quant/compression laws, JL/Turbo/polar/triple codecs, cosign/crypto/exFAT, GNN/MTP/HRM/zeta, storage/device/route health, gates/governance, and formula-PID registration boundaries. Bilateral compare in its `BILATERAL-COMPARE.md`.
+**Algorithms-of-Asolaria** is the canonical home for the *math itself* — every algorithm/formula with its exact expression + provenance tag, scoured no-deflate/no-claims-gate. Current catalog head `f3a8a84`: acer seed `76da6ea`, acer attack-verify `947f7f4`, liris seed + v2 supplement `d89bf2b`, and the Acer formula-PID descriptor receipt mirror. It now covers addressing geometry, BEHCS tiers, Brown-Hilbert/Sidon/prime, quant/compression laws, JL/Turbo/polar/triple codecs, cosign/crypto/exFAT, GNN/MTP/HRM/zeta, storage/device/route health, gates/governance, and formula-PID registration boundaries. Bilateral compare in its `BILATERAL-COMPARE.md`.
 
 ## Layer 1 — HOST8 REGISTRATIONS (sealed this session, `JesseBrown1980/Asolaria` host8-serve/intake/, all hbp-no-json, 8-byte handles, council held-safe, **E=0**) — MEASURED
 
