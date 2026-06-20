@@ -1,0 +1,14 @@
+# Linguist language overrides — surface the Rust hot-path, demote provably-cold JS.
+# Verified (workflow wwauajx2c): every .mjs in THIS repo is non-runtime here —
+# scratch math probes, read-only report/JSON generators, descriptor-only demos,
+# and a spine excerpt whose 8 sibling imports are ABSENT from this repo (cannot run).
+# No load-bearing/live JS exists in this repo, so these overrides are honest, not a mask.
+
+01-rebuild/_scratch/*.mjs            linguist-generated
+measurements/*.mjs                   linguist-documentation
+cubes/*.mjs                          linguist-documentation
+kernels/asolaria-kernel-5primitive.mjs linguist-documentation
+
+# Surface the committed BEHCS-1024 Rust (lib.rs + pid-mod.rs, the PID minter)
+*.rs                                 linguist-detectable=true
+kernels/asolaria-os-metal-kernel/*.rs linguist-detectable=true
