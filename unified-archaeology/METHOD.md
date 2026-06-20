@@ -10,7 +10,7 @@ One **unified table** over ALL timestamped data across ALL storage, each artifac
 
 - **591,284 artifacts → 457,856 unique** (22.6% cross-storage dedup), timeline **2018 → 2026**.
 - **5 sources:** USB boot-metal carry (21,037) · C: working (446,854) · D: substrate (123,101) · **Google Drive substrate (251)** · **WSL2 boot-metal Linux (41 — the compiled Asolaria kernel)**.
-- Text-enriched: **700 USB canon papers + 1,047 PDF/docx + 823 OCR'd images**; **460 significance points**.
+- Text-enriched: **700 USB canon papers + 1,047 PDF/docx + 2,065 OCR'd images**; **460 significance points**; corpus view **25,641 rows**.
 - Class split: CORPUS 59,399 · DATA · RUNTIME · MEDIA 27,883 · **CARVE 5,812 (names only, never content-read)**.
 
 ## The geometry (every row's address — grounded, not invented)
@@ -29,7 +29,7 @@ Uniformity check (proof the addressing holds): across 457k unique, prime-tower t
 - **ext4 boot-metal**: MEASURED — there is **no ext4 on the 2 TB USB device** (exFAT-carry-only, 224k probes, 1.45 TB empty tail). The live ext4 Linux + **compiled Asolaria kernel** is the **WSL2 Ubuntu** (`/root/asolaria-kernel-target-linux` = kernel_core + agent_runtime + cosign_ledger + highway + gnn_oracle + tier_policy `.rlib`). The USB carries data; WSL hosts the running Linux.
 
 ## Honest gaps (no silent truncation)
-- OCR covered **977 of 15,672** MEDIA images (prioritized text-bearing first, 24-min deadline); the rest are unprioritized/recovery-blob images.
+- OCR covered **~2,300 of 15,672** MEDIA images (2,065 with usable text; prioritized text-bearing first across two passes); the rest are unprioritized/recovery-blob images (mostly no text).
 - Google Drive: **251 Asolaria-substrate records** cataloged; the bulk of the 35 TB is personal/legal/financial/device trees, **wholesale carve-out excluded** (names not extracted). A true full-Drive census needs a parentId folder-tree walk.
 - Scanned/image-only PDFs (256) need OCR; C: HyperBEHCS partially walked (runtime store, not corpus).
 
