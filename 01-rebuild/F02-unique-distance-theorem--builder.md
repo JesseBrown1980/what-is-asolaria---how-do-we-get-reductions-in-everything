@@ -53,7 +53,7 @@ D4 RISK   prime 7   cube 343      D32 STRUCTURAL_INVARIANT prime 131 cube 224809
 `growth_law: "Each new prime cubed = new dimension … Infinite expansion."` This is
 literally "towers of types of PIDs based on the 60-dimension catalogs held in CUBES."
 Each dimension *is* a tower; its prime *is* its separator; its cube *is* its capacity.
-(Canon holds the ladder at 60D+/atlas v56 per `BROWN-HILBERT.md`; runtime stays 47D.)
+(Canon holds the ladder at 60D+/atlas v56 per `BROWN-HILBERT.md`; live catalog = 49 dimensions — 49D is SIGNED-CANON, COSIGN_49D_001, cosign-chain seq3572 row_hash b66fe4cd4866de8d, quintet-ratified 2026-06-20; 47D remains the cosigned BASE 49D additively extends, D1-D47 unchanged + D48 HYPERGLYPH-ATLAS prime223 + D49 EXECUTION-PROOF-SUPERGRAPH prime227.)
 
 ### 1.2 The prime-cube intersection anchors (behcs-256) — EXISTS
 `C:/asolaria-as-neural-network/tools/behcs/pre-existence-graph-exporter.mjs:30`

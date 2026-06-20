@@ -37,7 +37,7 @@ The file states the **growth law** verbatim (line 90):
 
 > "Each new prime cubed = new dimension. D48 = prime(223) = cube(11089567). Infinite expansion. 47D is the current ceiling, not the final one."
 
-`hilbert-omni-49D.json` extends this exactly: D48 prime 223 cube 11089567, D49 prime 227 cube 11697083. `BROWN-HILBERT.md` records the canon ladder has **expanded to 60D+ / coord64 / atlas v56**, held there by operator decision 2026-06-01 (`tuple_dim=60`), with D48–D60+ constitutional-only while runtime stays 47D-gated. **This is the 60-dimension catalog the operator's hint names.** The 16 levels and 60 dims are not invented — they are the live `tuple_dim=60` canon plus the level structure I reconstruct below.
+`hilbert-omni-49D.json` extends this exactly: D48 prime 223 cube 11089567, D49 prime 227 cube 11697083. `BROWN-HILBERT.md` records the canon ladder has **expanded to 60D+ / coord64 / atlas v56**, held there by operator decision 2026-06-01 (`tuple_dim=60`), with the live catalog now at 49 dimensions — 49D is SIGNED-CANON (COSIGN_49D_001, cosign-chain seq3572 row_hash b66fe4cd4866de8d, quintet-ratified 2026-06-20), additively extending the cosigned BASE 47D with D48 HYPERGLYPH-ATLAS prime223 + D49 EXECUTION-PROOF-SUPERGRAPH prime227, and D50–D60+ remaining constitutional-only. **This is the 60-dimension catalog the operator's hint names.** The 16 levels and 60 dims are not invented — they are the live `tuple_dim=60` canon plus the level structure I reconstruct below.
 
 > **Key reading:** the prime is not chosen to *predict* anything. It is a **coordinate-system regulator**: each dimension gets its own prime base so that mixing dimensions can never collide (Chinese-Remainder separation). This is exactly the memory-canon line: *primes are address regulators, not prime-prediction.*
 
@@ -275,7 +275,7 @@ DDPT-RECEIPT | nodes=<N> | distinct_distances=<C(N,2)> | duplicate_distances=0
 - **READ-ONLY** on every source file (we only *read* primes from a frozen inline copy of the 47D ladder; we never write the repos).
 - **No process launch, no network, no MCP, no live bus** — pure functions, matches the 100B run's proven `MODE` (`oneAgentOneProcessBlocked`, `externalModelTokenBudget: 0`).
 - **Write only under** `D:\asolaria-prime-towers-rebuild-2026-06-15\`.
-- **Promotion** follows BEHCS rule: workers emit receipts, *supervisors decide what becomes code* (`BEHCS-1024-PRISM.md`). DDPT enters as a proposal overlay (like 49D), not a runtime mutation, until cosigned.
+- **Promotion** follows BEHCS rule: workers emit receipts, *supervisors decide what becomes code* (`BEHCS-1024-PRISM.md`). DDPT enters as a proposal overlay (the way 49D did before it was cosigned — 49D is now SIGNED-CANON, COSIGN_49D_001, cosign-chain seq3572 row_hash b66fe4cd4866de8d, quintet-ratified 2026-06-20), not a runtime mutation, until cosigned.
 
 ### 5.5 What new code/artifact to write — summary
 
@@ -310,7 +310,7 @@ DDPT-RECEIPT | nodes=<N> | distinct_distances=<C(N,2)> | duplicate_distances=0
 
 1. **Chamber count is scope-dependent** — canon says 8, live feed shows 36 (6×6). The tower formula is count-independent, but the exact "canonical" chamber number should be reconciled before minting.
 2. **Distinct-distance proof is exact in theory, floating in practice** — Q-linear independence of {log p, √p} is rigorous, but a finite-precision `embed3` can collide at large N. The test measures the **min-gap** as the empirical safety margin; an exact-integer Φ check (no floats) is the fallback rigidity proof.
-3. **60D vs 47D runtime** — runtime executes 47D-gated; D48–D60 are constitutional-only (BROWN-HILBERT.md). The catalog of record must mark which dims are live vs overlay so the tower doesn't over-claim runtime breadth.
+3. **60D canon vs the live catalog** — 49D is SIGNED-CANON (COSIGN_49D_001, cosign-chain seq3572 row_hash b66fe4cd4866de8d, quintet-ratified 2026-06-20); live catalog = 49 dimensions; 47D remains the cosigned BASE 49D additively extends (D1-D47 unchanged + D48 HYPERGLYPH-ATLAS prime223 + D49 EXECUTION-PROOF-SUPERGRAPH prime227). D50–D60 remain constitutional-only (BROWN-HILBERT.md). The catalog of record must mark which dims are live vs overlay so the tower doesn't over-claim runtime breadth.
 4. **t=5 (frozen-brain HRM+MTP tier) is named, not yet wired** — the ⁵ exponent is defined here; binding it to the actual frozen-Gemma HRM+MTP lane is a separate facet's job.
 5. **Glyph is referential, not bijective at 64-bit** — two glyphs *can* alias because hilbertAddress takes only the low 64 bits; per canon a glyph summarizes and never replaces the backend Φ. Distinct-distance rigidity lives on Φ (the BigInt), not on the 8-glyph render.
 

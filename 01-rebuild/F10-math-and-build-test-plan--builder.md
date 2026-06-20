@@ -46,7 +46,7 @@ which mixes the **angular** part (residue mod P) with the **axial** part (which 
 
 Jesse's "towers of TYPES of PIDs, 60-dimension catalogs in cubes at 16 levels, each tower with a 3-tier prime separator" maps onto OUR data as follows:
 
-- **The 60-D catalog** EXISTS as the canon ladder (`BROWN-HILBERT.md` line 7: "canon dimension ladder has expanded to 60D+ … fabric `tuple_dim=60`"). The 47-D file is the live runtime slice of it.
+- **The 60-D catalog** EXISTS as the canon ladder (`BROWN-HILBERT.md` line 7: "canon dimension ladder has expanded to 60D+ … fabric `tuple_dim=60`"). The live catalog = 49 dimensions — 49D is SIGNED-CANON (COSIGN_49D_001, cosign-chain seq3572 row_hash b66fe4cd4866de8d, quintet-ratified 2026-06-20); the 47-D file remains the cosigned BASE 49D additively extends (D1-D47 unchanged + D48 HYPERGLYPH-ATLAS prime223 + D49 EXECUTION-PROOF-SUPERGRAPH prime227), and is itself a slice of the 60D+ canon ladder.
 - **Cubes at 16 levels** — the BEHCS-256 index reports 16 indexes / 16 supervisors and "Hilbert levels" appear as a D19 LOCATION field (EXISTS: `reports/behcs256-index-map-cube-glyph-latest.md`; `hilbert-omni-47D.json` D19 fields include `"hilbert_level"`).
 - **3-tier prime separator inside each tower** is Jesse's `n·p`, `n·prime·n³`, `n·prime·n⁵`. This is the prime-tier ladder the brief names (prime-1, prime-real-3, prime-real-3-cubed, prime-real-3⁵). It is **NEW as a formal separator function** (§4 defines it); the raw ingredients (prime per dimension, cube = prime³) EXIST.
 

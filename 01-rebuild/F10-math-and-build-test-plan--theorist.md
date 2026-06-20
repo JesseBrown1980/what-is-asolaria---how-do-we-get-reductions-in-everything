@@ -77,7 +77,7 @@ The match to four significant figures is exactly what an unbiased SHA-256 keystr
 
 ### 2.1 The coordinate map (towers, cylinders, levels)
 
-Let the catalog ladder be dimensions `D = 1..K` (`K = 47` runtime, `60+` canon), each carrying a distinct prime `p_D` (D1↦2, …, D47↦211) — **EXISTS** in `hilbert-omni-47D.json`. Define a **tower** `T` as a typed PID family (an agent type) anchored at a base position `B_T ∈ ℕ`. Within a tower, the **cylinder** of nesting depth `ℓ` (the Hilbert level, `ℓ = 0..15`, the 16 levels) carries its own stride `σ_{T,ℓ}`.
+Let the catalog ladder be dimensions `D = 1..K` (`K = 49` live catalog — 49D is SIGNED-CANON, COSIGN_49D_001, cosign-chain seq3572 row_hash b66fe4cd4866de8d, quintet-ratified 2026-06-20, additively extending the cosigned BASE 47D with D48 HYPERGLYPH-ATLAS prime223 + D49 EXECUTION-PROOF-SUPERGRAPH prime227; `60+` canon), each carrying a distinct prime `p_D` (D1↦2, …, D47↦211) — **EXISTS** in `hilbert-omni-47D.json`. Define a **tower** `T` as a typed PID family (an agent type) anchored at a base position `B_T ∈ ℕ`. Within a tower, the **cylinder** of nesting depth `ℓ` (the Hilbert level, `ℓ = 0..15`, the 16 levels) carries its own stride `σ_{T,ℓ}`.
 
 **Definition (PID coordinate).** For the `n`-th agent of type `T` at level `ℓ`:
 ```
