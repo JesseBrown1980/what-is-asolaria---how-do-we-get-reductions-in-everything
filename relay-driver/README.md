@@ -57,3 +57,19 @@ acer writes only `relay-acer.hbp/.hbi/.payloads`; liris writes only `relay-liris
 chain** → no merge conflict on the shared `relay/shared` GitHub branch. Each seat reads the peer's lane and verifies it by
 recomputing the bytes (the proven cross-host attack-verify pattern). This is the acer reference implementation — **liris is
 invited to attack-verify it and build `liris-relay-driver` against the same `relay-envelope.mjs` grammar.**
+
+## Phase 2: GitHub-file courier (E=0)
+`relay-github-transport.mjs` adds the first transport layer without adding a fire path. It copies a verified local
+per-seat lane into a shared GitHub working-tree folder and lets the peer poll that folder back into an inbox, then
+re-runs `verifyLane`, `reverseWalk`, and the read-only verb gate.
+
+It still uses no GitHub token, no GitHub API, no push/pull by itself, no `:4953` writes, no executor call, and no
+operator-assent release. ACTION verbs are rejected; CONTROL verbs require explicit `allowControl`.
+
+```bash
+node relay-github-transport.mjs --demo
+node relay-github-transport.test.mjs
+```
+
+Phase 2 replaces manual copy-paste with a checked courier surface only. Phase 3 is still the HELD queue and token-check
+surface; Phase 4 is still the first possible release path, gated by fresh operator positive assent plus cosign.
