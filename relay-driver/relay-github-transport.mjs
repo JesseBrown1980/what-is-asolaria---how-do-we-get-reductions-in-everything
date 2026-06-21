@@ -6,6 +6,7 @@ import { resolve, sep } from 'node:path';
 import { tmpdir } from 'node:os';
 import { lanePaths, emit, verifyLane, reverseWalk } from './relay-driver.mjs';
 import { parseRow, classOf } from './relay-envelope.mjs';
+import { loadIndex } from './relay-hbi-indexer.mjs';
 
 const LANE_FILES = ['hbp', 'hbi', 'payloads'];
 const SEAT_RE = /^[a-z][a-z0-9_-]{1,40}$/;
@@ -45,12 +46,36 @@ export function assertReadOnlyLane(paths, { allowControl = false } = {}) {
   return { rows: rows.length, actionRows: 0 };
 }
 
+// FIX (acer attack-verify of PR #24): the .hbi sidecar is a couriered file too — bring it INSIDE the verify
+// perimeter. Without this, a peer ships a valid .hbp (passes verifyLane/reverseWalk/verb-gate) but a forged .hbi
+// (e.g. verb=COSIGN / cls=ACTION / seq=777 / a bogus row_hash head) lands in the trusted inbox unflagged, and
+// laneHead() reads row_hash+seq straight from that unverified index. Cross-check the (already-verified) .hbp
+// against the .hbi row-for-row, AND run the read-only verb gate over the .hbi's own verb column. No token/sig needed.
+export function assertHbiMatchesHbp(paths, { allowControl = false } = {}) {
+  const rows = parseAllRows(paths.hbp); // .hbp is verified by verifyLane/reverseWalk BEFORE this is called
+  const idx = loadIndex(paths.hbi);
+  if (idx.length !== rows.length) throw new Error('PEER_HBI_MISMATCH: index rows ' + idx.length + ' != hbp rows ' + rows.length);
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i], x = idx[i];
+    const want = { row_hash: r.row_hash, verb: r.verb, seq: String(r.seq), payload_off: String(r.hbi_off), payload_len: String(r.len), cls: classOf(r.verb) };
+    for (const k of Object.keys(want)) {
+      if (String(x[k]) !== want[k]) throw new Error('PEER_HBI_MISMATCH: row ' + i + ' field ' + k + ' got ' + x[k] + ' want ' + want[k]);
+    }
+    // belt-and-suspenders: the .hbi's own verb column must itself pass the read-only verb gate (a cls=ACTION sidecar dies here too)
+    const cls = classOf(x.verb);
+    if (cls === 'ACTION') throw new Error('ACTION_VERB_REJECT: .hbi index row ' + i + ' carries ' + x.verb);
+    if (cls === 'CONTROL' && !allowControl) throw new Error('CONTROL_VERB_REJECT: .hbi index row ' + i + ' carries ' + x.verb);
+  }
+  return { rows: rows.length };
+}
+
 export function publishOwnLane({ localLaneDir, sharedRoot, seat, allowControl = false }) {
   assertSeat(seat);
   const local = laneFileSet(localLaneDir, seat);
   const v = verifyLane(local);
   if (!v.pass) throw new Error('LOCAL_VERIFY_REJECT: ' + JSON.stringify(v.failures));
   const ro = assertReadOnlyLane(local, { allowControl });
+  assertHbiMatchesHbp(local, { allowControl }); // never ship an .hbi that diverges from the verified .hbp
   const outDir = ensureDir(laneDir(sharedRoot, seat));
   for (const k of LANE_FILES) {
     if (!existsSync(local[k])) throw new Error('MISSING_LOCAL_LANE_FILE: ' + local[k]);
@@ -74,6 +99,7 @@ export function pollPeerLane({ sharedRoot, peer, inboxDir }) {
   const rw = reverseWalk(p);
   if (!rw.pass) throw new Error('PEER_REVERSEWALK_REJECT: ' + JSON.stringify(rw.issues));
   const ro = assertReadOnlyLane(p);
+  assertHbiMatchesHbp(p); // the couriered .hbi must match the verified .hbp before this lane is accepted
   return { peer, present: true, rows: ro.rows, inboxDir: dstDir };
 }
 

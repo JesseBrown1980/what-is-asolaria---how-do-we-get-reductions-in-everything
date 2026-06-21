@@ -1,6 +1,6 @@
 // PHASE-2 GitHub-file courier tests. E=0: filesystem only, no network, no GitHub API, no fire.
 
-import { rmSync, mkdirSync, writeFileSync, readFileSync } from 'node:fs';
+import { rmSync, mkdirSync, writeFileSync, readFileSync, copyFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { lanePaths, emit } from './relay-driver.mjs';
 import { publishOwnLane, pollPeerLane, sharedStatus } from './relay-github-transport.mjs';
@@ -58,6 +58,23 @@ console.log('PHASE-2 GITHUB-TRANSPORT TEST SUITE (E=0)');
 { const T = fresh('status'); mkdirSync(T.shared + '/acer', { recursive: true }); mkdirSync(T.shared + '/BAD', { recursive: true });
   const st = sharedStatus(T.shared);
   ok('t7 sharedStatus filters bad seat dirs', st.seats.length === 1 && st.seats[0].seat === 'acer'); }
+
+// t8 — FIX: a forged .hbi sidecar (valid .hbp untouched) carrying a COSIGN/cls=ACTION/seq=777 head must be REJECTED on poll.
+// Before the fix this returned {present:true} and laneHead() trusted the forged head. (acer attack-verify of PR #24)
+{ const T = fresh('hbi-forge'); const P = lanePaths(T.local, 'acer');
+  emit(P, { from: 'acer', to: 'liris', verb: 'NOTE', n: 1, payload: 'benign', ts: '2026-06-21T00:00:00Z' });
+  publishOwnLane({ localLaneDir: T.local, sharedRoot: T.shared, seat: 'acer' });
+  const forged = 'IDX|row_hash=deadbeefdeadbeef|row_off=0|row_len=999|pid=BH.RELAY.acer.1|verb=COSIGN|cls=ACTION|from=acer|to=liris|ts=2026-06-21T00:00:00Z|seq=777|payload_off=0|payload_len=6\n';
+  writeFileSync(`${T.shared}/acer/relay-acer.hbi`, forged); // tamper ONLY the .hbi; leave the valid .hbp + .payloads
+  throws('t8 forged .hbi (COSIGN/ACTION head) rejected on poll', () => pollPeerLane({ sharedRoot: T.shared, peer: 'acer', inboxDir: T.inbox }), /PEER_HBI_MISMATCH|ACTION_VERB_REJECT/); }
+
+// t9 — poll-side ACTION gate, ISOLATED: a chain-valid EXEC peer lane (hand-placed into shared/, so it bypasses
+// publishOwnLane's gate) must be rejected by pollPeerLane's own verb gate — not by a row_hash break like t5.
+{ const T = fresh('poll-action'); const P = lanePaths(T.local, 'liris');
+  emit(P, { from: 'liris', to: 'acer', verb: 'EXEC', n: 1, payload: 'chain-valid but ACTION', ts: '2026-06-21T00:00:00Z' });
+  mkdirSync(`${T.shared}/liris`, { recursive: true });
+  for (const k of ['hbp', 'hbi', 'payloads']) copyFileSync(P[k], `${T.shared}/liris/relay-liris.${k}`);
+  throws('t9 chain-valid EXEC peer lane rejected on poll (verb gate)', () => pollPeerLane({ sharedRoot: T.shared, peer: 'liris', inboxDir: T.inbox }), /ACTION_VERB_REJECT/); }
 
 console.log(`\n${pass} PASS / ${fail} FAIL`);
 process.exit(fail === 0 ? 0 : 1);

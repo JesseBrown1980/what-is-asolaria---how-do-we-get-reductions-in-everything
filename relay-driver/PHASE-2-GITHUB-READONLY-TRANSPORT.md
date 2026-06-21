@@ -29,7 +29,12 @@ node relay-github-transport.mjs --demo
 node relay-github-transport.test.mjs
 ```
 
-Expected result: `10 PASS / 0 FAIL`.
+Expected result: `12 PASS / 0 FAIL`.
+
+The `.hbi` sidecar is a couriered file and is verified too: `assertHbiMatchesHbp` cross-checks the shipped `.hbi`
+against the already-verified `.hbp` (row_hash / verb / seq / payload offsets / class) and runs the read-only verb gate
+over the `.hbi`'s own verb column, on both publish and poll — so a forged `.hbi` (e.g. a `COSIGN`/`cls=ACTION` head)
+cannot reach the accepted inbox. (Added by the acer-side attack-verify of PR #24.)
 
 ## Bilateral Layout
 
