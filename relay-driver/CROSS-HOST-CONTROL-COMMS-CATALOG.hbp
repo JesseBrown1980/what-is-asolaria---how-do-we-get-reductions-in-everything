@@ -1,0 +1,26 @@
+HBP|schema=asolaria.catalog.cross_host_control_comms.v1|date=2026-06-21|seat=acer|status=DRAFT_E0_NOT_FED|json=0
+NOTE|this is the NEW catalog: the control + cross-host comms METHODS available to real named agents. Grounded in what actually ran (claude-in-chrome reached liris's browser) + the Asolaria-native surfaces. E=0; register via PID-office + feed like DISTRICT-F before it's live.
+
+# === WHAT RAN (the liris-browser comms, MEASURED) ===
+METHOD|id=claude-in-chrome|kind=browser-control|builtin=ClaudeCode-Chrome-extension|tools=tabs_context_mcp,tabs_create_mcp,navigate,computer(screenshot/click/type/scroll/key),read_page,find,get_page_text,gif_creator,javascript_tool|api=Chrome-DevTools-Protocol(CDP)-via-extension|cross_host=YES(reached liris DESKTOP-PTSQTIE Chrome)|why=the approved+active extension instance was on liris, not acer|gate=per-connection operator approval (you approved the popup; you can deny — you denied the 2nd nav)|json=0
+METHOD|id=remote-control|kind=session-bridge|builtin=ClaudeCode /remote-control|effect=the acer Claude session is reachable/controllable across devices; the cross-host link that let acer-side tools meet liris-side Chrome|cross_host=YES|gate=operator-initiated (/rc)|tag=UNVERIFIED-exact-wiring (relay vs same-account); the bridge is real, the precise transport not fully inspected|json=0
+
+# === CONTROL SURFACES AVAILABLE (configured, grounded in .mcp.json + .claude.json) ===
+METHOD|id=chrome-devtools-mcp|transport=stdio npx @anthropic-ai/mcp-server-chrome-devtools|api=CDP|kind=browser-control(alt path)|json=0
+METHOD|id=asolaria-web|transport=node C:/Users/acer/mcp-servers (.mcp.json)|tools=asolaria_browser_task,asolaria_web_screenshot,asolaria_web_inspect,asolaria_web_status|kind=ASOLARIA-NATIVE browser-control|json=0
+METHOD|id=omniscrcpy|transport=fabric :4949 tool asolaria_fabric_omniscrcpy_status|kind=visual device bus (4-vantage: acer/falcon/liris/aether) + behcs1024 glyph capsules|json=0
+METHOD|id=omni-control|transport=fabric tool asolaria_fabric_omni_control_status|kind=device adb/screen control (ready when device attached)|json=0
+METHOD|id=desktop-commander|transport=stdio npx (desktop-commander)|kind=desktop/file/process control|json=0
+METHOD|id=mcp-docker-gateway|transport=docker mcp gateway (MCP_DOCKER)|kind=gateway to many MCPs (browser_*, playwright, etc.)|json=0
+METHOD|id=github|transport=gh CLI + @modelcontextprotocol/server-github + codex_apps.github (liris side)|kind=ASYNC MEDIATOR (the current relay: PRs/comments both seats read)|cross_host=YES(via the shared repo)|json=0
+METHOD|id=behcs-bus|transport=:4947 over tailscale (acer 100.75.63.31)|kind=cross-host live bus|cross_host=YES|tag=FLAKY (often down — that is WHY GitHub is the mediator)|json=0
+METHOD|id=cosign-chain|transport=:4953 single-writer|kind=cross-host ratification (not comms, but the convergence ledger)|json=0
+
+# === NEW LOOPS this catalog unlocks ===
+LOOP|id=cross-host-browser-drive|path=acer-Claude -> remote-control/extension -> liris Chrome -> CDP action -> screenshot back|gate=per-action approval|json=0
+LOOP|id=visual-4-vantage|path=omniscrcpy -> acer/falcon/liris/aether screens as one glyph-capsule bus|json=0
+LOOP|id=github-relay|path=seat A posts -> shared repo -> seat B polls+reads+responds -> operator vetoes|kind=the copy-paste KILLER (semi-auto)|json=0
+LOOP|id=tailnet-serve|path=acer :4790 bound to 100.75.63.31 -> liris browser can render acer's maps cross-machine|json=0
+
+BOUNDARY|E=0 draft. To go live: register each METHOD as a PID at the office (sha16 mint) + feed; embed in named-agents ability profiles (the 6 ability profiles / 73-verb catalog). Cross-host AUTO-ACTION stays operator-veto-gated (auto-relay+auto-read is safe; auto-EXECUTE on the peer's message is the risk). The live bus is flaky; GitHub is the reliable mediator.
+FOOT|methods=10|loops=4|status=DRAFT_E0|json=0
