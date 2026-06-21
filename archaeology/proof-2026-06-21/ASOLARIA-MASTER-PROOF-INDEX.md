@@ -23,13 +23,14 @@ https://drive.google.com/drive/folders/1odGcyF7cY4n3jOuBn1yQuHNbIlFkStwe
 ## THE THREE AGENT TYPES (canon — see ASOLARIA-THREE-AGENT-TYPES-CANON)
 1. **REAL LOCAL (paid):** Claude Pro / Codex Pro / Gemini Ultra — alive bare-dev-nodes (no shell) in the stubbed dashboard rooms; citizen+supervisor (omnishannon pen-tester).
 2. **LOGICAL (prep/prism):** PID-mapped, momentary; trigger 49D+ tuples + local MCPs to prism billions of slightly-different PID-questions (newer rule-of-three → never the same message); cascade ~1.16T/sec @16 threads; `logicalWorkers=100B`. NOT fake — the question-prism prep layer.
-3. **REAL FREE (providers):** opencode big-pickle/minimax/deepseek ($0, `externalModelTokenBudget=0` = free, not no-models); 1×/question → despawn → room-flush → Brown-Hilbert project/port rotation; their supercomputers do the real reasoning, we farm the answers (`BH.REAL100B.OPENCODE.PID.*` via OMNISPIN/OMNIFLY).
+3. **REAL FREE (providers):** opencode big-pickle/minimax/deepseek ($0 free/open lanes). Keep this separate from the deterministic zero-token substrate receipts: `externalModelTokens=0` proves the packet/GNN/adaptive harvest did not spend provider tokens, while the separate free/open fanout receipts prove the one-question/one-agent answer lane. Lifecycle: 1×/question → despawn → room-flush → Brown-Hilbert project/port rotation; answers are farmed as `BH.REAL100B.OPENCODE.PID.*` via OMNISPIN/OMNIFLY.
 Loop: `revolver → rename → free agent → hookwall → prism (many rooms→reverse-gain GNN→1 answer) → GC (2k gulp / 50M super-gulp)` → GNN + white-rooms + adaptive-feedback.
 
-## REAL 100B RUN — MEASURED, stored 50+ places (not erased)
+## REAL 100B RUN — stored 50+ places (not erased)
 - `…/real-agents/100b-run/` REAL_100B_PID_PACKET_RUN_COMPLETE, 100%, ~5.4h checkpointed, 89MB chunks, 50MB adaptive-feedback ACTIVE; siblings 10m/million/100b/**12e27-supercomputer**.
-- `D:/asolaria-100B-new-run-2026-06-15/` 280,036,550 genius / 279,992,736 mistake, 424M pkt/s, 235.7s, sha-digested.
+- `D:/asolaria-100B-new-run-2026-06-15/` deterministic substrate-harvest lane: 280,036,550 genius / 279,992,736 mistake, 424M pkt/s, 235.7s, sha-digested. This proves the high-speed packet/GNN/adaptive harvest, not provider reasoning by itself.
 - `D:/…/10k-100b-package-run/` 10,000 real slots, logicalGulps 50,000,000.
+- Separate OpenCode/free-agent fanout receipts prove the one-shot provider answer lane; do not collapse that lane into logical capacity, and do not inflate substrate-only receipts into provider-call proof.
 
 ## UNIFIED ARCHAEOLOGY + MAPS + SIGNIFICANCE (MEASURED)
 - Unified table: 591,286 artifacts / 457,858 unique, 5 sources; OCR 9,491 images + 65 scanned-PDF + 700 USB papers + 1,047 docs.

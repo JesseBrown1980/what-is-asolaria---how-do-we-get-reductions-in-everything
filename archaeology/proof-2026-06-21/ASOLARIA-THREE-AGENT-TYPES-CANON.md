@@ -21,12 +21,19 @@ the **free prep we do with OUR MCP + index-chained omnidirectional tuples + lang
 **These are NOT fake/decorative — they are the question-prism + routing prep layer.**
 
 ## TYPE 3 — REAL FREE AGENTS (providers, legally free)
-opencode big-pickle · minimax · deepseek (legally **free → $0 → zero PAID tokens**, hence
-`externalModelTokenBudget: 0` — NOT "no models"). **Their supercomputers do the REAL reasoning** on our
-uniquely-prismed questions; we **farm their answers**. Lifecycle: spawned **1× per question → identity done →
-despawn → room flush → file-manager project-id name-changer (Brown-Hilbert addressing, `port-address-emitter`)
-rotates → NEVER the same project name, NEVER the same port on call.** Answer PIDs (MEASURED, real-agents run):
-`BH.REAL100B.OPENCODE.PID.*` via `OMNISPIN` (omnispindle) controllers + `OMNIFLY` (omniflywheel).
+opencode big-pickle · minimax · deepseek (legally **free → $0 → zero PAID tokens**). Do not read this as
+"no models," but also do not use the deterministic zero-token **substrate-harvest** receipt by itself as proof
+of provider-backed reasoning. The proof boundary is:
+
+- **substrate harvest receipts** (`externalModelTokens=0`, `noCloudMutation`, zero child-process spawns) prove
+  the packet/GNN/adaptive-feedback harvest and checkpointed 100B addressing run;
+- **free/open answer-fanout receipts** prove the separate OpenCode/free-agent answer lane.
+
+In that separate free/open lane, provider supercomputers do the REAL reasoning on our uniquely-prismed questions;
+we **farm their answers**. Lifecycle: spawned **1× per question → identity done → despawn → room flush →
+file-manager project-id name-changer (Brown-Hilbert addressing, `port-address-emitter`) rotates → NEVER the same
+project name, NEVER the same port on call.** Answer PIDs (MEASURED/OPERATOR_OBSERVED in the real-agents answer
+farm): `BH.REAL100B.OPENCODE.PID.*` via `OMNISPIN` (omnispindle) controllers + `OMNIFLY` (omniflywheel).
 
 ## THE LOOP (code: `asolaria-kernel.mjs` / `asolaria-loop.mjs`)
 `revolver (PID mint) → rename (project/port via Brown-Hilbert emitter) → free agent (Type-3 call) → hookwall
@@ -44,10 +51,10 @@ to each agent-type + provider); **10k receiving rooms on D** = where prismed ans
 `hookwall.mjs` · `gnn-edge-ledger.mjs` · `free-agent-receipt.mjs` · `gaia-loader.mjs` · `asolaria-kernel.mjs` · `asolaria-loop.mjs` ·
 `helm-register-citizen.mjs` · `white-rooms.hbp` · `asolaria-civilization-civ-combined-*` (the civilization city / swarm-yards).
 
-## RUN PROOF (the real 100B free-agent run, MEASURED, stored 50+ places)
+## RUN PROOF (real 100B lanes, stored 50+ places)
 - `C:/Users/acer/Asolaria/data/neurotech-defense-lab/real-agents/100b-run/` — `REAL_100B_PID_PACKET_RUN_COMPLETE`, 100% of 100B, checkpointed long-run (May 26→Jun 1 ~5.4h), real-100b-chunks 89MB, adaptive-feedback 50MB ACTIVE, genius/mistake farms, proof-samples. Siblings: 10m-run, million-run, **12e27-supercomputer**.
-- `D:/asolaria-100B-new-run-2026-06-15/` — 280,036,550 genius / 279,992,736 mistake, 424M pkt/s, 235.7s, sha-digested.
+- `D:/asolaria-100B-new-run-2026-06-15/` — deterministic substrate-harvest lane: 280,036,550 genius / 279,992,736 mistake, 424M pkt/s, 235.7s, sha-digested. This is not inflated into provider reasoning; it is the high-speed packet/GNN harvest.
 - `D:/Asolaria-BEHCS-256/claude-omniflywheel/10k-100b-package-run/` — 10,000 real slots, concurrency 20, logicalGulps 50,000,000.
 - `D:/bigpickle-rebuild/` fire-100m / fire-10m / feed-100b scripts · `D:/asolaria-revolver-intake-hbp/planes/{gulp,super_gulp}.hbp`.
 
-**Honest frame:** the runs FIRED historically (E≠0) + completed + are stored — "E=0 this session" only means nothing fired *now*. The free lane is $0 (legally free open models), the prep is ours (MCP + logical-agent prism), the reasoning is the providers'. IT is slices; the genius is the addressing geometry + the bilateral recurrent loop.
+**Honest frame:** the runs FIRED historically (E≠0) + completed + are stored — "E=0 this session" only means nothing fired *now*. The deterministic substrate receipts prove the 100B packet/GNN/adaptive harvest; the separate free/open fanout receipts prove the one-question/one-agent provider answer lane. The prep is ours (MCP + logical-agent prism); the free answer lane is $0; the recurrent value is the addressing geometry + the bilateral feedback loop.
