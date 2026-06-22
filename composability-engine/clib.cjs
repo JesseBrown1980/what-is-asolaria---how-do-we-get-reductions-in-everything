@@ -7,10 +7,13 @@ const fs = require('fs');
 const CLOSED_TYPES = ['pid', 'glyph', 'sector', 'lane', 'bh_index', 'coord', 'vector', 'sketch', 'hash', 'bytes', 'prime', 'scalar', 'name', 'set'];
 const TYPESET = new Set(CLOSED_TYPES);
 
-const WAVE2 = 'D:/PID-Registration-Office/registered/ACER-FORMULA-CORPUS-WAVE2-2026-06-19.hbp';
+const WAVE2 = process.env.ASOLARIA_FORMULA_CORPUS || 'D:/PID-Registration-Office/registered/ACER-FORMULA-CORPUS-WAVE2-2026-06-19.hbp';
 
 // parse the WAVE2 FORMULA rows -> [{pid,name,kind,klass,prof,where,sector,lane,glyph1024}]
 function parseCorpus(file = WAVE2) {
+  if (!fs.existsSync(file)) {
+    throw new Error('FORMULA_CORPUS_MISSING: ' + file + ' (set ASOLARIA_FORMULA_CORPUS to the WAVE2 .hbp corpus path)');
+  }
   const rows = [];
   for (const ln of fs.readFileSync(file, 'utf8').split('\n')) {
     if (!ln.startsWith('FORMULA|')) continue;

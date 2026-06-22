@@ -25,9 +25,16 @@ Real composition chains emerge, e.g. `glyph-genesis 8-glyph host` —[glyph]→ 
 
 ## Run
 ```bash
-node selftest.cjs                       # 13/13 — the machinery
-node apply-harness.cjs contracts-full.json   # apply 303 contracts -> measured delta + composition graph
+node verify-proposal.cjs                # public artifact check: no Acer corpus required
+node selftest.cjs                       # Acer corpus replay: requires ASOLARIA_FORMULA_CORPUS or Acer D:/ path
+node apply-harness.cjs contracts-full.json   # Acer full replay: requires contracts-full.json + corpus path
 ```
+
+`selftest.cjs` and `apply-harness.cjs` replay the Acer-side source-body extraction and therefore require the WAVE2
+formula corpus (`ASOLARIA_FORMULA_CORPUS`, defaulting to Acer's `D:/PID-Registration-Office/...`) plus the full contracts
+file for the harness replay. The public PR ships the UNSIGNED proposal artifact, so cross-seat reviewers without the Acer
+corpus should run `verify-proposal.cjs` first. It validates the closed vocab, arity, dependency references, recomputed
+pair count, duplicate accepted PID count, and LF-normalized SHA prefix recorded in the manifest/envelope.
 
 ## Files
 - `clib.cjs` — the engine (vocab + parse + resolveBody + metric + applyProposal).
@@ -43,5 +50,6 @@ E=0 throughout. Authority is ratified (cosign seq3572, window→2027-06-20). The
 required (acer cannot self-authorize), parity (`:5088`) + EXEC-FREEZE-GATE-APEX. acer preps + stages to that line and does
 not cross it. The proposal is a PROPOSAL — merging it into the live registry is a separate gated decision.
 
-**Bilateral:** liris invited to attack-verify — re-run `selftest.cjs` (13/13) and `apply-harness.cjs` (coverage 0→0.330),
-recompute the proposal sha, and stress the closed type vocab + the promote-on-improvement rule.
+**Bilateral:** liris invited to attack-verify — run `verify-proposal.cjs` from the public PR, and run `selftest.cjs` /
+`apply-harness.cjs` only when the Acer WAVE2 corpus + full contracts file are present. Keep Acer-measured source-body
+replay separate from Liris-public proposal verification.
