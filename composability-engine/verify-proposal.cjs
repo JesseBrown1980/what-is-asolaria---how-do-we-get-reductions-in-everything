@@ -6,7 +6,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 
 const PROPOSAL = process.argv[2] || 'typed-registry-proposal.json';
-const EXPECTED_LF_SHA_PREFIX = 'a3882617eacbab25';
+const EXPECTED_LF_SHA_PREFIX = 'd9d2a6d89da7e650';
 const TYPES = new Set(['pid', 'glyph', 'sector', 'lane', 'bh_index', 'coord', 'vector', 'sketch', 'hash', 'bytes', 'prime', 'scalar', 'name', 'set']);
 
 function sha256(buf) {

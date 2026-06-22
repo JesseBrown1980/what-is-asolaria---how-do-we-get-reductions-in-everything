@@ -9,6 +9,11 @@ const nameByPid = Object.fromEntries(corpus.map(r => [r.pid, r.name]));
 const contracts = JSON.parse(fs.readFileSync(CONTRACTS, 'utf8'));
 // cross-checked-agreed first, then the rest (so high-confidence typed rows seed the graph)
 contracts.sort((a, b) => (b.cross_checked === true) - (a.cross_checked === true));
+// dedup by pid (keep the cross-checked-preferred FIRST occurrence) — a pid proposed in two batches must yield ONE
+// contract, so accepted_count == registry typed (fixes the duplicate-accepted-pid liris flagged on PR #26).
+{ const seen = new Set(), dq = []; let dropped = 0;
+  for (const c of contracts) { if (seen.has(c.pid)) { dropped++; continue; } seen.add(c.pid); dq.push(c); }
+  if (dropped) console.log('deduped ' + dropped + ' duplicate-pid contract(s) before apply'); contracts.length = 0; contracts.push(...dq); }
 
 const before = L.metric({}, corpus);
 let registry = {};

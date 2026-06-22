@@ -14,16 +14,16 @@
   "total": 876,
   "typed": 289,
   "coverage": 0.329909,
-  "composable_pairs": 17173
+  "composable_pairs": 17128
  },
  "delta": {
   "coverage": 0.329909,
   "typed": 289,
-  "composable_pairs": 17173
+  "composable_pairs": 17128
  },
- "accepted_count": 290,
- "rejected_count": 13,
- "composable_pairs": 17173,
+ "accepted_count": 289,
+ "rejected_count": 9,
+ "composable_pairs": 17128,
  "example_chains": [
   [
    {
@@ -1004,19 +1004,18 @@
   },
   "e551290ac1fc93f7": {
    "inputs": [
-    "vector",
-    "name"
+    "vector"
    ],
    "outputs": [
     "vector",
     "hash"
    ],
-   "arity": 2,
+   "arity": 1,
    "deps": [
-    "eb9e667645cb804c",
-    "bf9fa7ff4af5054e"
+    "3b40a7147a5c6977",
+    "a3ce259758e8c678"
    ],
-   "note": "Johnson-Lindenstrauss projection: normalizes input vector, draws each matrix entry from achlioptasWeight(seed,...), scales by 1/sqrt(targetDim), returns the projected vector plus sha16 fingerprint hash. arity 2 = (vector, seed name in options)."
+   "note": "johnsonLindenstrauss(vector): normalizeVector(vector) then Achlioptas-weighted projection to sqrt-scaled target dim. Returns packet whose `projection` is a reduced vector plus sha16 `fingerprint` (hash). Single domain input (vector); options is a config bag, not a vocab value, so arity=1. deps: normalizeVector + sha16."
   },
   "b634f4924caa6f70": {
    "inputs": [
@@ -6588,29 +6587,6 @@
    }
   },
   {
-   "pid": "e551290ac1fc93f7",
-   "name": "Johnson-Lindenstrauss projection",
-   "inputs": [
-    "vector",
-    "name"
-   ],
-   "outputs": [
-    "vector",
-    "hash"
-   ],
-   "arity": 2,
-   "deps": [
-    "eb9e667645cb804c",
-    "bf9fa7ff4af5054e"
-   ],
-   "note": "Johnson-Lindenstrauss projection: normalizes input vector, draws each matrix entry from achlioptasWeight(seed,...), scales by 1/sqrt(targetDim), returns the projected vector plus sha16 fingerprint hash. arity 2 = (vector, seed name in options).",
-   "cross_checked": true,
-   "delta": {
-    "coverage": 0,
-    "pairs": 14
-   }
-  },
-  {
    "pid": "bf02b9e64f3094bc",
    "name": "turbo uniform scalar quant",
    "inputs": [
@@ -7040,7 +7016,7 @@
    "cross_checked": true,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 65
+    "pairs": 64
    }
   },
   {
@@ -7529,7 +7505,7 @@
    "cross_checked": true,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 62
+    "pairs": 61
    }
   },
   {
@@ -7623,7 +7599,7 @@
    "cross_checked": true,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 66
+    "pairs": 65
    }
   },
   {
@@ -7641,7 +7617,7 @@
    "cross_checked": true,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 103
+    "pairs": 102
    }
   },
   {
@@ -7735,7 +7711,7 @@
    "cross_checked": true,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 91
+    "pairs": 90
    }
   },
   {
@@ -7897,7 +7873,7 @@
    "cross_checked": true,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 199
+    "pairs": 198
    }
   },
   {
@@ -7922,7 +7898,7 @@
    "cross_checked": true,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 219
+    "pairs": 218
    }
   },
   {
@@ -8000,7 +7976,7 @@
    "cross_checked": true,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 141
+    "pairs": 140
    }
   },
   {
@@ -8151,7 +8127,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 70
+    "pairs": 69
    }
   },
   {
@@ -8173,7 +8149,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 122
+    "pairs": 121
    }
   },
   {
@@ -8229,7 +8205,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 81
+    "pairs": 80
    }
   },
   {
@@ -8267,7 +8243,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 59
+    "pairs": 58
    }
   },
   {
@@ -8323,7 +8299,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 222
+    "pairs": 221
    }
   },
   {
@@ -8341,7 +8317,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 89
+    "pairs": 88
    }
   },
   {
@@ -8359,7 +8335,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 133
+    "pairs": 132
    }
   },
   {
@@ -8476,7 +8452,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 228
+    "pairs": 227
    }
   },
   {
@@ -8548,7 +8524,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 54
+    "pairs": 53
    }
   },
   {
@@ -8571,7 +8547,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 135
+    "pairs": 134
    }
   },
   {
@@ -8589,7 +8565,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 71
+    "pairs": 70
    }
   },
   {
@@ -8639,7 +8615,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 141
+    "pairs": 140
    }
   },
   {
@@ -8714,7 +8690,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 132
+    "pairs": 131
    }
   },
   {
@@ -8739,7 +8715,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 222
+    "pairs": 221
    }
   },
   {
@@ -8831,7 +8807,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 200
+    "pairs": 199
    }
   },
   {
@@ -8851,7 +8827,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 200
+    "pairs": 199
    }
   },
   {
@@ -8873,7 +8849,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 157
+    "pairs": 156
    }
   },
   {
@@ -8898,7 +8874,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001141,
-    "pairs": 146
+    "pairs": 145
    }
   },
   {
@@ -9224,7 +9200,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 176
+    "pairs": 175
    }
   },
   {
@@ -9262,7 +9238,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 154
+    "pairs": 153
    }
   },
   {
@@ -9300,7 +9276,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 270
+    "pairs": 269
    }
   },
   {
@@ -9341,7 +9317,7 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 124
+    "pairs": 123
    }
   },
   {
@@ -9393,31 +9369,11 @@
    "cross_checked": false,
    "delta": {
     "coverage": 0.001142,
-    "pairs": 58
+    "pairs": 57
    }
   }
  ],
  "rejected": [
-  {
-   "pid": "7540a0f9bb037521",
-   "name": "Turbo uniform quant",
-   "reason": "NO-IMPROVEMENT"
-  },
-  {
-   "pid": "176ead77ce6e3bb3",
-   "name": "Johnson-Lindenstrauss Achlioptas sparse projection",
-   "reason": "NO-IMPROVEMENT"
-  },
-  {
-   "pid": "bf02b9e64f3094bc",
-   "name": "turbo uniform scalar quant",
-   "reason": "NO-IMPROVEMENT"
-  },
-  {
-   "pid": "a40724a659b8a7c2",
-   "name": "Triple spherical quant (3D radius/theta/phi)",
-   "reason": "NO-IMPROVEMENT"
-  },
   {
    "pid": "512a830c60038161",
    "name": "OS-ON-METAL equation (sealed 2026-05-23 canon)",

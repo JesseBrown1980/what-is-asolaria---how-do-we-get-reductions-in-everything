@@ -12,13 +12,13 @@ gate. Nothing in this manifest has been fired. The PAST 100B run remains real+co
 ## 1. The system-improvement OBJECTIVE (the fitness the readiness verdict said was missing)
 Replaces the synthetic LCG genius-hit tautology. A run "improves the system" iff it raises:
 - **composability_coverage** = typed-formula rows / corpus rows  *(MEASURED 0 → 0.330)*
-- **composable_pairs** = directed (A→B) where an output type of A is an input type of B  *(MEASURED 0 → 17,173)*
+- **composable_pairs** = directed (A→B) where an output type of A is an input type of B  *(MEASURED 0 → 17,128)*
 - (extensions, staged): map-of-maps `orphan_count` ↓ (canon_index live = 86), supervisor collision-rate ↓, route fidelity ↑.
 
 ## 2. The run→system-change FEEDBACK PATH (the LAW-037 bridge — built + proven, was never mechanized before)
 `free-agent proposes typed contract / composition` → **applicator** (`clib.applyProposal`: validate against the CLOSED
 type vocab → apply to an ISOLATED registry copy → re-measure the objective → **promote ONLY on improvement**) →
-**UNSIGNED proposal + receipt** (`typed-registry-proposal.json`, sha `a3882617eacbab25`) → operator/cosign review → (gated) merge.
+**UNSIGNED proposal + receipt** (`typed-registry-proposal.json`, sha `d9d2a6d89da7e650`) → operator/cosign review → (gated) merge.
 This closes the loop on the SYSTEM (algorithms gain typed contracts; the corpus becomes composable), not on farmed answers.
 
 ## 3. PROVEN at micro + full-resolvable scale (MEASURED, E=0)
@@ -26,7 +26,7 @@ This closes the loop on the SYSTEM (algorithms gain typed contracts; the corpus 
 |---|---|---|
 | machinery self-test | — | **13/13** (parse, body-resolve, validate, promote-on-improvement, reject no-gain/invalid) |
 | micro-pilot | 24 | **+20 typed / +76 pairs**, 14/24 cross-check-agree |
-| full-resolvable corpus | 303 | **+289 typed / +17,173 pairs**, coverage 0→0.330, 227/303 cross-check-agree, 17,184 len-3 chains |
+| full-resolvable corpus | 303 | **+289 typed / +17,128 pairs**, coverage 0→0.330, 227/303 cross-check-agree, 17,184 len-3 chains |
 Example real composition chain: `glyph-genesis 8-glyph host` —[glyph]→ `BEHCS-1024 subset-embedding` —[glyph]→ `mintPID`.
 Real dependency edges emerged (mintPid→parse_pid, cosign-link→pid-fingerprint, FSM-transition→GNN-scorer).
 
