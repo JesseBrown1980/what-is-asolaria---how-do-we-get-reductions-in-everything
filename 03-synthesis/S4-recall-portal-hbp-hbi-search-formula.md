@@ -89,6 +89,26 @@ Acer Rust: 591,286 rows, 1.47 ms median, 1,336 q/s
 Liris Node: 10,644 rows, 3.65-4.82 ms median, 205 q/s
 ```
 
+Liris million-call stress receipt, same local portal:
+
+```text
+endpoint: /api/public/search?q=brown-hilbert&level=0&limit=1
+total: 1,000,000
+ok/fail: 1,000,000 / 0
+concurrency: 64
+keep-alive: on
+elapsed: 341.434 s
+throughput: 2,928.82 q/s
+latency: median 19.65 ms, p95 38.31 ms, p99 64.68 ms, p99.9 108.93 ms
+health during flood: 342 OK, 0 fail, median 21.24 ms, p99 113.31 ms
+json_written=0
+repo_written=0
+```
+
+That stress receipt is scoped differently from the 200-sample latency table: it uses
+`limit=1`, keep-alive, and 64 concurrent clients to test sustained portal throughput, not
+full-result browsing ergonomics.
+
 The old system stays alive while the new Rust/Host8 path is measured. Cutover remains
 gated by robustness/parity and bilateral review.
 

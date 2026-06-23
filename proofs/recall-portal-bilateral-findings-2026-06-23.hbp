@@ -9,6 +9,7 @@ RECALLPORTALLATENCY|colony=liris|query=brown-hilbert-l0|n=200|median_ms=3.65|p95
 RECALLPORTALLATENCY|colony=liris|query=significance-l0|n=200|median_ms=0.68|p95_ms=1.19|p99_ms=2.17|max_ms=3.04|candidate_count=8|json=0
 RECALLPORTALTHROUGHPUT|colony=acer|concurrency=32|qps=1336|health_flood_median_ms=9.85|health_flood_p99_ms=12|json=0
 RECALLPORTALTHROUGHPUT|colony=liris|concurrency=16|qps=205.73|query_median_under_load_ms=74.50|query_p95_under_load_ms=104.26|health_flood_median_ms=0.83|health_flood_p99_ms=117.29|health_failures=0|json=0
+RECALLPORTALSTRESS|colony=liris|tag=MEASURED_LIRIS_LOCAL|endpoint=http://127.0.0.1:4791/api/public/search?q=brown-hilbert&level=0&limit=1|total=1000000|concurrency=64|keepalive=1|ok=1000000|fail=0|status_200=1000000|elapsed_s=341.434|qps=2928.82|bytes=1215000000|min_ms=0.35|median_ms=19.65|p95_ms=38.31|p99_ms=64.68|p999_ms=108.93|max_ms=403.84|health_ok=342|health_fail=0|health_median_ms=21.24|health_p95_ms=56.80|health_p99_ms=113.31|health_max_ms=287.60|json_written=0|repo_written=0|json=0
 RECALLPORTALPII|colony=acer|level=0|probes=bank,vault,.pem,legal,password,cnpj,paypal|all_count_zero=true|public_tier=PII-free|json=0
 RECALLPORTALPII|colony=liris|level=0|probes=bank,vault,.pem,legal,password,cnpj,paypal|all_count_zero=true|public_tier=PII-free|json=0
 RECALLPORTALCOMPARE|kind=same-host-same-corpus|colony=acer|node_indexed_ms=56-67|rust_median_ms=1.47|speedup_about=40x|json=0
