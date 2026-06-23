@@ -3,6 +3,7 @@ RECALLPORTALVANTAGE|colony=acer|tag=MEASURED_ACER|endpoint=:4796|engine=rust-rec
 RECALLPORTALVANTAGE|colony=liris|tag=MEASURED_LIRIS_LOCAL|endpoint=http://127.0.0.1:4791|engine=node-serve-recall.cjs|host=DESKTOP-PTSQTIE|loopback=1|json=0
 RECALLPORTALINDEX|colony=acer|rows=591286|terms=2614638|postings=23930053|schema=HILBRA-IDX-BEHCS-TUPLE-TEXT-V1|json_hot_path=false|linear_fallback=false|json=0
 RECALLPORTALINDEX|colony=liris|rows=10644|terms=103238|postings=738077|built_ms=1028|schema=HILBRA-IDX-BEHCS-TUPLE-TEXT-V1|json_hot_path=false|linear_fallback=false|json=0
+RECALLPORTALCLAIM|status=scope_bound|defensible_label=SOTA-class_specialized_recall_best-known_measured_implementation_within_Asolaria_global_SOTA_not_yet_independently_benchmarked|not_claimed=worlds_fastest_full_text_search_engine|global_sota_requires=same_machine_same_corpus_same_query_sequence_equivalent_top1_tokenAND_correctness_hashes_cold_warm_identical_keepalive_concurrency_QPS_latency_CPU_RAM_index_size_build_time_vs_Tantivy_Lucene_PISA_Meilisearch|json=0
 RECALLPORTALLATENCY|colony=acer|query=warm-mixed|n=600|median_ms=1.47|p95_ms=3.26|p99_ms=4.15|max_ms=6.15|json=0
 RECALLPORTALLATENCY|colony=liris|query=asolaria-l0|n=200|median_ms=4.82|p95_ms=7.57|p99_ms=9.96|max_ms=17.68|candidate_count=10454|json=0
 RECALLPORTALLATENCY|colony=liris|query=brown-hilbert-l0|n=200|median_ms=3.65|p95_ms=6.04|p99_ms=9.36|max_ms=15.11|candidate_count=177|json=0

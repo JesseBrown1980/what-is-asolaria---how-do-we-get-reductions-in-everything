@@ -23,6 +23,23 @@ Both numbers are from each colony's own seat. The cross-colony comparison is not
 same-host engine benchmark, but it is a federation finding: the same portal shape holds on
 both colonies and the public L0 boundary holds independently on both.
 
+Benchmark claim boundary:
+
+```text
+Defensible label:
+SOTA-class specialized recall; best-known measured implementation within Asolaria;
+global SOTA not yet independently benchmarked.
+
+Not claimed:
+world's fastest full-text search engine.
+
+Needed for global/SOTA:
+same-machine benchmark against Tantivy, Lucene, PISA, and ideally Meilisearch;
+same corpus and query sequence; equivalent top-1/token-AND semantics;
+result-correctness hashes; cold and warm runs; identical keep-alive/concurrency;
+QPS, p50/p95/p99, CPU, RAM, index size, and build time.
+```
+
 ## 2. The Search Formula
 
 The indexed recall engine is the reduction:
