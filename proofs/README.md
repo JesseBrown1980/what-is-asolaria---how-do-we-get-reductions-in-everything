@@ -15,6 +15,10 @@ CANON), with the combinatorial products tagged MODELED. Read-only; re-runnable s
   (256/1024/2048 generations; 47→60 catalogs; 17 engines).
 - **`omni-language-space.hbp`** — exact conversational-language-space (word = glyph-tuple; sentence = ordered
   verb×noun…; conversation = many words; 17 engine-languages, any order).
+- **`recall-portal-bilateral-findings-2026-06-23.hbp`** — cold HBP mirror of the Recall + Atlas bilateral
+  measurements: Acer Rust `recall-serve` (`MEASURED_ACER`, 591,286 rows, 1.47 ms median, 1,336 q/s) and
+  Liris local Node `serve-recall.cjs` (`MEASURED_LIRIS_LOCAL`, 10,644 rows, 3.65-4.82 ms median, 205 q/s),
+  with L0 PII probes returning zero on both seats. No corpus, key, or JSON dump is published.
 
 ## What the proofs establish (vs physical limits)
 
