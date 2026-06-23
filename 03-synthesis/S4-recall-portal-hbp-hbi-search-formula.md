@@ -89,6 +89,25 @@ Acer Rust: 591,286 rows, 1.47 ms median, 1,336 q/s
 Liris Node: 10,644 rows, 3.65-4.82 ms median, 205 q/s
 ```
 
+Acer million-call stress receipt, Rust test portal:
+
+```text
+endpoint shape: :4796 public L0 query mix
+total: 1,000,000
+ok/503/fail: 1,000,000 / 0 / 0
+concurrency: 56
+keep-alive: off (connection: close; fresh TCP per request)
+elapsed: 739.3 s
+throughput: 1,353 q/s
+latency: median 41.35 ms, p95 49.98 ms, p99 59.88 ms, p99.9 93.29 ms
+mean: 41.39 ms
+```
+
+That stress receipt proves robustness under one million calls, not a slowdown in search
+compute. By Little's Law, 56 clients / 1,353 q/s = 41.4 ms, matching the observed median.
+The queue is at the connection/transport door; warm Rust search compute remains about
+1.47 ms.
+
 Liris million-call stress receipt, same local portal:
 
 ```text
@@ -108,6 +127,17 @@ repo_written=0
 That stress receipt is scoped differently from the 200-sample latency table: it uses
 `limit=1`, keep-alive, and 64 concurrent clients to test sustained portal throughput, not
 full-result browsing ergonomics.
+
+Transport finding:
+
+```text
+Acer Rust million: connection-close -> 1,353 q/s, median 41.35 ms
+Liris local million: keep-alive -> 2,928.82 q/s, median 19.65 ms
+```
+
+The measured engineering lever is persistent connections/keep-alive. The migration action
+is additive: implement it on the Rust test port, re-measure, publish another cold receipt,
+and keep the old serving system live until bilateral review gates a swap.
 
 The old system stays alive while the new Rust/Host8 path is measured. Cutover remains
 gated by robustness/parity and bilateral review.

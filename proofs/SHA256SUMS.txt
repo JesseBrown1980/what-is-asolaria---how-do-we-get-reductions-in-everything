@@ -4,4 +4,4 @@ d1629096bd1788fda09107e0bcfaaf6d69b55d29fc14d2e450b110fad5df55e4 *cosign-chain-i
 d4bfc81d9fd2f006f8fbba8c1f94a405d5e23283c908315b93adc29d2e759d81 *waterfall-code-acer-attack.hbp
 e726648d19b06fd1633e401c419b31311bbd581d4b96151a244fe4efe89539d1 *waterfall-final-cross-vantage-green.hbp
 04ee5ae94763bfb87502b546294efa6c6d85866310f8af87034577e5f90c8c2e *waterfall-math-acer-verify.hbp
-740e2207badfd3e7ca7c14181cdf3c02e95017a5ab6938cdb598b387dbe8271d *recall-portal-bilateral-findings-2026-06-23.hbp
+04a2b7c5a1c09b6609c1e8228048f6b831fa0a51f46c39786178fbff5fcdda2a *recall-portal-bilateral-findings-2026-06-23.hbp
