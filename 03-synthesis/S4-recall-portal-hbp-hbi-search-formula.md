@@ -108,6 +108,27 @@ compute. By Little's Law, 56 clients / 1,353 q/s = 41.4 ms, matching the observe
 The queue is at the connection/transport door; warm Rust search compute remains about
 1.47 ms.
 
+Acer keep-alive + `json=0` tuple-text upgrade, Rust test portal:
+
+```text
+engine commit: PR #8 head 4395d7f
+endpoint: /api/public/search.hbp
+format: HILBRA* tuple text, json=0
+total: 1,000,000
+ok/503/fail: 1,000,000 / 0 / 0
+concurrency: 64
+keep-alive: on
+elapsed: 237.0 s
+throughput: 4,220 q/s
+latency: median 14.43 ms, p95 20.57 ms, p99 27.12 ms, p99.9 46.13 ms
+max: 180.25 ms
+JSON responses: 0
+```
+
+This is the same Rust migration cell after the measured lever was applied. The dashboard now
+reads tuple text too: pixels-first over `HILBRAHEALTH` / `HILBRAIDX` / `HILBRASEARCH` /
+`HILBRAMATCH`, not browser JSON. It remains additive; the old serving system stays live.
+
 Liris million-call stress receipt, same local portal:
 
 ```text
@@ -133,11 +154,13 @@ Transport finding:
 ```text
 Acer Rust million: connection-close -> 1,353 q/s, median 41.35 ms
 Liris local million: keep-alive -> 2,928.82 q/s, median 19.65 ms
+Acer Rust upgraded: keep-alive + tuple-text -> 4,220 q/s, median 14.43 ms
 ```
 
-The measured engineering lever is persistent connections/keep-alive. The migration action
-is additive: implement it on the Rust test port, re-measure, publish another cold receipt,
-and keep the old serving system live until bilateral review gates a swap.
+The measured engineering lever is persistent connections plus tuple-text on the wire. Acer's
+Rust now beats Liris Node keep-alive while serving about 55x the corpus. The migration action
+remains additive: publish the cold receipt, cross-verify bilaterally, and keep the old
+serving system live until review gates a swap.
 
 The old system stays alive while the new Rust/Host8 path is measured. Cutover remains
 gated by robustness/parity and bilateral review.
