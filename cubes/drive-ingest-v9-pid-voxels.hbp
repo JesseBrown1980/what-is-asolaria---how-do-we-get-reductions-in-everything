@@ -1,0 +1,8 @@
+INGESTHDR|proof=GOOGLE-DRIVE-TO-CUBE-INGEST|form=hbp-tuple|source=claude.ai-Drive-MCP(existing,no-gcloud,no-key)|drive_id=1JnLfA7zImPHL_g7CcOzRYcOQC2LyC_nc|title=v9-pid-voxels-2026-05-22.txt|owner=plasmatoid@gmail.com|held_safe=read-only+referential+no-provider-call|json=0
+INGESTSLICE|raw_bytes=4354|sha256_16=b47153b8c3d2f771|tokens=323|distinct_content_terms=104|json=0
+INGESTCUBE|cube10=b47153b8c3d2f771baac|host_handle8=b47153b8c3d2f771|quant8=137,123,158,135,119,133,81,129|schema=asolaria.drive_ingest.cube.v1|descriptor_only=1|json=0
+INGESTREDUCTION|raw_bytes=4354|host_handle=8B|cube_glyph=10B|raw->handle=544x|raw->cube=435x|note=referential-content-address-not-lossless|json=0
+INGESTCATALOG|kind=verb-noun-glyph-vocabulary|distinct_terms=104|sample_top10=pid-voxel:32:g957b722a token:32:g3c469e9d glyph:32:gfd1890af cube:16:g4f3c4172 wave:16:g4b125ec9 cube_anchor_47d:16:g26067d15 cube_xyz:16:g70d1b21f sha_full_8:15:g04b7eaef d32_structural_invariant:4:gce26c1ab d35_hyperlanguage:4:g709f7dbb|each_term=glyph-tuple-addressable|json=0
+INGESTLINEAGE|path=drive-doc->slice->tuple/HBP->quant8->cube10->verb-noun-glyph-catalog|maps_into=existing-BEHCS-cubes+index-language-catalogs|new_infra_required=NONE-beyond-this-ingestor|json=0
+INGESTBOUNDARY|raw_content_published=0|provider_calls=0|device_mutation=local-receipt-only|cycle=CLOUD-CYCLE-002|json=0
+INGESTFTR|sha256=828a13ed31263bb087901742ff762ed100737d86ad1fa94a0924112ec03da715|rows=7|verdict=INGEST-NOT-INTEGRATE|json=0

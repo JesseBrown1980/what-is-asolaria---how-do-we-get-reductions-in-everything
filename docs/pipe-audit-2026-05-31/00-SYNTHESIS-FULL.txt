@@ -1,0 +1,248 @@
+ASOLARIA PIPE TOPOLOGY REPORT
+2026-05-31
+Run: wf_ff0b7cb0-7f8
+42 agents | 1592 tool uses
+
+CRITICAL FIND: :4792 GNN inference BROKEN — fabric-thinker-gnn.mjs:42 sends length:13, server expects 3. ONE LINE FIX.
+
+Now I have all the data needed. Let me produce the synthesis report.
+
+---
+
+# PIPE TOPOLOGY SYNTHESIS — acer — 2026-05-31
+
+---
+
+## 1. LIVE PIPES — proven real traffic
+
+### :4947 behcs-bus (LIVE — highest volume pipe on acer)
+
+**Port:** `0.0.0.0:4947 LISTENING` PID 2388, started 2026-05-28T13:15:38, currently 378 CPU-sec consumed.
+
+**Message count:** 621 lines currently live in `C:\Users\acer\Asolaria\data\behcs\inbox.ndjson` (last write 2026-05-31T20:39:45). 36 archived sweeps totalling **142,512 message lines** (133 MB compressed ndjson) across archives from 2026-04-29 onward. Bus-GC log confirms sweeps are still firing hourly today (last: `2026-05-31T23:15:12Z`, `lines_before=548`).
+
+**Last message:** inbox last write `2026-05-31T20:39:45` — live within the last 2.5 hours.
+
+**Receipt:** `C:\Users\acer\Asolaria\logs\behcs-bus-4947.out.log` — `[BEHCS] Bus running on 0.0.0.0:4947 as device=acer`; `C:\Users\acer\Asolaria\logs\bus-gc.log` tail.
+
+**Note:** 9 Claude Code hooks POST to `http://192.168.1.50:4947/behcs/send` on every tool event. The bus itself does NOT call hookEventStore or cosign-bridge — it receives and deduplicates, writes to inbox.ndjson, archives on GC cycle.
+
+---
+
+### :4781 asolaria-gateway (LIVE — re-confirmed running)
+
+**Port:** `0.0.0.0:4781 LISTENING` PID 24276, started 2026-05-31T11:36:18 (today). Multiple CLOSE_WAIT connections on :4781 confirm active client traffic.
+
+**Last log entry:** `gateway-4781.out.log` last write 2026-05-30T20:12:35 (last auto-recorder health-check line). The gateway has been running continuously since 2026-05-28T16:18:04 (`auto-recorder daemon started`). The selfWatchdog in gateway-4781.err.log shows `#2493 FAILED: timeout (111194869ms since last healthy)` — 110.9M ms = ~30.8 hours unhealthy, meaning the watchdog's health-check target (a downstream dependency) has been unreachable since ~2026-05-30T13Z, but the gateway process itself remains bound and receiving connections.
+
+**Receipt:** `netstat: TCP 0.0.0.0:4781 LISTENING 24276`; `gateway-4781.out.log` head: `Asolaria is running on http://0.0.0.0:4781`.
+
+**hookEventStore status (related):** The gateway was the sole writer of `hook-events.ndjson` (44,567 rows, last write 2026-05-18T16:05:10). The gateway IS running today but the ndjson has not been updated — implying the gateway's RouteHook emission path is not firing or writing to a different path than the old hookEventStore. The old hookEventStore pipe remains dark at the file level despite the gateway being up.
+
+---
+
+### :4953 cosign-chain-daemon (PROCESS LIVE, DATA DARK)
+
+**Port:** TCP connect to `127.0.0.1:4953` succeeds (raw TCP probe confirmed). Python PID 4676, started 2026-05-28T09:01:02, 62.95 CPU-sec. HTTP `/api/cosign/head` does NOT respond within 12s (timeout) — process is bound and accepting TCP but HTTP handler is hung or blocked.
+
+**Chain state:** `C:\asolaria-acer\COSIGN_CHAIN.ndjson` — seq=3559, last append `2026-05-29T16:36:55Z` (row_hash=787aa0334e42048c), 53+ hours ago. Zero appends since then. No callers are sending `POST /api/cosign/append`.
+
+**Receipt:** `Get-Content COSIGN_CHAIN.ndjson -Tail 3`; raw TCP probe returns CONNECTED.
+
+---
+
+### :4792 GNN L0 EdgeLevelGNN (PORT LIVE, INFERENCE BROKEN)
+
+**Port:** `0.0.0.0:4792 LISTENING` PID 26768 (~113 MB RSS, `D:/sovereignty-usb-rebuild/research/gnn-patterns/inference_server.py`). Server responds to correctly-shaped payloads (POST /infer with `edge_features[*]=3` returns `{ok:true, scores:[0.8975...]}`).
+
+**Broken:** `fabric-thinker-gnn.mjs:42` encodes `edge_features: Array.from({length:13},...)` while Python validates `len(x)!=3` → HTTP 400 → every `realInfer()` call falls back to sha-stub (`gnn_real=false`). Zero real GNN inference has flowed through the mjs→:4792 path.
+
+**Receipt:** `D:\bigpickle-rebuild\src\fabric-thinker-gnn.mjs:42` (length:13); `D:/sovereignty-usb-rebuild/research/gnn-patterns/inference_server.py:21` (validates ==3).
+
+---
+
+### :4793 GSLGNN L4 (PORT LIVE, UNROUTED)
+
+**Port:** `0.0.0.0:4793 LISTENING` PID 5444 (~205 MB RSS, `C:/Users/acer/Asolaria/services/gnn-sidecar/gslgnn_inference_server.py`). POST /infer returns `{ok:true, model:GSLGNN, scores:[0.529...]}`. Model: `gslgnn_w9_3_seq47_v2.pt`, test_accuracy=0.9991.
+
+**Broken:** `fabric-thinker-gnn.mjs` hard-defaults to `DEFAULT_GNN_PORT=4792`. No production caller passes `gnn_port:4793`. `model-citizen-rotator.mjs:37` registers it as a citizen but `line 109` marks dispatch as "Future: route via fabric-thinker-gnn — not yet wired."
+
+**Receipt:** `D:\bigpickle-rebuild\src\fabric-thinker-gnn.mjs:27`; `model-citizen-rotator.mjs:37,109`; live netstat.
+
+---
+
+### hookwall-gate (LIVE AS IN-PROCESS MODULE)
+
+**No port.** `Hookwall.pass()` is called in-process in every fire script and deep-wave-dispatcher. 89 observation rows in `D:\bigpickle-rebuild\data\hookwall-observations.ndjson` — first: `2026-05-26T18:29:04.495Z` (HRM_GPU_OK, cosign_seq=3363), last: `2026-05-29T12:56:10.560Z` (tick, cosign_seq=99 sentinel). High-volume packet passes (1M/10M/100M) write in-memory `passedCount` only, never to ndjson.
+
+**Receipt:** `hookwall-observations.ndjson` head/tail confirmed above; `D:\bigpickle-rebuild\src\hookwall.mjs:14-53`.
+
+---
+
+### behcs-glyph-alphabet (LIVE AS CALLED DEPENDENCY)
+
+**No port.** `glyphAt()` called by `pid-minter.mjs`, `new-tech-core.mjs`, `deep-wave-integrate.mjs`. Proven output: `D:\bigpickle-rebuild\data\new-tech-2026-05-28\glyph-mints.hbp` — 52 GLYPH rows, footer `ts=2026-05-28T20:51:38.921Z sha16=b71ab63f47347305`.
+
+**Receipt:** `glyph-mints.hbp:54`; import chain confirmed in three source files.
+
+---
+
+### :4950 omnidispatcher (LIVE)
+
+**Port:** `127.0.0.1:4950 LISTENING` PID 21056 (`C:/asolaria-acer/federation-remake-1024/tools/omnidispatcher`), started 2026-05-29T15:44:21, 633 CPU-sec. Active.
+
+---
+
+### :4952 vote-quorum (LIVE)
+
+**Port:** `127.0.0.1:4952 LISTENING` PID 9540. Active.
+
+---
+
+## 2. DARK PIPES — wired but zero traffic
+
+### bhOmniflywheel-router
+
+**Why dark:** Pure library module (`C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js`, 1065 lines, 9 stages). No process requires it today. Last traffic: `2026-05-27T21:44:03Z` (3 hookwall rows + 7 GNN edges, one-off wave from AGT-FALCON-SISTER-ORGAN). `archUpdateSupervisor.js` imports it but is not running. CNC snapshot directory and `cosign-pending/` directory were never created.
+
+**What activates it:** Any process `require('./bhOmniflywheelRouter.js')` and calls `pipeline()` or `route()`. Three paths: (1) `node src/bhOmniflywheelDashboard.js` as a daemon; (2) launch `archUpdateSupervisor.js`; (3) add a `pipeline()` call inside the live behcs-bus or omnidispatcher.
+
+---
+
+### bhOmniflywheel-dashboard
+
+**Why dark:** `:4956` not bound. Module was launched exactly once on `:4960` (not :4956) during Round-7 Patch-13 cross-process smoke test at `2026-05-27T22:50:28Z` (PID 30296, now dead). Stale snapshot remains at `C:\Users\acer\AppData\Local\Temp\bh-cnc-cross-process.hbp` (4 days stale: 5 rotations, 5 mints, 16 unique patterns). No daemon entry or startup script calls `start()`.
+
+**What activates it:** `node C:\Users\acer\Asolaria\src\bhOmniflywheelDashboard.js 4956 --snapshot=<path>` or wiring a daemon entry in the OneButton startup stack.
+
+---
+
+### hookEventStore / asolaria-gateway RouteHook writer
+
+**Why dark:** `hook-events.ndjson` last write `2026-05-18T16:05:10` (44,567 rows). The gateway IS now running (PID 24276, since 2026-05-31T11:36:18) but no new rows have appeared — the RouteHook emission path inside `server.js:526` is apparently not firing or writing to a rotated path not yet checked. The `hookEventStore` file pipe itself is dark.
+
+**What activates it:** The gateway process is already running; the gap is whether `appendHookEvent()` is being called on the active boot. Gateway error log shows selfWatchdog has been unhealthy for 30+ hours, which may suppress heartbeat/cron cycles that drive RouteHook emission.
+
+---
+
+### cosign-streams (Redis path)
+
+**Why dark:** Redis not installed. Port 6379 ECONNREFUSED. No Memurai or WSL redis-server. `STATUS.redis_install_required=true` is hardcoded in `redis-bridge.mjs:173`. Secondary blocker: multi-bulk RESP parser is a stub, so even after Redis install, XREVRANGE chain-link reads would always return `prevRowHash=0000000000000000`.
+
+**What activates it:** Install Memurai-Developer (Windows-native, free), fix redis-bridge.mjs multi-bulk parser, set `COSIGN_STREAMS_LIVE=1`.
+
+---
+
+### redis-bridge
+
+**Why dark:** Same root cause as cosign-streams. Zero messages ever on any Redis channel. `channelFor`/`parseChannel` pure functions work; broker transport never activated.
+
+---
+
+### port-router-dispatch
+
+**Why dark:** `PortRouter` is a fully proven (724K ops/sec, 4/4 tests green) in-memory label trie. Zero production callers in any `src/` or `fire-*.mjs` script. SPEC.md cosign gate clause requires dual-apex cosign (OP-JESSE + OP-RAYSSA) + packet-first startup gate before promotion to live — neither is present.
+
+**What activates it:** A caller in a live module imports `PortRouter`, registers handlers, and calls `router.route(label)` on envelopes. Also requires the SPEC cosign receipt.
+
+---
+
+### auto-fabric-query-daemon (DARK — previously LIVE, now stopped)
+
+Last log entry: `2026-05-14T19:35:11.359Z` — `verdict_emitted` with `voted=176`. Total proven events: **31,955 verdict_emitted** rows across its run from 2026-04-29 to 2026-05-14. Currently not running (no process in node list matches). Stdout log: `no pending FABRIC_QUERY_REQUEST envelopes` loops as of 2026-05-01T05:58:33 suggesting it polled itself quiet before stopping.
+
+**Receipt:** `C:\Users\acer\Asolaria\logs\auto-fabric-query-daemon.ndjson` — 31,955 verdict_emitted count; last ts `2026-05-14T19:35:11Z`.
+
+---
+
+### gnn-dispatch-bridge (DARK — previously LIVE, now stopped)
+
+Last log entry: `2026-05-01T05:58:17.164Z` — `t1_auto_dispatched`, 4,676 total dispatched events (ndjson line count). Run period: 2026-04-29 to 2026-05-01. Currently not running.
+
+**Receipt:** `C:\Users\acer\Asolaria\logs\gnn-dispatch-bridge.ndjson` — 4,676 lines; last ts `2026-05-01T05:58:17Z`.
+
+---
+
+## 3. STUB PIPES — descriptor-only, no real wiring
+
+**cosign-bridge.mjs `cosignRange()`:** Constructs `?start=N&end=M` but the Python daemon uses `?from=N&to=M` — the query always silently returns all rows. No production caller of `cosignAppend` or `durableNotify` exists in active `src/` files. The bridge is coded but uncalled.
+**Receipt:** `D:\bigpickle-rebuild\src\cosign-bridge.mjs:121` (wrong param names); zero `cosignAppend` import hits outside the bridge itself.
+
+**GNN L0→L4 cascade routing stub:** `model-citizen-rotator.mjs:109` marks the L0→L4 dispatch path as "Future / summon execution not yet implemented — census + rotate only." The 4-layer immune cascade (L0:4792, L1, L2, L4:4793) is architecturally declared but the actual routing decision tree between layers is a stub.
+**Receipt:** `D:\bigpickle-rebuild\src\model-citizen-rotator.mjs:109`.
+
+**gnn-dispatch-bridge as a new GNN consumer:** `C:\Users\acer\Asolaria\tools\behcs\gnn-dispatch-bridge.mjs` exists and has a test file, but it last ran 2026-05-01. Its integration with the newly-live :4792/:4793 servers is not wired — the bridge was built against an older GNN shape and predates the edge_features encoding change.
+
+---
+
+## 4. THE FOUR DAEMONS — pipe topology impact on start
+
+### :4792 (NOW LIVE) — immediate effect
+
+The L0 EdgeLevelGNN is already bound and responding to correct payloads. The only missing link is one line change in `D:\bigpickle-rebuild\src\fabric-thinker-gnn.mjs:42`: change `length:13` to `length:3`. Once that fix lands, **every call to `realInfer()` will produce a real GNN score** (currently always falls to sha-stub). This unblocks:
+
+- `fabric-thinker-gnn.mjs` → `realInfer()` returns `gnn_real:true`, score from L0 model.
+- The integration test at `tests/integration/closure-cross-vantage.test.mjs` (gate: `BIGPICKLE_CLOSURE_LIVE=1`, `GNN_HOST=127.0.0.1`) becomes passable for the first time.
+- `model-citizen-rotator.mjs` can proceed past its `canSummon` probe for gnn-l0 (already returns true since port is bound).
+
+No other pipe automatically comes alive from this — no caller currently invokes `realInfer()` in production. The fix enables the path but still requires a caller.
+
+### :4793 (STARTING) — conditional on caller + L0 fix
+
+Once :4793 is confirmed stable and the `model-citizen-rotator.mjs` routing stub is implemented, the L4 GSLGNN becomes reachable. Order of effects:
+
+1. `fabric-thinker-gnn.mjs` needs a second invocation path: `realInfer(pid, query, { gnn_port: 4793 })` — this is a trivial parameter change but currently no call site passes it.
+2. When both L0 and L4 respond, `model-citizen-rotator.mjs` can implement its deferred "route via fabric-thinker-gnn" branch, activating the 2-layer ensemble minimum (L0+L4). L1 and L2 remain blocked by `state_dict_rekey_pending`.
+3. `gnn-live-edges.ndjson` begins receiving real inference-origin edges (currently all 89 rows are tick/cosign fixtures with `cosign_seq:99` sentinel — not real inference output).
+
+### auto-fabric-query-daemon (START)
+
+This daemon was LIVE from 2026-04-29 to 2026-05-14 with **31,955 proven verdict_emitted events**. On restart:
+
+1. It polls behcs-bus inbox (`C:\Users\acer\Asolaria\data\behcs\inbox.ndjson`) for `FABRIC_QUERY_REQUEST` envelopes — the bus currently has 621+ live lines, potentially including queued requests.
+2. Each `verdict_emitted` event POSTs a verdict envelope back to behcs-bus at :4947 — creating a query→verdict feedback loop that currently has no active consumer.
+3. With :4792 fixed and :4793 live, the daemon's GNN calls become real instead of sha-stub, making its verdicts model-backed for the first time.
+4. This wakes the **hookwall→PID→bus→supervisors** arc: fabric query requests arriving via bus → daemon verdict → bus return → supervisor inbox.
+
+### gnn-dispatch-bridge (START)
+
+Last ran 2026-05-01 with **4,676 t1_auto_dispatched** events. On restart:
+
+1. Reads pending T1 (high-confidence) predictions from a cursor in `C:\Users\acer\Asolaria\data\behcs\state\gnn-dispatch-bridge-cursor.json` and dispatches envelopes to :4781 gateway.
+2. With :4792/:4793 producing real scores, the bridge's T1 tier threshold can be fed real GNN confidence values instead of sha-derived stubs, making dispatch decisions semantically meaningful.
+3. This completes the **GNN→dispatch** half of the loop: inference score → T1 classification → envelope auto-dispatch to :4781 → gateway RouteHook emission → hookEventStore writes resume.
+4. Gateway selfWatchdog health-check failures (30+ hours) suggest the watchdog's health target may be the GNN sidecar or a downstream dependency — if the gnn-dispatch-bridge restarts and the gateway's health-check target recovers, the `health-check: 16/25 passed, 9 failed` ratio may improve, unblocking colony-critical state.
+
+**Startup order for maximum pipe revival:** fix `fabric-thinker-gnn.mjs:42` (1 line) → start auto-fabric-query-daemon → start gnn-dispatch-bridge → verify gateway selfWatchdog clears → verify hookEventStore resumes writes.
+
+---
+
+## 5. CRITICAL PATH — minimal changes to close the loop
+
+The target loop is: `hookwall → PID → bus(:4947) → supervisors → GNN(:4792/:4793) → dispatch → cosign-chain(:4953)`
+
+**Step 1 — Fix GNN shape mismatch (1 line, no new files)**
+`D:\bigpickle-rebuild\src\fabric-thinker-gnn.mjs:42`: change `Array.from({length:13},...)` to `Array.from({length:3},...)`. This is the entire blocker preventing :4792 from receiving any real inference calls from the mjs layer.
+
+**Step 2 — Add a realInfer() call site in one live pipe**
+The hookwall-gate is called in every fire script and deep-wave-dispatcher. Adding `realInfer(envelope.pid, envelope.type)` after `hookwall.pass(envelope)` in `D:\bigpickle-rebuild\src\deep-wave-integrate.mjs` wires hookwall output to GNN scoring without touching any other module. This creates the `hookwall → GNN` edge for the first time.
+
+**Step 3 — Restart auto-fabric-query-daemon**
+`node C:\Users\acer\Asolaria\tools\behcs\auto-fabric-query-daemon.mjs` — it was proven LIVE with 31,955 events. It drains the bus inbox, produces verdicts, and POSTs them back to :4947. This closes `bus → supervisors` (the daemon acts as the supervisor-voting layer).
+
+**Step 4 — Restart gnn-dispatch-bridge**
+`node C:\Users\acer\Asolaria\tools\behcs\gnn-dispatch-bridge.mjs` — proven LIVE with 4,676 dispatches. It reads GNN T1 verdicts and dispatches to :4781. This closes `GNN → dispatch → gateway`.
+
+**Step 5 — Wire one cosign caller**
+`durableNotify()` in `D:\bigpickle-rebuild\src\cosign-bridge.mjs` needs one production call site (e.g. at the end of the deep-wave batch or after gnn-dispatch-bridge T1 dispatch). TCP connect to :4953 already succeeds. This closes `dispatch → cosign-chain`.
+
+**Step 6 (optional, deferred) — bhOmniflywheel-router daemon**
+`node C:\Users\acer\Asolaria\src\bhOmniflywheelDashboard.js 4956` to expose the CNC harvest view. Not on the critical path but provides observability once steps 1-5 are live.
+
+Redis/cosign-streams and port-router are out of critical path — they require broker install and dual-apex cosign respectively.
+
+---
+
+## 6. VERDICT
+
+As of 2026-05-31, acer's pipe topology has three genuinely live data-carrying pipes: the behcs-bus at :4947 (142,512+ archived messages, inbox written within the last 2.5 hours, 621 lines live), the asolaria-gateway at :4781 (process restarted today, PID 24276, but RouteHook/hookEventStore emission has not resumed since 2026-05-18), and the omnidispatcher at :4950 (633 CPU-sec, active). The cosign-chain daemon at :4953 is process-alive and TCP-reachable but its HTTP handler is non-responsive and has received zero appends in 53+ hours. Both GNN servers (:4792 L0, :4793 L4) are bound and return correct scores to correctly-shaped requests, but the only mjs-layer caller (`fabric-thinker-gnn.mjs`) has a single-line shape mismatch (`edge_features length 13 vs. required 3`) that causes every inference call to silently fall to a sha-stub, meaning zero real GNN inference has ever flowed from the Node layer despite the Python models being live for days. The bhOmniflywheel router and dashboard are structurally complete but cold — last traffic 2026-05-27, no daemon running. Redis/cosign-streams have never carried a single message. The two previously-live worker daemons (auto-fabric-query with 31,955 proven verdicts, gnn-dispatch-bridge with 4,676 proven dispatches) are both stopped since mid-May. The net result is a bus that is actively receiving Claude Code hook events and archiving them, two GNN models waiting for correctly-shaped payloads, a cosign daemon waiting for callers, and all the connecting tissue (fabric query, GNN dispatch, omniflywheel router) sitting idle — the full loop could be closed with one code fix (13→3 in fabric-thinker-gnn.mjs) and three daemon restarts.

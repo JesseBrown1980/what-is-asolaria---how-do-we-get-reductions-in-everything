@@ -1,0 +1,50 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: hookEventStore
+Kind: bus
+Node: acer
+LIVE: false | Port: 4791=DOWN (gateway not running); 4947=LIVE (behcs-bus, unrelated writer)
+Last message: {"at":"05/18/2026 16:05:10","eventType":"RouteHook","sourceApp":"asolaria-gateway","sessionId":"gateway:gateway_cron"}
+Message count: 44567 total lines in C:\\Users\\acer\\Asolaria\\data\\hook-events.ndjson; last event 2026-05-18T16:05:10 RouteHook from asolaria-gateway
+D11: The file has 44,567 events proving the pipe was LIVE for ~65 days (2026-03-14 to 2026-05-18). The dominant writer was asolaria-gateway emitting RouteHook events every 5 minutes (26,191 total). The pipe went DARK on 2026-05-18 when the gateway process stopped. The gateway is the single missing link: port 4791 is not bound and no gateway process is running as of 2026-05-31.
+One-line: DARK — pipe was live until 2026-05-18T16:05:10 (13.3 days ago); 44,567 events accumulated; gateway (sole appender, port 4791) is down and not running
+
+--- REAL FINDINGS ---
+
+* ndjson file exists and contains 44,567 events spanning 2026-03-14 to 2026-05-18
+  RECEIPT: C:\Users\acer\Asolaria\data\hook-events.ndjson — 166,964,663 bytes, LastWriteTime 2026-05-18 13:05:10, 44567 lines confirmed by PowerShell ReadAllLines
+
+* Event type distribution: RouteHook=26191, PreToolUse=7752, PostToolUse=6970, UserPromptSubmit=995, PermissionRequest=780, Stop=601, Notification=519, PostToolUseFailure=417, SubagentStart=138, SubagentStop=129, SessionStart=56, SessionEnd=4, PreCompact=3, Unknown=12
+  RECEIPT: PowerShell full-scan of hook-events.ndjson lines 1-44567
+
+* Last 5 events are all RouteHook from asolaria-gateway (gateway_heartbeat + gateway_cron), last timestamp 2026-05-18T16:05:10. File has not been written in 13.3 days (318 hours) as of 2026-05-31
+  RECEIPT: C:\Users\acer\Asolaria\data\hook-events.ndjson tail — last line: {at:'05/18/2026 16:05:10', eventType:'RouteHook', sourceApp:'asolaria-gateway', sessionId:'gateway:gateway_cron'}
+
+* The gateway server (src/gateway/server.js) is the ONLY component that calls appendHookEvent directly. It emits RouteHook events on every heartbeat/cron cycle. The gateway listens on port 4791 (config default). Port 4791 is NOT bound — gateway process is DOWN.
+  RECEIPT: C:\Users\acer\Asolaria\src\gateway\server.js line 10 (require hookEventStore), line 526 (appendHookEvent call), line 4791 port config. netstat confirms: 'PORT 4791: NOT BOUND'
+
+* Claude Code hooks (settings.json) fire 9 hookwall-handlers (posttooluse.mjs, session-start.mjs, etc.) which POST to http://192.168.1.50:4947/behcs/send — they go to the BEHCS bus (behcs-bus.js PID 2388, :4947 LIVE), NOT to hookEventStore.js directly
+  RECEIPT: C:\Users\acer\.claude\settings.json (hooks section), C:\tmp\hookwall-handlers\posttooluse.mjs line 21, C:\tmp\hookwall-handlers\session-start.mjs line 21 — all spawnSync curl to :4947/behcs/send
+
+* behcs-bus.js (PID 2388, bound to :4947, LIVE since 2026-05-28) does NOT import or call hookEventStore — confirmed by grep showing zero matches in that file
+  RECEIPT: C:\Users\acer\Asolaria\tools\behcs\behcs-bus.js — 1533 lines, no hookEventStore reference. netstat :4947 LISTENING PID=2388
+
+* omnispindle.js and skillsToolsIndexStore.js import hookEventStore (appendHookEvent and getHookEventStats respectively), but neither is the primary write path for live traffic
+  RECEIPT: C:\Users\acer\Asolaria\src\omnispindle.js grep match line ~1; C:\Users\acer\Asolaria\src\skillsToolsIndexStore.js — getHookEventStats import only
+
+* The hookEventStore resolves its ndjson path via resolveDataPath('hook-events.ndjson'), which joins the project root /data/ directory, defaulting to C:\Users\acer\Asolaria\data\hook-events.ndjson when ASOLARIA_INSTANCE_ROOT is unset
+  RECEIPT: C:\Users\acer\Asolaria\src\runtimePaths.js lines 4-19; C:\Users\acer\Asolaria\src\hookEventStore.js line 7
+
+--- HONEST GAPS ---
+
+* Cannot confirm whether omnispindle.js is currently running and calling appendHookEvent — no omnispindle process check was performed
+  SEVERITY: low
+
+* The BEHCS bus (:4947) receives hook events from Claude Code handlers but no code path from behcs-bus.js to hookEventStore was found — if such a forwarding path exists inside behcs-bus.js it was not read (1533-line file not fully inspected)
+  SEVERITY: medium
+
+* hooksConnector.js (ingestHookEvent) is the richer ingestion path with session side-effects but no caller was identified in this audit — it may be invoked by a running HTTP server not checked
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+Start the asolaria-gateway process: node C:/Users/acer/Asolaria/src/gateway/server.js (or equivalent launcher). Gateway listens on port 4791 by default (config key gateway.port). On boot it immediately begins emitting RouteHook events via appendHookEvent every heartbeat/cron cycle (~5 min interval based on historical event spacing). Claude Code hook events (PreToolUse, PostToolUse, SessionStart etc.) would also flow if the behcs-bus (:4947) were wired to forward received hook payloads into hooksConnector.ingestHookEvent, but that forwarding path is not currently implemented in behcs-bus.js.

@@ -1,0 +1,5 @@
+LANE|schema=ASOLARIA-NOTEBOOKLM-CURATE-LANE-V1|pid=8351e0ee9f8c3659|anchor=NOTEBOOKLM-CURATE-LANE|mode=ingest+operator-gated-upload|backup_root_env=NLM_BACKUP_ROOT|receipt_out_env=NLM_RECEIPT_OUT|json=0
+LANESTEP|lane_pid=8351e0ee9f8c3659|step=1|name=operator_login_upstream|effect=cookie_materialization_outside_repo|gate=operator_browser_auth|json=0
+LANESTEP|lane_pid=8351e0ee9f8c3659|step=2|name=upstream_backup|effect=local_backup_tree_only|gate=read_only|json=0
+LANESTEP|lane_pid=8351e0ee9f8c3659|step=3|name=receipt_and_glyph_cube|effect=hbp_rows+nlmcube+nlmglyph|gate=read_only|json=0
+LANESTEP|lane_pid=8351e0ee9f8c3659|step=4|name=optional_upload|effect=reverse_fabric_write_to_notebooklm|gate=operator_only|json=0

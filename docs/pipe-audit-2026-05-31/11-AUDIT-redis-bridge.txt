@@ -1,0 +1,56 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: redis-bridge
+Kind: redis
+Node: both (acer pub-side implemented; liris sub-side implied by bilateral channel namespace but no subscriber code exists in redis-bridge.mjs)
+LIVE: false | Port: 6379:DARK — ECONNREFUSED, no service registered
+Last message: N/A — pipe has never carried traffic; most-recent hookwall row (unrelated path) ts=2026-05-29T12:56:10.560Z
+Message count: 0 — no Redis broker, no messages routed through this pipe; 89 hookwall-observation rows exist but were written by the local hookwall pipeline, not via Redis pub/sub
+D11: DARK
+One-line: Redis broker is not installed (port 6379 ECONNREFUSED, no Redis/Memurai service); the RedisBridge class is fully coded but zero messages have ever flowed through it — the pipe is DARK.
+
+--- REAL FINDINGS ---
+
+* Source file exists and is a complete RESP implementation: RedisBridge class with connect/auth/publish/ping/close, plus channelFor/parseChannel helpers and a frozen STATUS object.
+  RECEIPT: D:\bigpickle-rebuild\src\redis-bridge.mjs:66-182
+
+* STATUS.redis_install_required === true is hardcoded in the file itself — the author flagged this pipe as needing a Redis server install before it can carry traffic.
+  RECEIPT: D:\bigpickle-rebuild\src\redis-bridge.mjs:172-182 (STATUS object, line 173)
+
+* Port 6379 is ECONNREFUSED — no Redis/Memurai process is listening. Node TCP probe returned ECONNREFUSED immediately.
+  RECEIPT: Live probe: node net.connect({host:'127.0.0.1',port:6379}) → ECONNREFUSED
+
+* No Redis or Memurai Windows service exists. sc query 'Redis' and sc query 'Memurai' both returned error 1060 (service not installed).
+  RECEIPT: sc query Redis → error 1060; sc query Memurai → error 1060
+
+* cosign-streams.mjs imports RedisBridge and calls connect() + XADD/XREVRANGE — it is the primary caller. It wraps a shared singleton _sharedRedis and reads OMNI_BILATERAL_TOKEN from env.
+  RECEIPT: D:\bigpickle-rebuild\src\cosign-streams.mjs:32,59-73
+
+* cosign-bridge.mjs references RedisBridge in a usage comment and exports durableNotify() which accepts a redisBridge instance — it is a secondary caller/consumer of the bridge.
+  RECEIPT: D:\bigpickle-rebuild\src\cosign-bridge.mjs:2,150,153
+
+* All live broker tests in redis-bridge.test.mjs are gated on env var OMNI_REDIS_TEST=1 (lines 88,93,106). The static/pure tests (channelFor, parseChannel, constructor, close, STATUS) pass without a broker and confirm the schema is 'redis-bridge-skeleton.v1'.
+  RECEIPT: D:\bigpickle-rebuild\tests\redis-bridge.test.mjs:88-114
+
+* hookwall-observations.ndjson has 89 real rows (cosign_seq 3363-3367 range plus later heartbeat ticks), but these were produced by the hookwall/universal-route pipeline — NOT by the redis-bridge pub/sub path. The channel names follow omni-asolaria/<vantage>/<verb>/<sector> schema that redis-bridge defines, but they were written locally by hookwall, not relayed through Redis.
+  RECEIPT: D:\bigpickle-rebuild\data\hookwall-observations.ndjson:1-89 (last ts 2026-05-29T12:56:10.560Z)
+
+* gnn-live-edges.ndjson also has 89 rows with matching timestamps, confirming the dual-emit pipeline is active locally — again not routed through Redis.
+  RECEIPT: D:\bigpickle-rebuild\data\gnn-live-edges.ndjson:84-89
+
+* No .env file exists in the project. OMNI_REDIS_TEST, OMNI_REDIS_HOST, OMNI_REDIS_PORT, OMNI_BILATERAL_TOKEN are all absent from disk.
+  RECEIPT: Glob **/*.env* in D:\bigpickle-rebuild → no files found; package.json has no redis dependency
+
+--- HONEST GAPS ---
+
+* No subscriber-side SUBSCRIBE/PSUBSCRIBE logic exists in redis-bridge.mjs — only PUBLISH and sendCommand are implemented. The _handleData method has a placeholder comment for 3-element array subscribe messages but does not parse them. The pipe is pub-only on the Node side; sub-listeners are absent.
+  SEVERITY: HIGH — the From->To spec says pub-channels -> sub-listeners, but sub-listeners are not implemented in this file
+
+* multi-bulk/array RESP replies are not parsed — _handleData only handles +, -, :, $ RESP types. XREVRANGE replies (nested arrays) fall back to regex in cosign-streams.mjs line 207, explicitly flagged as a deferred honest gap.
+  SEVERITY: MEDIUM — limits usability of cosign-streams XREVRANGE reads
+
+* No message count is findable for the redis channel path — the ndjson stores prove local hookwall traffic only, not Redis relay traffic. Zero messages have ever passed through the Redis broker because the broker has never been installed.
+  SEVERITY: INFO — confirmed DARK, not a code bug
+
+--- WOULD ACTIVATE IF ---
+1. Install Redis-compatible broker on acer: Memurai-Developer (Windows-native, free) or enable Redis via WSL2 apt. Default port 6379, no config changes needed for no-auth mode. 2. Optionally set OMNI_BILATERAL_TOKEN env var for bilateral bearer auth (same value on acer and liris). 3. Run live smoke test: OMNI_REDIS_TEST=1 node --test tests/redis-bridge.test.mjs — the two LIVE-gated tests will exercise connect+ping and publish. 4. For cosign-streams activation: call cosignAppend() with a live RedisBridge passed via opts.redis — it will XADD to stream key 'asolaria:cosign:chain'. 5. Sub-listener side requires implementing SUBSCRIBE/PSUBSCRIBE parsing in _handleData (currently a stub) before any consumer can receive messages."

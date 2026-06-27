@@ -1,0 +1,50 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: era-boundaries-canon
+Kind: pipe
+Node: acer
+LIVE: false | Port: :4956=DARK (not bound); :4781=LIVE; :4949=LIVE — neither runs bhOmniflywheelRouter directly
+Last message: GNN-EDGE|src=AGT-FALCON-SISTER-ORGAN-W155-P03-N00016|dst=citizen:liris|w=3|era=new-asolaria|ts=2026-05-27T21:44:03.847Z (mtime 2026-05-27T18:44:03.851Z local)
+Message count: 10 total (3 hookwall rows + 7 GNN edge rows), all from 2026-05-27T18:44Z test run; 0 since then
+D11: ERA_BOUNDARIES is a static in-module constant (SYSTEM_UPGRADE_TS + POMPEII_TS) that classifyEra() reads on every route() call. The constant is not loaded from any file or external config — it is burned into bhOmniflywheelRouter.js at lines 16-19. The pipe is FROM: any caller invoking route()/pipeline() TO: tagged envelope output + hookwall.ndjson + gnn-edges.ndjson append. Last confirmed traffic: 2026-05-27T18:44:03Z (10 rows total across 2 files). No traffic since. The module is required by bhOmniflywheelDashboard.js and archUpdateSupervisor.js but neither is confirmed to be currently running.
+One-line: DARK — pipe logic is sound, last real traffic was 2026-05-27 (3 hookwall rows + 7 GNN rows), :4956 dashboard is unbound, no CNC snapshot file exists, and ERA_MIDPOINTS['new-asolaria'] is stale.
+
+--- REAL FINDINGS ---
+
+* ERA_BOUNDARIES constant is defined at module level: SYSTEM_UPGRADE_TS='2026-05-22T00:00:00.000Z', POMPEII_TS='2026-05-24T20:43:43.000Z'. classifyEra() returns 'old-asolaria' / 'transition-asolaria' / 'new-asolaria' based on envelope ts field.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js:13-26
+
+* ERA_BOUNDARIES is exported and exposed via status() → era_boundaries field. The only callers that require the router are: bhOmniflywheelDashboard.js, archUpdateSupervisor.js, omniflywheelCoupling.js, omnispindle.js, and test files. Neither server.js nor any live daemon (4781, 4949, 4950) requires it directly.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js:213 + grep result showing 5 require() callsites
+
+* hookwall ndjson has exactly 3 rows, all dated 2026-05-27T18:44:03Z (4 days ago). All 3 belong to the same caller_pid AGT-FALCON-SISTER-ORGAN-W155-P03-N00016, target citizen:liris, era=new-asolaria. File not written since.
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-hookwall.ndjson — mtime 2026-05-27T18:44:03.848Z
+
+* GNN edges ndjson has 7 rows: 4 from 2026-05-27T21:36:25Z (AGT-VECTOR-HAPPY) and 3 from 2026-05-27T21:44:03Z (AGT-FALCON-SISTER-ORGAN). Last write 2026-05-27T18:44:03.851Z. No writes since.
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-gnn-edges.ndjson — mtime 2026-05-27T18:44:03.851Z
+
+* Port :4956 (bh-omniflywheel-dashboard) is NOT bound. No LISTEN entry in netstat output. Dashboard is not running.
+  RECEIPT: netstat -an output — 4956 absent; :4781 and :4949 LISTENING
+
+* cosign-pending directory is empty (no .hbp files). cncCosignEmit() has never fired against a live pending-pickup daemon.
+  RECEIPT: ls C:/Users/acer/Asolaria/data/cosign-pending/ returned no output
+
+* ERA_MIDPOINTS has 'new-asolaria'='2026-05-25T00:00:00.000Z' which is known-stale per round-5 patch comments (//Fix L8 class-1). ERA_MIDPOINTS['new-asolaria'] should be updated to a post-2026-05-31 midpoint as new-asolaria is the current live era and all incoming envelopes will rebase to that stale date when translateLayers L6-era-rebase fires.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js:393-397 — comment 'ERA_MIDPOINTS["new-asolaria"]="2026-05-25" now stale'
+
+--- HONEST GAPS ---
+
+* No log file records route() or pipeline() calls from any live production daemon. The only traffic evidence is 3+7 rows from a test run on 2026-05-27. Cannot confirm the module was ever hot-loaded by the running :4781/:4949 server.
+  SEVERITY: high
+
+* Dashboard (:4956) has no LIVE port binding and no snapshot file configured, so ERA_BOUNDARIES is never surfaced over HTTP in the current process state. Even if it were started, live-mode shows per-process zeros unless opts.snapshotPath is set.
+  SEVERITY: high
+
+* ERA_MIDPOINTS['new-asolaria']='2026-05-25T00:00:00.000Z' is acknowledged stale in source comments but not updated. Any L6-era-rebase translate call for 'new-asolaria' rebases to 6 days ago, causing downstream TTL failures if the translated envelope re-enters the filter stage.
+  SEVERITY: medium
+
+* No CNC snapshot file exists at the default path (data/bh-omniflywheel-gnn-edges/cnc-snapshot) or any configured path. registerCncSnapshotEmit() was never called from a live daemon, so cross-process state bridging is wired but inert.
+  SEVERITY: medium
+
+--- WOULD ACTIVATE IF ---
+Start bhOmniflywheelDashboard.js as a daemon (node src/bhOmniflywheelDashboard.js 4956 --snapshot=data/bh-cnc-snapshot.hbp) AND register a live caller that invokes pipeline() or route() on incoming envelopes — either via archUpdateSupervisor.js being loaded by server.js, or via omniflywheelCoupling.js being activated. Additionally, registerCncSnapshotEmit() must be called so the cross-process snapshot file is written on a 30s cadence, and ERA_MIDPOINTS['new-asolaria'] must be advanced past today (2026-05-31) so L6-era-rebase produces valid TTL-safe timestamps.

@@ -1,0 +1,53 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: cnc-harvester-hub
+Kind: bus
+Node: acer
+LIVE: false | Port: :4956=DARK (no listener). :4953=LIVE (cosign daemon python, would receive file-drops from cncCosignEmit — but no drops have occurred). :4947=LIVE (behcs-bus, unrelated). :4781=LIVE (server.js, does not import flywheel).
+Last message: 2026-05-27T21:44:03.847Z — GNN-EDGE|src=AGT-FALCON-SISTER-ORGAN-W155-P03-N00016|dst=citizen:liris|w=3|era=new-asolaria (bh-omniflywheel-gnn-edges.ndjson line 7)
+Message count: 7 GNN edge rows + 3 hookwall rows = 10 real messages total, all from 2026-05-27. Flywheel rotation_counter in those files shows rotations 1-3. No messages since then.
+D11: DARK
+One-line: cnc-harvester-hub is a library module (no daemon, no port) with 3 test-run rows frozen at 2026-05-27; no live traffic for 4 days, dashboard :4956 not running, cosign-pending dir never created.
+
+--- REAL FINDINGS ---
+
+* bhOmniflywheelRouter.js exports the full cnc-harvester-hub as functions: cncHarvest(), cncHarvestHbp(), cncHarvestSnapshotToFile(), cncHarvestFromFile(), registerCncSnapshotEmit(). The harvester aggregates flywheel rotations + GC ghost envelopes + whiteroom mints + room stats into a single CNC-OMNIFLYWHEEL-HARVEST-V1 object.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js:908-948 (cncHarvest + cncHarvestHbp), :801-906 (snapshot infrastructure)
+
+* Hookwall ndjson has exactly 3 rows, all timestamped 2026-05-27T21:44:03Z, all from caller AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 targeting citizen:liris. No traffic since then (today is 2026-05-31, 4 days stale). Last write: 2026-05-27 6:44 PM local.
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-hookwall.ndjson:1-3
+
+* GNN edges ndjson has 7 rows: 4 from AGT-VECTOR-HAPPY-W155-P03-N00008 (timestamps 2026-05-27T21:36Z) and 3 from AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 (2026-05-27T21:44Z). No edges since 2026-05-27. The file is 838 bytes.
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-gnn-edges.ndjson:1-7
+
+* Port :4956 (dashboard) is NOT bound — no listener found. The dashboard (bhOmniflywheelDashboard.js) is not running as a live process.
+  RECEIPT: netstat check: no :4956 LISTENING entry found
+
+* Port :4947 is LIVE (PID 2388, node C:/Users/acer/Asolaria/tools/behcs/behcs-bus.js). Port :4781 is LIVE (PID 24276, node server.js). Port :4953 is LIVE (PID 4676, python.exe C:\HyperBEHCS\bin\asolaria-cosign-chain-daemon.py — the cosign pickup daemon that bhOmniflywheelRouter.cncCosignEmit() drops files for).
+  RECEIPT: netstat -ano output; Get-CimInstance Win32_Process queries for PIDs 2388, 24276, 4676
+
+* cosign-pending directory (C:\Users\acer\Asolaria\data\cosign-pending) does NOT exist. No cncCosignEmit() files have ever been dropped. The L9 promotion path is wired in code but has never fired in production.
+  RECEIPT: C:\Users\acer\Asolaria\data\cosign-pending: Test-Path returned False
+
+* No CNC snapshot file exists anywhere in C:\Users\acer\Asolaria\data\ (no *.hbp, no cnc-*.hbp). registerCncSnapshotEmit() has never been called from any running daemon. server.js (885KB, :4781) does NOT import bhOmniflywheelRouter.
+  RECEIPT: Grep of server.js for bhOmniflywheelRouter/cncHarvest: no matches. File listing in data\ shows no .hbp or cnc-* files.
+
+* archUpdateSupervisor.js imports flywheel (bhOmniflywheelRouter.js) and declares autoTickEvery() which would register a stability-harvest schedule and call Falcon at :8790. However no arch-update-proposals directory exists and the supervisor is not referenced by server.js — it is not running.
+  RECEIPT: C:\Users\acer\Asolaria\src\archUpdateSupervisor.js:19 (import), :286 (autoTickEvery); data\arch-update-proposals: Test-Path=False
+
+* behcs-bus.js (PID 2388, :4947) does NOT reference bhOmniflywheelRouter, cncHarvest, or CNC-OMNIFLYWHEEL. It is not a caller into the harvester.
+  RECEIPT: Grep of C:\Users\acer\Asolaria\tools\behcs\behcs-bus.js for flywheel/bhOmniflywheel/cncHarvest: no output
+
+--- HONEST GAPS ---
+
+* behcs-bus.js internals not fully read — it is 4947-LIVE but confirmed to NOT call bhOmniflywheelRouter. Cannot confirm whether it routes envelopes through any other CNC-pattern path.
+  SEVERITY: low
+
+* server.js is 885KB and was not read in full — only grepped for bhOmniflywheelRouter/cncHarvest. There may be other modules loaded dynamically that call into the flywheel.
+  SEVERITY: medium
+
+* No log file for the process that generated the 3 hookwall rows (AGT-FALCON-SISTER-ORGAN-W155-P03-N00016) was located and read. Cannot confirm whether that process is still alive and just not emitting, or was a one-time test run.
+  SEVERITY: medium
+
+--- WOULD ACTIVATE IF ---
+One of three actions: (1) Start the dashboard: node C:\\Users\\acer\\Asolaria\\src\\bhOmniflywheelDashboard.js 4956 --snapshot=&lt;path&gt; — this exposes /v1/cnc-harvest but only reads state; (2) Wire bhOmniflywheelRouter.pipeline() calls into an active daemon (server.js or a new launcher) and call registerCncSnapshotEmit(snapshotPath, {cadenceMs:30000}) so the harvester snapshot auto-writes every 30s and the dashboard can read cross-process state; (3) Call archUpdateSupervisor.autoTickEvery() from a running process — it will register stability-harvest ticks which drive the flywheel. None of these are currently executing.

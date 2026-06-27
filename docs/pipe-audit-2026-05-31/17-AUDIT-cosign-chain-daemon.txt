@@ -1,0 +1,53 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: cosign-chain-daemon
+Kind: http
+Node: acer
+LIVE: false | Port: 4953:LISTEN (python PID 4676, started 2026-05-28T09:01)"
+Last message: seq=3559 ts=2026-05-29T16:36:55.000Z row_hash=787aa0334e42048c antecedents=[24b00e52d1f0fc4a] appended_by=ASOLARIA-COSIGN-CHAIN-SINGLE-WRITER-DAEMON-PID-2026-05-23 — source: C:\\asolaria-acer\\COSIGN_CHAIN.ndjson tail
+Message count: 3559 unique seq entries total in C:\\asolaria-acer\\COSIGN_CHAIN.ndjson (5410 raw lines including 1876 pre-daemon collision duplicates); 0 new appends since 2026-05-29T16:36:55
+D11: PARTIAL-LIVE: daemon process RUNNING and port BOUND, HTTP endpoint responding, but NO appends in 53+ hours (last write 2026-05-29T16:36:55). The daemon pipe infrastructure is alive; the data flow through it is currently dark.
+One-line: cosign-chain-daemon at :4953 is process-alive and HTTP-responsive (seq=3559, row_hash=787aa0334e42048c) but has received zero POST /api/cosign/append calls since 2026-05-29T16:36:55 — the Python daemon is ready, callers are absent.
+
+--- REAL FINDINGS ---
+
+* Port :4953 is BOUND and LISTENING. Python process PID 4676 owns it — command line: python.exe C:\HyperBEHCS\bin\asolaria-cosign-chain-daemon.py. Process started 2026-05-28T09:01:02, still running as of audit time with 61 CPU-seconds consumed.
+  RECEIPT: netstat output: TCP 127.0.0.1:4953 LISTEN; Get-NetTCPConnection OwningProcess=4676; Get-Process 4676 CommandLine confirmed
+
+* Daemon responds to /api/cosign/head in <1s and returns seq=3559, row_hash=787aa0334e42048c. The ts field from /head is now_iso() (current wall-clock, not stored row ts) per daemon source line 98 — confirmed by two calls returning different timestamps (22:19:55 then 22:26:41 then 22:26:59) while seq stayed 3559.
+  RECEIPT: C:\HyperBEHCS\bin\asolaria-cosign-chain-daemon.py line 98: chain_head() → _send(200, {seq, row_hash, ts: now_iso()})
+
+* COSIGN_CHAIN.ndjson at C:\asolaria-acer\COSIGN_CHAIN.ndjson exists with 5,410 lines. Max seq is 3,559. Last 5 stored entries: seq 3555-3559, all ts 2026-05-29T15:38:16 through 2026-05-29T16:36:55, all appended_by_daemon=ASOLARIA-COSIGN-CHAIN-SINGLE-WRITER-DAEMON-PID-2026-05-23.
+  RECEIPT: Get-Content COSIGN_CHAIN.ndjson -Tail 5 — last line: seq=3559 ts=2026-05-29T16:36:55 row_hash=787aa0334e42048c
+
+* TRAFFIC GAP: no entries exist with ts >= 2026-05-30. Last write was 2026-05-29T16:36:55 (approximately 53 hours before this audit on 2026-05-31T22:26Z). The daemon is listening but no callers have sent POST /api/cosign/append in that window.
+  RECEIPT: PowerShell: Get-Content COSIGN_CHAIN.ndjson | Where { $_ -match '2026-05-3[01]' } → NO_ENTRIES_SINCE_2026-05-30
+
+* 5,410 lines vs 3,534 unique seq values = 1,876 collision/duplicate/null-seq lines in chain. These are legacy pre-daemon race-append artifacts (V42-A4 seq=250 4-way collision class). The single-writer daemon prevents new collisions but the historical debris remains in the file.
+  RECEIPT: C:\HyperBEHCS\bin\asolaria-cosign-chain-daemon.py lines 34-53: chain_head() uses MAX(seq) scan to guarantee no new collisions despite historical dups
+
+* cosign-bridge.mjs is a CLIENT MODULE only — it POSTs to :4953 via Node http. It is NOT a server and does NOT bind any port. The actual daemon is the Python process at C:\HyperBEHCS\bin\asolaria-cosign-chain-daemon.py. The bridge module maps append-payload → cosign-chain-ndjson via HTTP POST to 127.0.0.1:4953/api/cosign/append.
+  RECEIPT: D:\bigpickle-rebuild\src\cosign-bridge.mjs lines 78-113: cosignAppend() constructs http.request({host:'127.0.0.1', port:4953, path:'/api/cosign/append', method:'POST'})
+
+* No production caller of cosignAppend or durableNotify was found in active src/ files. The only live import of durableNotify is in a _wip_backup_2026-05-26 test file. In current src/, cosign-chain-writer-lock.mjs pairs_with cosign-bridge but does not import it. universal-route.mjs references cosign-bridge in a comment only.
+  RECEIPT: PowerShell Select-String cosignAppend/durableNotify across D:\bigpickle-rebuild\src\ — zero hits outside the bridge module itself and a wip_backup test
+
+* Port :4947 is LIVE (LISTENING + ESTABLISHED, OwningProcess 2388) consistent with the known :4947=LIVE status provided.
+  RECEIPT: Get-NetTCPConnection -LocalPort 4947: State=Listen + Established, OwningProcess=2388
+
+--- HONEST GAPS ---
+
+* /api/cosign/range query with ?start=N&end=M timed out (10s) but ?from=1&to=999999 succeeded — the daemon uses 'from'/'to' parameters, not 'start'/'end'. The bridge module's cosignRange() at line 121 constructs ?start=...&end=... which will always return all rows (bad param names silently default to from=1 to=999999). This is a silent bug in cosign-bridge.mjs cosignRange().
+  SEVERITY: medium
+
+* The /head ts field returns now_iso() (current wall-clock) not the stored row's ts. Any caller using /head ts to determine 'when was the last append' will get a misleading live timestamp, not the actual last-write time of 2026-05-29T16:36:55. Must inspect the chain file or /range to get real last-write time.
+  SEVERITY: medium
+
+* Traffic silence for 53+ hours: daemon is live and healthy but no callers have posted. Cannot confirm from this audit whether the silence is expected (no pipeline work since 2026-05-29) or indicates a broken caller that stopped posting. No application log for the daemon was found to show recent POST attempts vs rejections.
+  SEVERITY: high
+
+* The daemon was started on 2026-05-28T09:01 but most entries in the chain predate the daemon (historical seq 1-3559 were being built since 2026-04-18). Cannot determine from the chain alone how many of the 3,559 unique entries were appended by the daemon vs written by earlier direct-file callers.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+Any caller invokes cosignAppend() from D:\\bigpickle-rebuild\\src\\cosign-bridge.mjs (which POSTs to 127.0.0.1:4953/api/cosign/append) or directly POSTs a JSON body to that endpoint. In production, this means a pipeline stage (e.g. durableNotify() with a live redisBridge, or the bigpickle-rebuild pipeline emitting a seal envelope) calling cosignAppend(payload). The daemon is ready and will respond immediately — the only missing piece is an active caller sending traffic.

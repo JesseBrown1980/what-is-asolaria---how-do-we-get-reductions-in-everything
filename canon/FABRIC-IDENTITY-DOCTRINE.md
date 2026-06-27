@@ -12,9 +12,11 @@
 AddressID      = PID(A) = sha256(canonical(A))[0:16]
                  # the address-point (a bijective coordinate tuple), NOT a resident node
 
-RelationKey    = H(AddressID_A, AddressID_B, relation_kind, direction,
-                   tower, role, cylinder, epoch, vantage)
-                 # owns ROUTING + DEDUP — the relationship identity
+RelationKey    = H(AddressID_A, AddressID_B, relation_kind, direction, epoch, vantage)
+                 # owns ROUTING + DEDUP — the relationship identity. PLACEMENT-INVARIANT:
+                 # NO tower/role/cylinder (mutable geometry the optimizer rearranges; baking
+                 # them in would break the optimizer's hard "RelationKey preserved" constraint).
+                 # Geometry-free, never lapses; NEVER H(d). (Corrected from v1's 9-field key.)
 
 RelationEvent  = H(RelationKey, hbp_row_sha16, sequence_or_timestamp)
                  # owns REPEATED OBSERVATIONS — the occurrence identity.

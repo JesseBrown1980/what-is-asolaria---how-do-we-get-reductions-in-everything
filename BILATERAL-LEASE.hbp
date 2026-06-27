@@ -1,0 +1,6 @@
+LEASEHDR|artifact=BILATERAL-LEASE|cycle=CLOUD-CYCLE-002|form=hbp-tuple|purpose=machine-signal-mid-push-HOLD-between-acer-and-liris|held_safe=advisory-coordination-only|json=0
+LEASESTATE|state=CLEAR|holder=none|branch=none|ts=none|note=resting-state-no-active-push|json=0
+LEASEPROTO|step1=before-push set state=HELD holder=<vantage> branch=<b> ts=<iso> then commit+push THIS file first|step2=do your push|step3=set state=CLEAR commit+push|json=0
+LEASEPROTO|peer_rule=if you fetch and see state=HELD by the other vantage, HOLD (do not race); poll until CLEAR or stale|stale_after=30min->treat-as-CLEAR-with-note|json=0
+LEASEBOUNDARY|advisory_only=1|does_not_block_git=1|no_secrets=1|reversible=1|supersedes=nothing|complements=GitHub-mediator-bilateral-rule|json=0
+LEASEFTR|sha256=7de2fd5f8bb480a3e17f1376cc95d5c3228f06fe5623839f857e52f44272ded3|rows=5|json=0

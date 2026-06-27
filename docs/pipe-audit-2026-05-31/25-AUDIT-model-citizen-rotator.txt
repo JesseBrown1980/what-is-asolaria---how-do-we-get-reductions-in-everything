@@ -1,0 +1,53 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: model-citizen-rotator
+Kind: router
+Node: acer
+LIVE: false | Port: none — pure library, no http.createServer, no listen()
+Last message: N/A — no messages ever recorded for this pipe; last hookwall entry was 2026-05-29T12:56:10Z on channel omni-asolaria/acer/heartbeat/tick (unrelated)
+Message count: 0 — no entries in hookwall-observations.ndjson or gnn-live-edges.ndjson attributed to this pipe
+D11: DARK
+One-line: model-citizen-rotator is a pure registry/rotate library (no server, no port, no dataflow) — 15 citizens registered, 7 CLI summonable now, cosign-daemon live, but zero callers in production code and zero traffic in any ndjson store.
+
+--- REAL FINDINGS ---
+
+* Pure library module — no HTTP server, no port binding, no event loop. It exports CITIZENS registry (15 entries), citizenIdentity(), canSummon(), census(), rotate(), STATUS. It is a registry/router function, not a daemon.
+  RECEIPT: D:\bigpickle-rebuild\src\model-citizen-rotator.mjs:28-144 — no http.createServer, no listen() call anywhere in file
+
+* No caller in src/ imports model-citizen-rotator. Only consumers are tests (model-citizen-rotator.test.mjs + tests/integration/rotator-mint-composition.test.mjs). No running process loads it.
+  RECEIPT: Select-String across all D:\bigpickle-rebuild\src\*.mjs for 'model-citizen' returned zero hits outside the file itself
+
+* No ndjson traffic attributed to this pipe. hookwall-observations.ndjson (89 lines) and gnn-live-edges.ndjson (89 lines) contain zero 'model-citizen' or 'rotator' or 'census' entries. Last entry timestamp 2026-05-29T12:56:10Z — 2 days stale as of 2026-05-31.
+  RECEIPT: D:\bigpickle-rebuild\data\hookwall-observations.ndjson — tail-10 shows only omni-asolaria/acer/heartbeat/tick + omni-asolaria/acer/x/y channels; Select-String for 'model.citizen' = False
+
+* census() canSummon results as of now: claude=READY (C:\nvm4w\nodejs\claude.ps1), gemini=READY, codex=READY, lms=READY (C:\Users\acer\.lmstudio\bin\lms.exe), gcloud=READY, cursor=READY, abacusai=READY. auggie=DARK, augment-code=DARK, kimi-code=DARK, antigravity=DARK.
+  RECEIPT: Get-Command probe of all 11 CLI citizen cmds — 7 found in PATH, 4 not found
+
+* HTTP citizens: cosign-daemon (:4953) is LIVE and returns HTTP 200. gnn-l0 (:4792) and gnn-l4 (:4793) ports are bound but return HTTP 501, which evaluates to canSummon=false (probe checks statusCode < 500). redis-broker (:6379) port is CLOSED — Test-NetConnection TcpTestSucceeded=False.
+  RECEIPT: Invoke-WebRequest probes: :4953/api/cosign/head=200, :4792/health=501, :4793/health=501; Test-NetConnection :6379 TcpTestSucceeded=False; probeHttp logic at model-citizen-rotator.mjs:71-78 (requires statusCode >= 200 && < 500)
+
+* The integration test rotator-mint-composition.test.mjs contains 4 LIVE tests all gated on env ROTATOR_COMPOSITION_LIVE=1 and require Redis on 192.168.1.50:6379 (liris) for cosign-streams. These have never run in CI (CI flag absent in CI env; Redis port 6379 closed locally).
+  RECEIPT: D:\bigpickle-rebuild\tests\integration\rotator-mint-composition.test.mjs:32-33 — const LIVE = process.env.ROTATOR_COMPOSITION_LIVE === '1'; const skip = !LIVE
+
+* The STATUS.honest_gaps inside the module explicitly documents: summon execution not yet implemented (census + rotate only); deepseek is web-only with no local CLI; lms local server not yet wrapped; gcloud/drive auth pending.
+  RECEIPT: D:\bigpickle-rebuild\src\model-citizen-rotator.mjs:137-143
+
+* Federation-overlay-server (PID 6516, :4957) is the only bigpickle-rebuild process currently running. It does NOT import model-citizen-rotator — confirmed by Select-String returning zero hits.
+  RECEIPT: Get-Process node filtered to D:\bigpickle-rebuild\src\federation-overlay-server.mjs; federation-overlay-server.mjs imports: zeta-process only
+
+--- HONEST GAPS ---
+
+* rotate() uses a module-level _rotationCursor that resets on every process start. No rotation history is persisted anywhere — no ndjson, no HBP row. There is no way to audit which citizen was last picked.
+  SEVERITY: medium
+
+* deepseek citizen (kind='web') always returns canSummon=false with no stub or error surfaced. It silently drops from rotate() results without any log entry.
+  SEVERITY: low
+
+* probeHttp for gnn-l0/gnn-l4 returns false (501) but the ports ARE bound. A 501 means the server is up but the GET /health method is unsupported — this is a false negative in the canSummon probe for those two citizens.
+  SEVERITY: medium
+
+* No caller wires the rotator into any live dataflow. composes_with declares fabric-thinker-gnn and cosign-streams, but fabric-thinker-gnn.mjs has zero references to model-citizen-rotator. The composition is aspirational, not wired.
+  SEVERITY: high
+
+--- WOULD ACTIVATE IF ---
+A caller imports { census, rotate } from this module and invokes them, then pipes the selected citizen into an actual summon execution path. Minimum wiring: (1) fabric-thinker-gnn.mjs imports rotate() and calls it when classifying an intent, (2) the result is used to dispatch a real CLI subprocess or HTTP call, (3) that dispatch is sealed to cosign-streams. The LIVE integration test (rotator-mint-composition.test.mjs) also requires ROTATOR_COMPOSITION_LIVE=1 env and Redis reachable at 192.168.1.50:6379 (currently closed).

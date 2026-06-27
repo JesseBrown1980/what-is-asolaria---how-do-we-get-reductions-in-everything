@@ -12,3 +12,6 @@ kernels/asolaria-kernel-5primitive.mjs linguist-documentation
 # Surface the committed BEHCS-1024 Rust (lib.rs + pid-mod.rs, the PID minter)
 *.rs                                 linguist-detectable=true
 kernels/asolaria-os-metal-kernel/*.rs linguist-detectable=true
+# HBP proof/cube artifacts: byte-identity matters — the footer sha256 is computed over the
+# LF-joined body. Never apply CRLF conversion or the sha will not reproduce across hosts.
+*.hbp -text eol=lf

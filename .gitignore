@@ -1,0 +1,66 @@
+# Asolaria sovereign-export SCRUB — Stage 1 path-skip (secret-class VALUES never staged).
+# Derived from the verified secret-scrub spec (workflow wsvdjllox). Allow knowledge, deny secret VALUES.
+# Allowed counterparts (.env.example / *.pub / .mcp.json.example / hash OUTPUTS) are NOT ignored.
+
+# --- env / dotenv values (keep .example + .template) ---
+.env
+.env.*
+!.env.example
+!.env.template
+!.env.sample
+
+# --- private keys / keystores (NOT public *.pub) ---
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+id_ed25519
+id_rsa
+id_ecdsa
+id_dsa
+id_*
+!*.pub
+
+# --- vault / secrets / credentials ---
+*.vault.json
+vault/
+**/vault/**
+secrets/
+*.secret
+*credential*
+service-account*.json
+.aws/credentials
+.config/gcloud/
+.netrc
+.npmrc
+.git-credentials
+.ssh/
+
+# --- cookies / session / auth dumps (NotebookLM + browser) ---
+*cookie*
+*.cookiejar
+.notebooklm-mcp-cli/
+**/.notebooklm-mcp-cli/**
+
+# --- MCP config (carries connector tokens) — keep the .example ---
+.mcp.json
+.mcp.json.bak
+!.mcp.json.example
+
+# --- opaque binaries that can smuggle secret bytes (re-include only via reviewed exception) ---
+*.bin
+*.dat
+*.blob
+*.dump
+*.enc
+
+# --- runtime junk (the "dirty but not export-worthy" bucket) ---
+__pycache__/
+*.pyc
+node_modules/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db

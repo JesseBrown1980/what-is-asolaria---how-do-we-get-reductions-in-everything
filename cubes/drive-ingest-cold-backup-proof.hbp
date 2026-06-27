@@ -1,0 +1,8 @@
+INGESTHDR|proof=GOOGLE-DRIVE-TO-CUBE-INGEST|form=hbp-tuple|source=claude.ai-Drive-MCP(existing,no-gcloud,no-key)|drive_id=1ADqbpzl4E8_yQON5apRlwFIob0p7eNyTE-6CdrtxaU4|title=ASOLARIA-COLD-BACKUP-ACTIVATION-PROOF-2026-06-16|owner=plasmatoid@gmail.com|held_safe=read-only+referential+no-provider-call|json=0
+INGESTSLICE|raw_bytes=1354|sha256_16=98a09859abc26f44|tokens=168|distinct_content_terms=79|json=0
+INGESTCUBE|cube10=98a09859abc26f44e487|host_handle8=98a09859abc26f44|quant8=120,136,135,131,126,125,112,131|schema=asolaria.drive_ingest.cube.v1|descriptor_only=1|json=0
+INGESTREDUCTION|raw_bytes=1354|host_handle=8B|cube_glyph=10B|raw->handle=169x|raw->cube=135x|note=referential-content-address-not-lossless|json=0
+INGESTCATALOG|kind=verb-noun-glyph-vocabulary|distinct_terms=79|sample_top10=drive:6:g7062520c connector:4:gc08c6acf already:4:gea53396c propose:4:g12df7f0e asolaria:3:g4869d99c cold-backup:3:g856a25fc file:3:g3b9c358f claude:3:gc857d09d credential:3:ge265b6f5 cubes:3:ge4cbd03b|each_term=glyph-tuple-addressable|json=0
+INGESTLINEAGE|path=drive-doc->slice->tuple/HBP->quant8->cube10->verb-noun-glyph-catalog|maps_into=existing-BEHCS-cubes+index-language-catalogs|new_infra_required=NONE-beyond-this-ingestor|json=0
+INGESTBOUNDARY|raw_content_published=0|provider_calls=0|device_mutation=local-receipt-only|cycle=CLOUD-CYCLE-002|json=0
+INGESTFTR|sha256=b8afb6aa33f3c1eedd019aab64cc21f13e0ffe38edb48eb75cc5ce937cad5ffa|rows=7|verdict=INGEST-NOT-INTEGRATE|json=0

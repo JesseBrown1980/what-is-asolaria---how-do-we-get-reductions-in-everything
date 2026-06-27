@@ -1,0 +1,53 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: omnidispatcher-1000slot
+Kind: router
+Node: acer
+LIVE: false | Port: :4950=LIVE (PID 21056, 8 workers booted, ESTABLISHED link to :4947), :4953=LIVE (cosign, head_seq=3559), :4947=LIVE (behcs-bus PID 2388, uptime 281541s)
+Last message: No message has ever been dispatched through the omnidispatcher queue. Last deep-wave cosign entry: seq=3488 DW-OMNI-ENGINE-CASCADE-COMPLETE at 2026-05-28T17:37:17Z. Bus inbox last entry: @hookwall.PostToolUse at 2026-05-31T22:29:27Z (not a FEDENV-v1 envelope).
+Message count: 0 real messages dispatched through :4950 ever (last_active_ts=0 on all 1006 slots). 65,318,400 packets processed through the dw-omni cascade but via in-process omni-engine, not omnidispatcher worker pool. GNN live-edges: 89 total entries, last at 2026-05-29T12:56:10Z.
+D11: DARK
+One-line: Omnidispatcher is process-live at :4950 (8 workers, 1006 slots loaded, established connection to :4947) but has ZERO queue depth and zero traffic — all 8 workers are idle, no slot has ever been activated (last_active_ts=0 for all), and the deep-wave-extended-integrate.mjs module emits HBPv1 pipe-row strings only, never posts FEDENV-v1 envelopes to :4950.
+
+--- REAL FINDINGS ---
+
+* Omnidispatcher is LIVE and process-bound at :4950 (PID 21056). /v1/health returns ok:true, ts:2026-05-31T22:28:23Z. 1006 slots loaded (1000 canonical + 6 overflow), 8 workers booted.
+  RECEIPT: netstat output: TCP 127.0.0.1:4950 LISTENING PID 21056; wmic: node.exe C:/asolaria-acer/federation-remake-1024/tools/omnidispatcher/omnidispatcher.mjs --boot --workers=8; curl http://127.0.0.1:4950/v1/health: {ok:true}
+
+* Zero traffic flowing RIGHT NOW. /v1/state shows queue_depth=0, all 4 priority lanes at 0, worker pool 8/8 idle, port_pool 0 allocated / 1000 free. No slot has last_active_ts > 0.
+  RECEIPT: curl http://127.0.0.1:4950/v1/state: {slot_count:1006,active_slots:0,queue_depth:0,queue_lanes:{apex:0,high:0,normal:0,low:0},worker_pool:{size:8,idle:8,busy:0},port_pool:{allocated:0,free:1000}}
+
+* deep-wave-extended-integrate.mjs is a PURE EMIT-ONLY helper module — it contains no networking, no port binding, no queue submission. It exports 5 pure functions (toRouterDispatchPlan, to35TBGoogleDriveSubstrate, to128GBLirisIntake, to2TBSovlinuxIntake, toOmniscrcpyFrame, toOmnicoderTask) plus emitFullExtendedRows. All functions return HBPv1 pipe-row strings. From→To is: wave stats (caller) → HBPv1 pipe-row strings (returned to caller for file-writing). It does NOT submit anything to :4950.
+  RECEIPT: D:/bigpickle-rebuild/src/deep-wave-extended-integrate.mjs lines 1-68: no fetch/http calls, no imports of http/net, only createHash from node:crypto. toRouterDispatchPlan at line 49 embeds url=http://127.0.0.1:4950 as a STRING FIELD only.
+
+* ROUTER-DISPATCH-PLAN rows referencing :4950 were written to HBP seal files during past runs but never actually submitted to the omnidispatcher HTTP endpoint. The dw-full-1779989245211 run directory is empty (operator interrupted it at seq=3480 citing architectural violation). The dw-omni-1779989494311 run completed all 6 waves (65.3M packets, chain seqs 3482-3488, 2026-05-28T17:32-17:37) but used the omni-engine pattern, NOT the omnidispatcher worker pool.
+  RECEIPT: D:/bigpickle-rebuild/data/runs/dw-full-1779989245211/: empty dir (0 files). COSIGN_CHAIN.ndjson seq=3480: DW-FULL-CASCADE-INTERRUPTED-ARCHITECTURAL-CORRECTION. dw-omni run: aggregate shows 65318400 total_packets at seq=3488 but used fire-deep-wave-omni-engine-2026-05-28.mjs (omni-engine.mjs pattern, not omnidispatcher).
+
+* Slot distribution: 578 RESERVED (reserve category, route=reserved), 428 READY. Active route breakdown: bus-direct=341, google-api-client=37, citizen-stub-queue=22, meta-supervisor-slot=12, multi-cli-invoke=9, omniscrcpy-antigravity-proxy=7. The 341 bus-direct slots are the daemon-proxy category — these would be live if callers POST FEDENV-v1 envelopes, but none are queued.
+  RECEIPT: curl http://127.0.0.1:4950/v1/slots: python3 analysis — States:{READY:428,RESERVED:578}, Routes:{bus-direct:341,reserved:578,...}, slots with last_active_ts>0: 0
+
+* Cosign chain is LIVE at :4953, head_seq=3559 (as of 2026-05-31T22:29:50Z). Last deep-wave cosign entry is seq=3488 (DW-OMNI-ENGINE-CASCADE-COMPLETE, 2026-05-28T17:37:17Z). Chain advanced from seq=3488 to seq=3559 (71 more entries) since the last deep-wave run — none of those are deep-wave or omnidispatcher-dispatch events.
+  RECEIPT: curl http://127.0.0.1:4953/api/cosign/head: {ok:true,seq:3559,ts:2026-05-31T22:29:50Z}. COSIGN_CHAIN.ndjson tail: last seq=3559 at 2026-05-29T16:36:55Z. grep for DW-FULL/dw-omni: last match is seq=3488.
+
+* Bus :4947 is LIVE (PID 2388, uptime 281541s, started 2026-05-28T16:15:38Z, inbox_depth=564). The omnidispatcher polls bus at /v1/since?filter=FEDENV-v1 and ESTABLISHED connection to :4947 is confirmed. However FEDENV-v1 poll returns 0 events (no FEDENV-v1 envelopes in bus since boot).
+  RECEIPT: curl http://127.0.0.1:4947/behcs/health: {ok:true,uptime_s:281541,inbox_depth:564}. netstat: ESTABLISHED between PID 21056 (:4950 process) and :4947. curl /v1/since?idx=0&filter=FEDENV-v1: {events:0}. inbox.ndjson tail: last entries are @hookwall.PostToolUse events at 2026-05-31T22:29:27Z — none are FEDENV-v1.
+
+* The dw-smoke run (2026-05-28T17:13:41Z, cascade dw-smoke-1779988420929) produced a ROUTER-DISPATCH-PLAN HBP row with slots_required=875 and omnidispatcher_url=http://127.0.0.1:4950 — this was a string in the HBP seal file, not an actual dispatch to :4950.
+  RECEIPT: D:/bigpickle-rebuild/data/runs/dw-smoke-1779988420929/dw-smoke-1779988420929-summary.hbp line 17: ROUTER-DISPATCH-PLAN|...omnidispatcher_url=http://127.0.0.1:4950|backpressure_threshold=900_slots_used
+
+* GNN live-edges file has 89 entries, last timestamp 2026-05-29T12:56:10Z (2+ days ago), all recent ones are heartbeat ticks with stub cosign_seq=99 and cosign_row=a1b2c3d4e5f60718 — not real deep-wave dispatch entries.
+  RECEIPT: D:/bigpickle-rebuild/data/gnn-live-edges.ndjson: wc -l = 89. tail -5: all {verb:tick, cosign_seq:99, cosign_row:a1b2c3d4e5f60718, ts:2026-05-29T12:56:10Z}. Same for hookwall-observations.ndjson (89 lines).
+
+--- HONEST GAPS ---
+
+* Cannot read actual omnidispatcher stdout/logs — no log file path was found, PID 21056 is running but stderr/stdout is not captured to disk in any discoverable location. The /v1/state endpoint is the only live window.
+  SEVERITY: low
+
+* The fire-deep-wave-omni-engine-2026-05-28.mjs script (used for the actual dw-omni run that completed) was not read — it is the CALLER of emitFullExtendedRows. Its relationship to :4950 slot dispatch is confirmed absent by chain records and /v1/state, but the source was not directly inspected.
+  SEVERITY: low
+
+* The 341 bus-direct daemon-proxy slots could theoretically carry deep-wave traffic if the omni engine posted FEDENV-v1 envelopes to :4947 and omnidispatcher routed them — whether any past run exercised this path is not confirmed either way from chain records.
+  SEVERITY: medium
+
+--- WOULD ACTIVATE IF ---
+A caller POSTs a valid FEDENV-v1 JSON envelope to http://127.0.0.1:4950/v1/envelope with a matching h_coord or pid routing to a non-reserved slot (e.g., one of the 341 bus-direct daemon-proxy slots or 22 citizen-stub-queue slots). The deep-wave-extended-integrate.mjs module would need to be modified to actually HTTP-POST its ROUTER-DISPATCH-PLAN rows as FEDENV-v1 envelopes to :4950/v1/envelope rather than returning them as plain strings — or fire-deep-wave-omni-engine-2026-05-28.mjs would need to add that submission step after calling emitFullExtendedRows.

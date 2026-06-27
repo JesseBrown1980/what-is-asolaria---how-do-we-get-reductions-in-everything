@@ -1,0 +1,8 @@
+INGESTHDR|proof=GOOGLE-DRIVE-TO-CUBE-INGEST|form=hbp-tuple|source=claude.ai-Drive-MCP(existing,no-gcloud,no-key)|drive_id=1ILa03YfFV3rkjyNBsy_WVp0MhsvFDXfz|title=absorption-wave-2026-05-20-ABSORB-4-gc-extension-wiring.md|owner=plasmatoid@gmail.com|held_safe=read-only+referential+no-provider-call|json=0
+INGESTSLICE|raw_bytes=9503|sha256_16=045f1e90c046dfcd|tokens=919|distinct_content_terms=364|json=0
+INGESTCUBE|cube10=045f1e90c046dfcdfe9b|host_handle8=045f1e90c046dfcd|quant8=140,145,124,149,147,94,120,134|schema=asolaria.drive_ingest.cube.v1|descriptor_only=1|json=0
+INGESTREDUCTION|raw_bytes=9503|host_handle=8B|cube_glyph=10B|raw->handle=1188x|raw->cube=950x|note=referential-content-address-not-lossless|json=0
+INGESTCATALOG|kind=verb-noun-glyph-vocabulary|distinct_terms=364|sample_top10=pipeline:24:g23bf0d24 super_gulp:11:gb276fbc9 frame:11:g9dff50df receipt:10:g6f328609 result:10:gf6a214f7 marks:10:ge3d11da4 gulp:9:g3d7a4d22 existing:8:gafafb16a current:8:g97b05602 daemon:7:gf77b12a5|each_term=glyph-tuple-addressable|json=0
+INGESTLINEAGE|path=drive-doc->slice->tuple/HBP->quant8->cube10->verb-noun-glyph-catalog|maps_into=existing-BEHCS-cubes+index-language-catalogs|new_infra_required=NONE-beyond-this-ingestor|json=0
+INGESTBOUNDARY|raw_content_published=0|provider_calls=0|device_mutation=local-receipt-only|cycle=CLOUD-CYCLE-002|json=0
+INGESTFTR|sha256=5e53b10079653706183adf87156bd57276395d2a06cf27c180518a5501265673|rows=7|verdict=INGEST-NOT-INTEGRATE|json=0

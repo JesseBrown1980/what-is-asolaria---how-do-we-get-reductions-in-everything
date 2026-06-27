@@ -1,0 +1,284 @@
+PIPE MAP — verified on disk
+
+1. hookwall-gate
+   Path: D:\bigpickle-rebuild\src\hookwall.mjs
+   Kind: hookwall
+   From: envelope-source → omnidispatcher
+   Node: acer
+
+2. bhOmniflywheel-router
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: router
+   From: hookwall → supervisor-bands
+   Node: acer
+
+3. bhOmniflywheel-dashboard
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelDashboard.js
+   Kind: http
+   From: ? → ?
+   Node: acer
+
+4. hookEventStore
+   Path: C:\Users\acer\Asolaria\src\hookEventStore.js
+   Kind: bus
+   From: route-hooks → hook-events-ndjson
+   Node: acer
+
+5. cosign-chain-daemon
+   Path: D:\bigpickle-rebuild\src\cosign-bridge.mjs
+   Kind: http
+   From: append-payload → cosign-chain-ndjson
+   Node: acer
+
+6. redis-bridge
+   Path: D:\bigpickle-rebuild\src\redis-bridge.mjs
+   Kind: redis
+   From: pub-channels → sub-listeners
+   Node: both
+
+7. cosign-streams
+   Path: D:\bigpickle-rebuild\src\cosign-streams.mjs
+   Kind: redis
+   From: append-event → cosign-stream-key
+   Node: acer
+
+8. port-router-dispatch
+   Path: D:\bigpickle-rebuild\src\port-router.mjs
+   Kind: router
+   From: ? → ?
+   Node: acer
+
+9. behcs-glyph-alphabet
+   Path: D:\bigpickle-rebuild\src\behcs.mjs
+   Kind: pipe
+   From: ? → ?
+   Node: both
+
+10. gnn-l0-edge-cascade
+   Path: D:\bigpickle-rebuild\src\fabric-thinker-gnn.mjs
+   Kind: http
+   From: inference-request → score-verdict
+   Node: acer
+
+11. gnn-l4-gslgnn
+   Path: D:\bigpickle-rebuild\src\fabric-thinker-gnn.mjs
+   Kind: http
+   From: ? → ?
+   Node: acer
+
+12. omnidispatcher-1000slot
+   Path: D:\bigpickle-rebuild\src\deep-wave-extended-integrate.mjs
+   Kind: router
+   From: ? → ?
+   Node: acer
+
+13. fabric-cascade-planner
+   Path: D:\bigpickle-rebuild\src\deep-wave-decompose.mjs
+   Kind: http
+   From: ? → ?
+   Node: acer
+
+14. gnn-edge-ledger
+   Path: D:\bigpickle-rebuild\src\gnn-edge-ledger.mjs
+   Kind: bus
+   From: routing-decisions → gnn-live-edges-ndjson
+   Node: acer
+
+15. model-citizen-rotator
+   Path: D:\bigpickle-rebuild\src\model-citizen-rotator.mjs
+   Kind: router
+   From: ? → ?
+   Node: acer
+
+16. universal-route-emit
+   Path: D:\bigpickle-rebuild\src\universal-route.mjs
+   Kind: bus
+   From: ? → ?
+   Node: acer
+
+17. aolaria-surface-registry
+   Path: C:\Users\acer\Asolaria\src\asolariaSurfaceRegistry.js
+   Kind: router
+   From: ? → ?
+   Node: acer
+
+18. helm-supervisor
+   Path: D:\bigpickle-rebuild\src\helm-supervisor.mjs
+   Kind: router
+   From: ? → ?
+   Node: acer
+
+19. hookwall-observability
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: http
+   From: ? → ?
+   Node: acer
+
+20. room-manager-10k
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: pipe
+   From: ? → ?
+   Node: acer
+
+21. whiteroom-mint-canon
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: bus
+   From: ? → ?
+   Node: acer
+
+22. gc-farm-rejection
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: bus
+   From: ? → ?
+   Node: acer
+
+23. cnc-harvester-hub
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: bus
+   From: ? → ?
+   Node: acer
+
+24. cosign-snapshot-emit
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: pipe
+   From: ? → ?
+   Node: acer
+
+25. stability-harvest-schedule
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: bus
+   From: ? → ?
+   Node: acer
+
+26. era-boundaries-canon
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: pipe
+   From: ? → ?
+   Node: acer
+
+27. translator-7layer
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: router
+   From: ? → ?
+   Node: acer
+
+28. schedule-registry
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: bus
+   From: ? → ?
+   Node: acer
+
+29. catalog-registry
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: pipe
+   From: ? → ?
+   Node: acer
+
+30. fedenv-hbp-pipe
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: pipe
+   From: ? → ?
+   Node: acer
+
+31. hookwall-file-sink
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: bus
+   From: omniflywheel-route → hookwall-rows
+   Node: acer
+
+32. gnn-edges-file-sink
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: bus
+   From: route-observation → gnn-edge-rows
+   Node: acer
+
+33. ghost-snapshot-persist
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: pipe
+   From: ? → ?
+   Node: acer
+
+34. whiteroom-snapshot-persist
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: pipe
+   From: ? → ?
+   Node: acer
+
+35. room-snapshot-persist
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: pipe
+   From: ? → ?
+   Node: acer
+
+36. cnc-snapshot-file
+   Path: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js
+   Kind: bus
+   From: ? → ?
+   Node: acer
+
+37. connectors-bundle
+   Path: C:\Users\acer\Asolaria\src\connectors\*
+   Kind: bridge
+   From: ? → ?
+   Node: acer
+
+38. cosign-pending-dropzone
+   Path: C:\asolaria-acer\data\cosign-pending\
+   Kind: bus
+   From: ? → ?
+   Node: acer
+
+39. behcs-glyph-map
+   Path: C:\asolaria-foundation-v1\projections\maps\hyperglyph-map.public.v1.json
+   Kind: pipe
+   From: ? → ?
+   Node: both
+
+40. cosign-chain-ndjson
+   Path: C:\HyperBEHCS\store\cosign\COSIGN_CHAIN.ndjson
+   Kind: bus
+   From: ? → ?
+   Node: acer
+
+41. redis-pubsub-channels
+   Path: :6379
+   Kind: redis
+   From: ? → ?
+   Node: both
+
+42. liris-cosign-bilateral
+   Path: liris-local-.hbp-writer + twin-seal antecedents
+   Kind: bridge
+   From: ? → ?
+   Node: liris
+
+43. fabric-thinker-inference
+   Path: D:\bigpickle-rebuild\src\fabric-thinker.mjs
+   Kind: http
+   From: ? → ?
+   Node: acer
+
+44. project-room-router
+   Path: D:\bigpickle-rebuild\src\project-room-router.mjs
+   Kind: router
+   From: ? → ?
+   Node: acer
+
+45. runtime-tool-gate
+   Path: D:\bigpickle-rebuild\src\runtime-tool-gate.mjs
+   Kind: hookwall
+   From: ? → ?
+   Node: acer
+
+46. pid-chain-revolver
+   Path: D:\bigpickle-rebuild\src\pid-chain-revolver.mjs
+   Kind: pipe
+   From: ? → ?
+   Node: acer
+
+47. tile-lifetime-expiry
+   Path: D:\bigpickle-rebuild\src\tile-lifetime.mjs
+   Kind: pipe
+   From: ? → ?
+   Node: acer
+

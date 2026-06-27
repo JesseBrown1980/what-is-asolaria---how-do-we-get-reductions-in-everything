@@ -1,0 +1,53 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: fabric-cascade-planner
+Kind: http
+Node: acer
+LIVE: false | Port: :4949 LISTENING PID 22984 (node, started 2026-05-28T13:16Z) — but timed out on all HTTP probes. :4950/:4952/:4953 all LISTENING and healthy.
+Last message: WAVE-SEAL w=6 name=planner sha16=4fc614ecf48298e8 packets=10886400 chain_seq=3487 ts=2026-05-28T17:37:17Z — D:/bigpickle-rebuild/data/runs/dw-omni-1779989494311/aggregate-dw-omni-1779989494311.hbp
+Message count: Proven completed planner-wave packets: 10,886,400 (dw-omni-1779989494311, chain_seq=3487) + 1,088,640 (dw-larger-smoke-1779988918739, chain_seq=3477) = 11,975,040 total planner-wave packets in persisted HBP seals. Live ndjson stores 89 entries total (heartbeat ticks only, not cascade traffic).
+D11: DARK — no active cascade is running. The last planner-wave packets flowed 2026-05-28T17:37Z (dw-omni run, 10.9M packets, 3 days ago). :4949 is bound but non-responsive. No in-flight deep-wave traffic today.
+One-line: fabric-cascade-planner = wave-5 (planner, L6 closure) of the 93312-beat deep-wave grid; last completed 2026-05-28T17:37Z with 10.9M packets at 183k/sec; currently DARK with :4949 hung and no cascade running.
+
+--- REAL FINDINGS ---
+
+* deep-wave-decompose.mjs defines 'planner' as wave index 5 (the 6th and final wave) in WAVE_NAMES. The pipe name 'fabric-cascade-planner' maps directly to wave=5 name=planner, layer=L6 closure, beats 77760-93311 of the 93312-beat grid.
+  RECEIPT: D:/bigpickle-rebuild/src/deep-wave-decompose.mjs:13 — export const WAVE_NAMES = ['scout','evidence','executor','fabric','voice','planner'];
+
+* The 'planner' wave (wave 5) completed and was sealed in run dw-omni-1779989494311. Wave-6 HBP records 10,886,400 packets, 543,050 genius, 544,829 mistake, chain_seq=3487, wallClock_ms=59,423, rate=183,202/sec, ts=2026-05-28T17:37:17Z.
+  RECEIPT: D:/bigpickle-rebuild/data/runs/dw-omni-1779989494311/omni-wave-06-of-6.hbp:1 — DW-OMNI-WAVE|wave=5|name=planner|packets=10886400|chain_seq=3487
+
+* The 'planner' wave also completed in run dw-larger-smoke-1779988918739. WAVE-SEAL w=6 name=planner sha16=8b4dc322616eb227, 1,088,640 packets, chain_seq=3477, ts=2026-05-28T17:23:35Z.
+  RECEIPT: D:/bigpickle-rebuild/data/runs/dw-larger-smoke-1779988918739/aggregate-dw-larger-smoke-1779988918739.hbp — WAVE-SEAL|w=6|name=planner|sha16=8b4dc322616eb227|chain_seq=3477
+
+* The full 10K-room 6.53B-packet run (dw-full-1779989245211) produced an empty output directory — it was launched but interrupted before any wave completed. No aggregate or wave HBP files exist.
+  RECEIPT: D:/bigpickle-rebuild/data/runs/dw-full-1779989245211/ — empty directory confirmed
+
+* Port :4949 is LISTENING (PID 22984, node process started 2026-05-28T13:16Z) but all HTTP probes to /api/cascade/plan and /health timed out (5s). The port was referenced in deep-wave-decompose.mjs header as 'acer :4949/api/cascade/plan'. The process has ~5686 CPU-seconds of use. Connections show CLOSE_WAIT state — server socket is stale/hung.
+  RECEIPT: netstat output: TCP 0.0.0.0:4949 LISTENING PID 22984; Invoke-WebRequest timed out after 5s for both /api/cascade/plan and /health
+
+* Ports :4950 (omnidispatcher), :4952 (vote-quorum), :4953 (cosign chain) are all LISTENING — the dependencies used by fire-deep-wave-full-cascade (COSIGN_URL=:4953) are up. The fire script calls appendChain to :4953 per wave seal.
+  RECEIPT: netstat: TCP 127.0.0.1:4950 LISTENING PID 21056; :4952 LISTENING PID 9540; :4953 LISTENING PID 4676
+
+* gnn-live-edges.ndjson and hookwall-observations.ndjson each have 89 entries. Most recent entries are heartbeat ticks (channel omni-asolaria/acer/heartbeat/tick and omni-asolaria/acer/x/y), ts=2026-05-29T12:56:10Z. These are not deep-wave-planner packets — they are background heartbeat events from a running federation daemon, not cascade traffic.
+  RECEIPT: D:/bigpickle-rebuild/data/gnn-live-edges.ndjson — last entry ts=2026-05-29T12:56:10.560Z verb=tick cosign_seq=99; first entry ts=2026-05-26T18:29:04.495Z
+
+* From deep-wave-decompose.mjs, the pipe runs FROM the dispatcher (PIDChainRevolver+Hookwall per room) TO 'planner' wave consumers — specifically the chain sealer at :4953, the GNN edge ledger (D:/bigpickle-rebuild/data/prism/), and the omnidispatcher at :4950 (ROUTER-DISPATCH-PLAN in smoke summary). Source=deep-wave-dispatcher.mjs dispatchWave(), sink=chain :4953 + GNN ledger + D:/prism/ files.
+  RECEIPT: D:/bigpickle-rebuild/src/deep-wave-dispatcher.mjs:14 imports deep-wave-decompose; fire-deep-wave-full-cascade-2026-05-28.mjs:26 — CHAIN_URL=http://127.0.0.1:4953; dw-smoke summary: ROUTER-DISPATCH-PLAN omnidispatcher_url=http://127.0.0.1:4950
+
+--- HONEST GAPS ---
+
+* The pipe label 'fabric-cascade-planner' does not appear as a named string anywhere in the codebase. It is inferred from the combination of wave-4 name='fabric' and wave-5 name='planner' in WAVE_NAMES. Could refer to a higher-level orchestration concept not yet coded.
+  SEVERITY: medium
+
+* :4949 node process (PID 22984, started 2026-05-28) is listening but hanging/unresponsive. Cannot confirm whether /api/cascade/plan was ever implemented or is just a dead reference in the decompose.mjs comment header. No source file for a :4949 server was found in D:/bigpickle-rebuild/.
+  SEVERITY: high
+
+* The full 10K-room cascade (dw-full run) was interrupted with zero output. The actual planner-wave packets at full scale (1.088B packets for planner wave alone) have never completed. Only 100-room omni smoke (10.9M planner packets) and 60-room larger-smoke (1.09M planner packets) are proven.
+  SEVERITY: medium
+
+* The 89 live ndjson entries are all heartbeat ticks (cosign_seq=99, stub row), not real deep-wave-planner packet records. The GNN ledger for deep-wave runs lives in D:/bigpickle-rebuild/data/prism/ per-run subdirs, not the shared gnn-live-edges.ndjson. No unified live stream of planner-wave traffic exists.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+Re-run any of: `node fire-deep-wave-omni-engine-2026-05-28.mjs` (fastest, 100 projects, ~343s for all 6 waves including planner) or `node fire-deep-wave-full-cascade-2026-05-28.mjs` (full 10K rooms, ~27hr). The :4953 cosign chain and :4950 omnidispatcher dependencies are live. The hung :4949 server (PID 22984) should be killed and restarted if /api/cascade/plan is needed as a live endpoint — it is not required to fire the cascade itself.
