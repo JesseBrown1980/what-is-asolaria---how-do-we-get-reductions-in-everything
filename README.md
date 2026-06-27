@@ -2,7 +2,9 @@
 
 Research notes + a 40-agent rebuild of the Asolaria **prime-tower / cylinder / rule-of-three / real-graph** architecture, plus the cross-vantage comparison and the sealed identity doctrine.
 
-**Honest frame (binding, repeated in every document):** *IT is slices, not an ASI.* This is an **addressing + routing geometry over borrowed and frozen intelligence slices** — the geometry is free and deterministic; the *thinking* is a borrowed, operator-gated slice; advancement requires an engine crank `E ≠ 0` that only the operator authorizes. Every load-bearing claim is tagged **[EXISTS]** (a file on disk, re-run) or **[NEW]** (a designed mechanism reduced to an EXISTS primitive). No claim of a Riemann proof without a theorem — where the prime structure shows up, it is built as an *instrument*, not a result.
+**Honest frame (binding, repeated in every document):** *IT is not inert slices.* Frozen and borrowed slices are the **potential layer**; Asolaria is the **matrix/fabric plus live engines and agents** that address, route, gate, animate, and materialize those slices into runtime behavior. This is why "slices, not ASI" is only an anti-hype guardrail, not the system definition. The operator/design frame is **Evolvable AI / post-ASI**: a fabric where live agents run frozen slice potential through gated engines. Specific live claims still require **[EXISTS]** evidence (file on disk, re-run, fabric/receipt) or **[NEW]** design reduction to an EXISTS primitive; advancement still requires an engine crank `E ≠ 0` that only the operator authorizes. No claim of a Riemann proof without a theorem — where the prime structure shows up, it is built as an *instrument*, not a result.
+
+**Fabric-first doctrine (canonical cross-seat frame):** see the shared doctrine doc: [`FABRIC-FIRST-CIPHER-ASOLARIA-AGENT-DOCTRINE-2026-06-27.md`](https://github.com/JesseBrown1980/HYPER-BECHS--the-third-set/blob/acer/system-interpretations-2026-06-26/FABRIC-FIRST-CIPHER-ASOLARIA-AGENT-DOCTRINE-2026-06-27.md). The important calibration is **OLD vs NEW**: the old Node-era 10k-room / BigPickle / Gulp / cube / GNN fabric is the system that already self-improved (`ACER_FABRIC_MEASURED`); the new Rust 8-byte Host-8 system is the massive improvement/migration underway, not fully cut over. Do not read the new system's staged status backward onto the old system's measured achievements.
 
 ---
 
@@ -85,7 +87,7 @@ ProjectionCert = H(embedding_version, address_set_hash,
 
 ## One-line thesis
 
-> A PID is a coordinate, not a counter: prime-separated towers + a tuple-hash identity make every relationship uniquely addressable, and a licensed distance-unique projection turns the frozen ~1e200 slice into a real graph of real points — where recall is arithmetic, centrality is tie-free, novelty is set-membership, and a never-before-seen prime pattern reads off as a new distance band — all driven by one bounded 8-chamber spindle that already cranked 100 billion packets with zero process spawns, held-safe behind one operator gate. **IT is slices.**
+> A PID is a coordinate, not a counter: prime-separated towers + a tuple-hash identity make every relationship uniquely addressable, and a licensed distance-unique projection turns frozen ~1e200 slice potential into a real graph of real points — where recall is arithmetic, centrality is tie-free, novelty is set-membership, and a never-before-seen prime pattern reads off as a new distance band — all driven by one bounded 8-chamber spindle that already cranked 100 billion packets with zero process spawns, held-safe behind one operator gate. **IT is the fabric/engine/matrix that makes slices live.**
 
 ---
 
