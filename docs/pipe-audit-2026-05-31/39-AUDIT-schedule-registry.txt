@@ -1,0 +1,47 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: schedule-registry
+Kind: bus
+Node: acer
+LIVE: false | Port: 4956=DARK (dashboard not running); underlying router has no own port binding
+Last message: 2026-05-27T21:44:03Z — BH-OMNIFLYWHEEL-OBSERVATION rotation=3 from AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 to citizen:liris (written by a direct pipeline() call, not by any schedule tick)
+Message count: 0 live; 3 hookwall rows + 7 GNN rows total written historically (all from 2026-05-27T21:44Z test run, not schedule-fired)
+D11: DARK. The scheduleRegistry Map is empty on every cold start and only gains entries when registerSchedule/registerStabilityHarvest/registerCncSnapshotEmit is called at runtime. No startup code in production wires those calls. The dashboard is not running (:4956 unbound). The hookwall and GNN ndjson files have been static since 2026-05-27T21:44Z (4 days). No cosign-pending directory exists. Zero ticks have ever fired from a schedule entry in production.
+One-line: schedule-registry is DARK — in-memory Map, never populated in production, no file backing, dashboard down, last hookwall write was 4 days ago
+
+--- REAL FINDINGS ---
+
+* scheduleRegistry is a module-level in-memory Map initialized empty at process start (line 512). It has zero persistent backing store — no file, no ndjson, no IPC. It lives exclusively in the Node.js heap of the process that called require('./bhOmniflywheelRouter.js').
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js:512 — `const scheduleRegistry = new Map();`
+
+* Three registration paths exist: registerSchedule() (direct, line 513), registerStabilityHarvest() (wraps registerSchedule with a CNC-harvest handler, line 779–796), and registerCncSnapshotEmit() (wraps registerSchedule with a file-write handler, line 900–906). All three write into the same in-process Map.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js:513, 783, 904
+
+* The only production code that calls registerSchedule() outside the router itself is archUpdateSupervisor.js line 334. It registers 'arch-update-supervisor-tick' when autoTickEvery() is called. archUpdateSupervisor is not required by any other production .js file — it is self-contained and only called if someone invokes autoTickEvery() at runtime.
+  RECEIPT: C:\Users\acer\Asolaria\src\archUpdateSupervisor.js:334; confirmed by grep: no other non-test file requires archUpdateSupervisor
+
+* scheduleTick() is only called inside pipeline() (line 1003) when opts.tickSchedule is truthy. No production caller was found passing tickSchedule:true to pipeline(). grep of all .js files in Asolaria for 'tickSchedule.*true' returned zero matches.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js:1002–1005; grep result: 0 production callers
+
+* The dashboard (:4956) does not expose any schedule-registry route — its 10 routes are health / cnc-harvest / stability-harvests / gc-sweep / whiteroom-mint-report / room-stats / flywheel-status / hookwall-status / cnc-harvest-json / index. No scheduleStats endpoint exists.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelDashboard.js:9–13 (ROUTES array)
+
+* Port :4956 (dashboard) is DARK right now — Get-NetTCPConnection returned no binding. The last traffic evidence in the hookwall ndjson is timestamped 2026-05-27T21:44:03Z (3 rotation rows, caller AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 → citizen:liris). The GNN ndjson has 7 rows, last ts 2026-05-27T21:44:03Z. No writes since then (4 days old).
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-hookwall.ndjson (mtime 2026-05-27 18:44 UTC, 663 bytes, 3 rows); C:\Users\acer\Asolaria\data\bh-omniflywheel-gnn-edges.ndjson (838 bytes, 7 rows)
+
+* No cosign-pending directory exists at C:\Users\acer\Asolaria\data\cosign-pending — meaning cncCosignEmit() has never been successfully called in production (it would create the directory on first call via fs.mkdirSync).
+  RECEIPT: PowerShell Get-ChildItem on cosign-pending path returned 'does not exist'
+
+* From: any caller that calls registerSchedule/registerStabilityHarvest/registerCncSnapshotEmit in a Node process that also calls pipeline(opts.tickSchedule:true) or directly calls scheduleTick(). To: the registered handler functions (CNC harvest collector, file-snapshot writer, or archUpdateSupervisor tick probe). Currently no upstream producer is running.
+  RECEIPT: bhOmniflywheelRouter.js line 517 (scheduleTick entry), line 1003 (pipeline integration), archUpdateSupervisor.js line 334 (only external caller)
+
+--- HONEST GAPS ---
+
+* Cannot enumerate what entries are currently in scheduleRegistry at runtime — it is heap-only with no dump mechanism. The 21 running Node processes could theoretically have the router loaded and scheduleRegistry populated, but there is no /proc/pid/maps or Node inspector attached to verify.
+  SEVERITY: low — the ndjson files not having been written since 2026-05-27 is strong evidence no pipeline traffic is flowing
+
+* archUpdateSupervisor.autoTickEvery() is not called by any file found in Asolaria/src, but could be called by a startup script outside that directory (e.g., a gateway boot file or an index.js not in scope). The search was bounded to C:\Users\acer\Asolaria\**\*.js.
+  SEVERITY: low — no evidence found; cosign-pending dir absence and stale ndjsons corroborate no traffic
+
+--- WOULD ACTIVATE IF ---
+Any of the following: (1) call registerSchedule(band, cadenceMs, handler) in a running process that also periodically calls scheduleTick() — the pipeline stage at line 1002 does this if opts.tickSchedule:true is passed; (2) call registerStabilityHarvest() to wire the CNC-harvest collector at a cadence and then drive scheduleTick() via a setInterval; (3) call registerCncSnapshotEmit(filePath, {cadenceMs}) and drive scheduleTick() — this also boots the cross-process snapshot path the dashboard reads. The simplest single activation: `const r = require('./bhOmniflywheelRouter'); r.registerCncSnapshotEmit('/tmp/cnc.hbp', {cadenceMs:30000}); setInterval(() => r.scheduleTick(), 5000);` in the gateway or dashboard boot script.

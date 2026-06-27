@@ -1,0 +1,44 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: room-manager-10k
+Kind: pipe
+Node: acer
+LIVE: false | Port: none — :4956 not bound (dashboard down); :4950 and :4952 live but do not expose room-stats
+Last message: 2026-05-27T21:44:03-0300 — GNN-EDGE src=AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 dst=citizen:liris w=3 era=new-asolaria
+Message count: 3 hookwall rows + 7 GNN-edge rows total (all from 2026-05-27, single test run, rotation 1-3)
+D11: DARK
+One-line: room-manager-10k (bhOmniflywheelRouter.js STAGE 6) is DARK — in-memory only, no running daemon, no live callers, last real traffic was a 3-envelope test run on 2026-05-27; the dashboard server (:4956) is not bound.
+
+--- REAL FINDINGS ---
+
+* STAGE 6 assignRoom() is a pure in-memory function: roomState is a Map with ROOM_COUNT=10000. A fresh require() returns rotation_counter=0, active_rooms=0, total_capacity=10000 — zero live state.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:425-452 + node -e probe 2026-05-31T22:43:19Z
+
+* Last real traffic: 3 hookwall rows and 7 GNN-edge rows, all written 2026-05-27T18:44:03Z (4 days ago). Rows are from a single test agent AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 with rotation 1, 2, 3 — likely a manual test run, not continuous production traffic.
+  RECEIPT: C:/Users/acer/Asolaria/data/bh-omniflywheel-hookwall.ndjson (3 rows, mtime 2026-05-27T21:44:03-0300) + C:/Users/acer/Asolaria/data/bh-omniflywheel-gnn-edges.ndjson (7 rows, mtime 2026-05-27T21:44:03-0300)
+
+* Port :4956 (bhOmniflywheelDashboard, the only HTTP server with /v1/room-stats) is NOT bound. Neither :4950 (omnidispatcher, LIVE) nor :4952 (vote-quorum, LIVE) expose a room-stats route.
+  RECEIPT: netstat output 2026-05-31: :4956 absent; curl http://127.0.0.1:4950/v1/room-stats returns {ok:false,error:'unknown route'}
+
+* Only two non-test production callers of bhOmniflywheelRouter exist: bhOmniflywheelDashboard.js (HTTP wrapper, not running) and archUpdateSupervisor.js (uses registerStabilityHarvest pattern, does NOT call pipeline() or assignRoom() on live envelopes).
+  RECEIPT: C:/Users/acer/Asolaria/src/archUpdateSupervisor.js:8,19 + Grep scan of all src/*.js
+
+* No CNC harvest snapshot file exists (data/cosign-pending/ directory absent). The cross-process snapshot path (registerCncSnapshotEmit) has never been activated in production.
+  RECEIPT: ls C:/Users/acer/Asolaria/data/cnc-harvest* and data/cosign-pending/ both return empty 2026-05-31
+
+* From-to flow is: caller invokes pipeline(env, opts) or assignRoom(env) → roomState Map (in-process ephemeral) → hookwallEmit writes to data/bh-omniflywheel-hookwall.ndjson and data/bh-omniflywheel-gnn-edges.ndjson. No inter-process or inter-port wiring exists for the room-manager stage specifically.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:950-1023 (pipeline), 290-312 (hookwallEmit), 425-452 (assignRoom)
+
+--- HONEST GAPS ---
+
+* archUpdateSupervisor.js was not fully read — it requires bhOmniflywheelRouter and mentions pipeline at line 303, but the full invocation path was not confirmed. It may call pipeline() with assignRoom:false, meaning room-manager stage is skipped even when archUpdateSupervisor runs.
+  SEVERITY: low
+
+* hilbertHotelRouter.js is a declared over-layer on assignRoom (BASE_ROOM_COUNT=10000) and is referenced from scratch/1e200-sweep-W156-round-9.js. Whether that scratch script is ever run in production, and whether it routes envelopes through the room-manager stage, was not verified.
+  SEVERITY: low
+
+* No process list was checked (ps aux / tasklist) to confirm bhOmniflywheelDashboard.js is truly not running as a detached process on a different port. The netstat scan only checked port 4956 by default.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+Start bhOmniflywheelDashboard.js (node C:/Users/acer/Asolaria/src/bhOmniflywheelDashboard.js) to bind :4956 and expose /v1/room-stats; AND wire at least one live caller to call pipeline(env, {assignRoom: true, hookwall: true}) — e.g. an omnidispatcher worker or archUpdateSupervisor emitting real FEDENV envelopes. The in-process roomState will populate on first assignRoom() call with a valid caller_pid.

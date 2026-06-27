@@ -1,0 +1,53 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: cosign-streams
+Kind: redis
+Node: acer
+LIVE: false | Port: 6379:NOT_BOUND — ECONNREFUSED; :4953 LIVE (HTTP cosign daemon, different path)
+Last message: N/A — no messages on Redis stream. HTTP chain last message: seq=3559, row_hash=787aa0334e42048c, ts=2026-05-31T22:24:43.000Z (via cosign-bridge, not cosign-streams)
+Message count: 0 (Redis stream asolaria:cosign:chain does not exist; 89 hookwall ndjson lines present but all are synthetic test fixtures with cosign_seq=99, not cosign-streams traffic)
+D11: DARK — Redis not running on acer (ECONNREFUSED :6379). cosign-streams pipe has never emitted a live XADD. The HTTP cosign daemon at :4953 is alive with seq=3559 real rows, but that is the cosign-bridge path, not cosign-streams.
+One-line: cosign-streams is DARK: Redis not installed/running on acer (ECONNREFUSED :6379); 0 real XADD events on stream asolaria:cosign:chain; HTTP cosign daemon at :4953 is alive (seq=3559) but serves cosign-bridge, not this pipe.
+
+--- REAL FINDINGS ---
+
+* Source file exists and is fully implemented with 4 exported async functions: cosignAppend, cosignHead, cosignLength, durableNotifyViaStreams — all targeting Redis key asolaria:cosign:chain via XADD/XREVRANGE/XLEN commands through RedisBridge
+  RECEIPT: D:/bigpickle-rebuild/src/cosign-streams.mjs:34-213
+
+* Redis server is NOT running on acer. TCP probe to 127.0.0.1:6379 returns ECONNREFUSED. netstat confirms no process is bound to 6379.
+  RECEIPT: node ECONNREFUSED 127.0.0.1:6379 — confirmed via live TCP probe
+
+* The HTTP cosign daemon (cosign-bridge.mjs fallback) IS live at 127.0.0.1:4953 (Python PID 4676). Chain head: seq=3559, row_hash=787aa0334e42048c, ts=2026-05-31T22:24:43.000Z — 3559 real rows on the HTTP chain.
+  RECEIPT: netstat: TCP 127.0.0.1:4953 LISTENING PID 4676; live GET /api/cosign/head response: {ok:true, seq:3559}
+
+* cosign-streams.mjs itself has zero Redis traffic — no asolaria:cosign:chain stream exists and no asolaria:cosign:seq counter exists because Redis is not running.
+  RECEIPT: D:/bigpickle-rebuild/src/cosign-streams.mjs:34,36 — DEFAULT_STREAM_KEY and SEQ_COUNTER_KEY unreachable
+
+* redis-bridge.mjs documents the install gap explicitly: STATUS.redis_install_required=true, STATUS.next_gate='install-Redis-server-on-acer-and-liris-then-smoke-test-PUBLISH'
+  RECEIPT: D:/bigpickle-rebuild/src/redis-bridge.mjs:174-182
+
+* hookwall-observations.ndjson has 89 lines with real timestamps (last: 2026-05-29T12:56:10.560Z) — these are from cosign-bridge/universal-route dual-emit (cosign_seq=99 repeated mock fixture), NOT from cosign-streams Redis path. All cosign_seq values are stuck at 99.
+  RECEIPT: D:/bigpickle-rebuild/data/hookwall-observations.ndjson — last 5 lines all show cosign_seq:99 and cosign_row:a1b2c3d4e5f60718
+
+* Live test gate COSIGN_STREAMS_LIVE=1 explicitly skips all Redis-touching assertions. Only pure-function tests (sha16, canonicalize, computeRowHash, STATUS) run in CI — confirmed 0 Redis calls in test suite unless env var is set.
+  RECEIPT: D:/bigpickle-rebuild/tests/cosign-streams.test.mjs:74-85
+
+* cosign-streams.mjs uses a regex fallback to parse XREVRANGE replies (instead of proper multi-bulk RESP parser) because redis-bridge.mjs only parses single-depth RESP. This means cosignAppend will always read prevRowHash=0000000000000000 (chain-link broken) even when Redis IS running, until redis-bridge gains multi-bulk parsing.
+  RECEIPT: D:/bigpickle-rebuild/src/cosign-streams.mjs:93-99 — regex fallback comment + cosign-streams.mjs:207 honest_gaps[0]
+
+--- HONEST GAPS ---
+
+* Redis server not installed on acer — no Memurai, no WSL redis-server (redis-cli not found in WSL). The entire cosign-streams pipe is blocked at the transport layer.
+  SEVERITY: CRITICAL — pipe is fully dark until Redis is running
+
+* redis-bridge.mjs RESP parser is single-depth only. XREVRANGE returns a multi-bulk nested array; the regex fallback in cosign-streams.mjs:93-99 will always fail to extract prev_row_hash from a real reply, breaking the twin-seal hash chain from the very first append.
+  SEVERITY: HIGH — chain integrity broken even after Redis install, until redis-bridge gains typed stream reply parsing
+
+* No XAUTOCLAIM / consumer-group crash recovery helper. If a consumer crashes mid-PEL, entries remain in pending state indefinitely.
+  SEVERITY: MEDIUM — documented in STATUS.honest_gaps[1], deferred
+
+* The hookwall ndjson data (89 lines) is from universal-route test fixtures with synthetic cosign_seq=99 — not real production flow through cosign-streams. Real message count through this pipe is 0.
+  SEVERITY: MEDIUM — audit confusion risk; file looks active but seq value is stuck at test fixture value
+
+--- WOULD ACTIVATE IF ---
+1. Install Redis on acer: Memurai-Developer (Windows-native, free at memurai.com) or WSL2 `apt install redis-server && redis-server --daemonize yes`. Verify with redis-cli ping returning PONG on :6379. 2. Fix redis-bridge.mjs multi-bulk RESP parser so XREVRANGE reply can be decoded (required for chain integrity — without this cosign-streams.mjs:93-99 regex fallback will always return prevRowHash=0000000000000000, breaking every hop after the first). 3. Set env var COSIGN_STREAMS_LIVE=1 to unlock live test gate. 4. Optionally set OMNI_BILATERAL_TOKEN if auth is needed. The cosign-streams module code itself is complete and correct — it is purely gated on the Redis server being present and the redis-bridge parser being upgraded.

@@ -1,0 +1,50 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: fedenv-hbp-pipe
+Kind: pipe
+Node: acer
+LIVE: false | Port: :4781=LIVE :4947=LIVE :4956=DARK
+Last message: 2026-05-27T21:44:03Z — GNN-EDGE src=AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 dst=citizen:liris w=3 era=new-asolaria
+Message count: 3 hookwall rows + 7 GNN edge rows (all from 2026-05-27, frozen)
+D11: DARK
+One-line: fedenv-hbp-pipe is DARK: last traffic 2026-05-27 (4 days ago, 3 hookwall rows + 7 GNN edges, all from one test session), :4956 dashboard unbound, no cosign-pending drops, no CNC snapshot file, no running daemon confirmed.
+
+--- REAL FINDINGS ---
+
+* bhOmniflywheelRouter.js is a pure library module — it exports route/pipeline/hookwallEmit/etc but has NO server socket, no HTTP listener, and no daemon entry point. It is a shared-library pipe component, not a self-starting process.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:1025-1064 (module.exports block — no require.main===module guard, no net.createServer, no http.listen)
+
+* Port :4956 (bhOmniflywheelDashboard) is NOT bound. :4781 and :4947 are LISTENING. The dashboard that serves CNC harvest data is dark.
+  RECEIPT: netstat output: 0.0.0.0:4781 LISTENING, 0.0.0.0:4947 LISTENING, zero entries for :4956
+
+* Last real traffic written to bh-omniflywheel-hookwall.ndjson was 2026-05-27T18:44:03Z — 4 days ago. Total: 3 rows. All three from the same caller AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 targeting citizen:liris, era=new-asolaria, supervisor=falcon.
+  RECEIPT: C:/Users/acer/Asolaria/data/bh-omniflywheel-hookwall.ndjson — stat Modify: 2026-05-27 18:44:03.848 -0300, wc -l = 3
+
+* bh-omniflywheel-gnn-edges.ndjson has 7 rows. Last 3 rows are from the same AGT-FALCON-SISTER-ORGAN session at 2026-05-27T21:44:03Z. First 4 rows are from AGT-VECTOR-HAPPY-W155-P03-N00008 at 2026-05-27T21:36:04-21:36:25Z. Both sessions appear to be test runs, not daemon traffic.
+  RECEIPT: C:/Users/acer/Asolaria/data/bh-omniflywheel-gnn-edges.ndjson — stat Modify: 2026-05-27 18:44:03.851 -0300, all 7 rows visible
+
+* No cosign-pending drop files exist. The L9 promotion path (cncCosignEmit writing .hbp files to data/cosign-pending/) has never fired or was never started.
+  RECEIPT: ls C:/Users/acer/Asolaria/data/cosign-pending/ — empty/missing directory, no output
+
+* No CNC snapshot file exists. The cross-process snapshot mechanism (registerCncSnapshotEmit / cncHarvestSnapshotToFile) has not been activated — no file at data/*.hbp or data/cnc-* paths.
+  RECEIPT: ls C:/Users/acer/Asolaria/data/ | grep cnc — zero matches
+
+* Live callers of bhOmniflywheelRouter are: archUpdateSupervisor.js (line 19: require('./bhOmniflywheelRouter.js') for registerStabilityHarvest pattern) and hilbertHotelRouter.js (composes with assignRoom). Neither of these daemons appears running given :4956 is dark and no recent file writes.
+  RECEIPT: C:/Users/acer/Asolaria/src/archUpdateSupervisor.js:19, C:/Users/acer/Asolaria/src/hilbertHotelRouter.js:3,13,22
+
+* Pipe From→To: FEDENV-v1 JSON or FEDENV-v2 HBP-pipe envelope inbound (any caller using encodeHbp or raw JSON) → tagged envelope + HBPv1 trail row outbound to hookwall ndjson + GNN edges ndjson + caller's return value. The FEDENV-v2 prefix is 'FEDENV-v2|' pipe-delimited key=value format.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:95-132 (FEDENV_V2_PREFIX, encodeHbp, decodeHbp), lines 290-311 (hookwallEmit writes to data/bh-omniflywheel-hookwall.ndjson and data/bh-omniflywheel-gnn-edges.ndjson)
+
+--- HONEST GAPS ---
+
+* Cannot confirm whether archUpdateSupervisor or hilbertHotelRouter are currently running as daemons — ps aux returned empty (MSYS/Windows ps does not show Node processes). A Windows-native process check (tasklist | findstr node) would be definitive.
+  SEVERITY: medium
+
+* The 3 hookwall rows and 7 GNN rows may be from test runs (bhOmniflywheelRouter.test.js) rather than live daemon calls — the caller PIDs look like manually crafted test strings. Cannot confirm with certainty which code path generated them without checking test file output paths.
+  SEVERITY: low
+
+* No bhOmniflywheelDashboard test server or process was found. Cannot rule out that the dashboard is running under a different process manager or wrapper not surfaced by the netstat/ps checks available.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+Start bhOmniflywheelDashboard.js on :4956 (`node src/bhOmniflywheelDashboard.js 4956 --snapshot=<path>`) AND start a daemon that calls bhOmniflywheelRouter.pipeline() on each inbound FEDENV envelope — candidates are archUpdateSupervisor.js or a new launcher that calls registerCncSnapshotEmit() so the cross-process snapshot file is written and the dashboard reads live data from other processes. The pipe itself (the module) requires no changes — it only needs a caller process to invoke route() or pipeline().

@@ -1,0 +1,44 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: stability-harvest-schedule
+Kind: bus
+Node: acer
+LIVE: false | Port: none — :4956 (dashboard) unbound; :4953 (cosign-pending daemon) is bound but unrelated to stability-harvest
+Last message: never — stabilityHarvests[] array has always been empty in production; hookwall last write was 2026-05-27T21:44:03Z (4 days ago, from a test run)
+Message count: 0
+D11: DARK
+One-line: The stability-harvest-schedule pipe is fully DARK: registerStabilityHarvest() is never called outside tests, scheduleRegistry is empty at runtime, stabilityHarvests[] has zero entries, the dashboard serving /v1/stability-harvests is not even running (:4956 unbound), and the hookwall data files show no writes since 2026-05-27.
+
+--- REAL FINDINGS ---
+
+* registerStabilityHarvest() is defined at bhOmniflywheelRouter.js:779-797. It calls registerSchedule() to insert a named entry (band+'-stability-harvest') into scheduleRegistry (an in-memory Map). The handler fires cncHarvest() and pushes a snap into the stabilityHarvests[] array (cap 1000). This is a pure in-process scheduler — no socket, no file emit, no port.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:779-797
+
+* registerStabilityHarvest() is NEVER called in any non-test production file. archUpdateSupervisor.js references it only in comments (lines 8 and 282). bhOmniflywheelDashboard.js never calls it. No daemon boot script, coupling file, or orchestrator wires it up. scheduleRegistry stays empty at runtime.
+  RECEIPT: C:/Users/acer/Asolaria/src/archUpdateSupervisor.js:8,282 (comments only); grep across all *.js confirms zero live call sites
+
+* The dashboard at bhOmniflywheelDashboard.js:44 exposes /v1/stability-harvests and calls r.getStabilityHarvests(). Because no process has ever called registerStabilityHarvest(), that call always returns an empty array []. Dashboard port :4956 is NOT bound (netstat shows no :4956 listener), so even this read path is unreachable.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelDashboard.js:44; netstat confirms :4956 unbound
+
+* scheduleTick() (called by the pipeline when opts.tickSchedule=true) iterates over scheduleRegistry. With scheduleRegistry empty, fired_count=0 every call. No stability snapshot has ever been pushed to stabilityHarvests[].
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:517-554 (scheduleTick); pipeline line 1002-1005
+
+* The hookwall ndjson (bh-omniflywheel-hookwall.ndjson) has 3 rows, all from 2026-05-27T18:44:03Z (4 days ago). GNN-edges ndjson has 7 rows, last written at the same timestamp. No new writes since. These show the flywheel ran exactly once in a test/demo session; it is not running continuously.
+  RECEIPT: C:/Users/acer/Asolaria/data/bh-omniflywheel-hookwall.ndjson (mtime 2026-05-27T21:44:03); C:/Users/acer/Asolaria/data/bh-omniflywheel-gnn-edges.ndjson (mtime 2026-05-27T21:44:03)
+
+* There is no stability-harvest data file anywhere under C:/Users/acer/Asolaria/data/. No cosign-pending files exist. The 'stability-harvest-schedule' named schedule has zero ticks ever recorded.
+  RECEIPT: ls C:/Users/acer/Asolaria/data/ — no harvest/schedule/snapshot/cnc files found
+
+* The From side (emitter) would be: any caller that invokes registerStabilityHarvest({band, cadenceMs}) followed by scheduleTick() at the given cadence. The To side is: stabilityHarvests[] array in-process, surfaced via /v1/stability-harvests on the dashboard. Currently both ends are unconnected.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:779-798
+
+--- HONEST GAPS ---
+
+* No process-list scan was performed (tasklist/ps) to check if a long-lived Node daemon holding a live module instance with registerStabilityHarvest() already called is sleeping in the background. scheduleRegistry is in-process memory — a running daemon would not leave a file trace.
+  SEVERITY: low — the missing hookwall traffic (last write 4 days ago) and no :4956 port strongly indicate no such daemon is live
+
+* archUpdateSupervisor.autoTickEvery() wires its own scheduleName to the omniflywheel scheduler, not registerStabilityHarvest. It is unclear whether autoTickEvery is currently registered in a running :4949 or :4781 process — if so, that schedule would be in the registry but would not be named '*-stability-harvest'.
+  SEVERITY: low — orthogonal to the stability-harvest-schedule pipe specifically
+
+--- WOULD ACTIVATE IF ---
+A boot script (or the bhOmniflywheelDashboard start() path, or any daemon that requires bhOmniflywheelRouter) calls `r.registerStabilityHarvest({ band: 'vector', cadenceMs: 60000 })` once at startup AND then either (a) the pipeline is invoked with `opts.tickSchedule: true` on each envelope, or (b) a setInterval drives `r.scheduleTick(Date.now())` at the cadence. The dashboard on :4956 then also needs to be started to expose /v1/stability-harvests. None of these three steps are currently wired.

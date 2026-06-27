@@ -1,0 +1,50 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: gnn-l0-edge-cascade
+Kind: http
+Node: acer
+LIVE: false | Port: 4792=LISTENING (python.exe PID 26768)
+Last message: {"schema":"gnn-live-edge.v1","ts":"2026-05-29T12:56:10.560Z","edgeClass":"proof_edge","from":"cosign_seq_99","to":"channel_omni_asolaria_acer_x_y","verb":"tick","weight":1,"vantage":"acer","cosign_seq":99,"cosign_row":"a1b2c3d4e5f60718"}
+Message count: gnn-live-edges.ndjson: 89 total (76 tick/heartbeat, 13 cosign-seal events, 0 inference records); hookwall-observations.ndjson: 89 total (same breakdown); last write: 2026-05-29T12:56:10.560Z
+D11: DARK (pipe is broken — inference requests always fall back to sha-stub due to edge_features shape mismatch between mjs sender and Python server)
+One-line: Port :4792 is UP and responds to correctly-shaped requests, but fabric-thinker-gnn.mjs sends 13 edge features while the Python server requires exactly 3, causing every realInfer() call to return a sha-stub fallback (gnn_real=false) — zero real GNN inference has ever flowed through this pipe from the mjs layer.
+
+--- REAL FINDINGS ---
+
+* Port :4792 is BOUND (LISTENING). Python process PID 26768 (python.exe, 113 MB) owns the socket. Server is D:/sovereignty-usb-rebuild/research/gnn-patterns/inference_server.py — EdgeLevelGNN L0, loads baseline_model.pt via torch.
+  RECEIPT: netstat -ano | findstr ':4792' → TCP 0.0.0.0:4792 LISTENING 26768; tasklist 26768 → python.exe 113,736 K; D:/sovereignty-usb-rebuild/research/gnn-patterns/inference_server.py line 30: HTTPServer(('0.0.0.0', 4792), Handler).serve_forever()
+
+* CRITICAL SHAPE MISMATCH: fabric-thinker-gnn.mjs sends edge_features[*]=13 (line 42: Array.from({length:13},...)), but the Python server validates edge_features[*]=3 (inference_server.py line 21) and rejects any other length with HTTP 400. Confirmed: POST /infer with 13 features returns {ok:false, reason:'expected nodes[*]=6, edges[*]=2, edge_features[*]=3'}. POST /infer with 3 features returns {scores:[0.897...], ok:true}.
+  RECEIPT: D:/bigpickle-rebuild/src/fabric-thinker-gnn.mjs line 42: edge_features: [Array.from({length:13},...)]; D:/sovereignty-usb-rebuild/research/gnn-patterns/inference_server.py line 21: any(len(x)!=3 for x in edge_features) → raises ValueError; live probe confirmed both behaviors
+
+* Every realInfer() call from the mjs module will ALWAYS fall back to sha-stub (algorithm='fabric-thinker-gnn-fallback-to-sha.v1', gnn_real=false) because the 13-feature payload is rejected with 400 before any model inference runs. The GNN server is alive but the pipe carries zero real inference traffic.
+  RECEIPT: D:/bigpickle-rebuild/src/fabric-thinker-gnn.mjs lines 102-111: gnn_result.ok check; on HTTP 400 the parsed body has ok:false so branch falls to fallback return at lines 147-153
+
+* gnn-live-edges.ndjson has 89 entries total. 76 are verb='tick' heartbeat events (cosign_seq=99, cosign_row=a1b2c3d4e5f60718 — a stub/sentinel value). The 13 non-tick entries are cosign seal records from 2026-05-26 (canonical federation events: LAW-035/036/037, 100B stage1, HRM GPU OK, etc.). Zero entries contain gnn_score, inference, or /infer fields. Last write: 2026-05-29T12:56:10.560Z — two days ago.
+  RECEIPT: D:/bigpickle-rebuild/data/gnn-live-edges.ndjson: wc-l=89; grep verb:tick → 76; grep gnn_score → 0; tail shows ts=2026-05-29T12:56:10.560Z
+
+* hookwall-observations.ndjson has 89 entries mirroring the same tick pattern. Last write 2026-05-29T12:56:10.560Z. No entries with inference-origin channels.
+  RECEIPT: D:/bigpickle-rebuild/data/hookwall-observations.ndjson: wc-l=89; last 3 lines all cosign_seq=99 tick to omni-asolaria/acer/heartbeat/tick and omni-asolaria/acer/x/y
+
+* model-citizen-rotator.mjs registers gnn-l0 as a citizen (line 36) and notes 'Future: route via fabric-thinker-gnn' (line 109) but does NOT import or call realInfer(). The GNN routing composure is declared but not wired into any active call site.
+  RECEIPT: D:/bigpickle-rebuild/src/model-citizen-rotator.mjs lines 36, 109, 138: 'summon execution not yet implemented — census + rotate only (registry layer)'
+
+* The integration test closure-cross-vantage.test.mjs wires realInfer() into the full chain (lines 24, 70, 109) and gates on BIGPICKLE_CLOSURE_LIVE=1. Default GNN_HOST=192.168.1.50 (liris), not 127.0.0.1. The empirical floor comment (line 14: '5/5 real GNN inference, 22.8ms, cosign XLEN=108') was measured 2026-05-25 — before the mjs gained the 13-feature encoding on the same commit wave.
+  RECEIPT: D:/bigpickle-rebuild/tests/integration/closure-cross-vantage.test.mjs lines 14, 35-41, 62-71
+
+* Python server edge_features parameter is accepted in validation but NOT passed to the model (inference_server.py line 22 calls MODEL(nodes_tensor, edges_tensor) — no edge_features argument). The model is EdgeLevelGNN(6, 64) which is an edge-level GNN but the server discards edge features after validating their length.
+  RECEIPT: D:/sovereignty-usb-rebuild/research/gnn-patterns/inference_server.py line 22: MODEL(torch.tensor(nodes,...), torch.tensor(edges,...).t().contiguous()) — edge_features parsed then dropped
+
+--- HONEST GAPS ---
+
+* Cannot confirm whether the 5/5 real inference empirical floor (2026-05-25) was measured against a prior version of the mjs that sent 3 edge features, or against the liris-hosted GNN at 192.168.1.50 which may accept a different shape. The acer-local server at :4792 and the integration test's default GNN_HOST differ.
+  SEVERITY: medium
+
+* No log file from the Python inference_server.py process is accessible (server suppresses logs: log_message=pass). Cannot count lifetime POST /infer requests served. The 89 ndjson entries are written by the JS layer, not the Python server — so they don't record /infer hits.
+  SEVERITY: low
+
+* Whether the cosign_row='a1b2c3d4e5f60718' sentinel on all 76 tick entries is a real cosign chain entry or a placeholder is not verified here — only the ndjson content was read, not the cosign chain itself.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+Fix edge_features encoding in pidQueryToGraph() at D:/bigpickle-rebuild/src/fabric-thinker-gnn.mjs line 42: change Array.from({length:13},...) to Array.from({length:3},...) (or align Python server to accept 13). Then call realInfer() from at least one active code path — currently no production caller invokes it (model-citizen-rotator.mjs only lists gnn-l0 as a citizen, routing is stub-deferred). The integration test BIGPICKLE_CLOSURE_LIVE=1 is the only wired call site and requires GNN_HOST=192.168.1.50 (liris) or explicit override to 127.0.0.1.

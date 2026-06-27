@@ -1,0 +1,53 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: gnn-l4-gslgnn
+Kind: http
+Node: acer
+LIVE: false | Port: :4793 LISTENING PID 5444 (python.exe gslgnn_inference_server.py)
+Last message: 2026-05-29T12:56:10.560Z — verb=tick, from=cosign_seq_99, to=channel_omni_asolaria_acer_x_y (D:/bigpickle-rebuild/data/gnn-live-edges.ndjson line 89 — this is a heartbeat tick, not a GSLGNN inference)
+Message count: 0 real inference messages. gnn-live-edges.ndjson has 89 entries total but all are cosign-chain or heartbeat tick verbs — none are GSLGNN :4793 inference edges.
+D11: OBSERVED-acer-w9_3-trained-pending-bilateral-verify
+One-line: GSLGNN L4 server at :4793 is LIVE and responding to POST /infer with real scores, but the pipe is DARK — fabric-thinker-gnn.mjs defaults to :4792 and no production caller passes gnn_port:4793, so zero real traffic flows through gnn-l4-gslgnn.
+
+--- REAL FINDINGS ---
+
+* GSLGNN L4 Python server is LIVE and bound at 0.0.0.0:4793, PID 5444 (python.exe). POST /infer returns ok=true, model=GSLGNN, checkpoint=gslgnn_w9_3_seq47_v2.pt, checkpoint_sha256_first16=9e50723b10c9de5c, scores=[0.529156506061554] in real-time. ~205 MB RSS.
+  RECEIPT: C:/Users/acer/Asolaria/services/gnn-sidecar/gslgnn_inference_server.py:PORT=4793 + live netstat TCP 0.0.0.0:4793 LISTENING PID 5444 + empirical POST /infer returning {ok:true}
+
+* fabric-thinker-gnn.mjs hard-defaults to :4792 (L0 EdgeLevelGNN), not :4793 (GSLGNN L4). The constant DEFAULT_GNN_PORT=4792 is never overridden in any production caller within bigpickle-rebuild. No .mjs file passes gnn_port:4793 to realInfer().
+  RECEIPT: D:/bigpickle-rebuild/src/fabric-thinker-gnn.mjs:27 — const DEFAULT_GNN_PORT = 4792; and Grep across **/*.mjs shows zero gnn_port.*4793 call sites
+
+* gnn-l4 is registered as a model-citizen (kind=http, port=4793) in model-citizen-rotator.mjs line 37, but model-citizen-rotator.mjs line 109 explicitly states routing via fabric-thinker-gnn is FUTURE / not yet wired. canSummon probe at :4793 would return true (port is bound), but no dispatch path calls it.
+  RECEIPT: D:/bigpickle-rebuild/src/model-citizen-rotator.mjs:37 + :109 — 'Future: route via fabric-thinker-gnn'
+
+* gnn-live-edges.ndjson has 89 entries. First entry 2026-05-26T18:29Z, last entry 2026-05-29T12:56:10Z. No entry references GSLGNN or L4 or gnn-l4-gslgnn. Most recent 5 lines are cosign heartbeat tick verbs (verb=tick, from=cosign_seq_99), not actual GNN inference edges. No inference traffic recorded from :4793.
+  RECEIPT: D:/bigpickle-rebuild/data/gnn-live-edges.ndjson — 89 lines, tail-5 all schema=gnn-live-edge.v1 verb=tick from=cosign_seq_99
+
+* GSLGNN model file gslgnn_w9_3_seq47_v2.pt loaded with state_dict rekey fix. Manifest d11=OBSERVED-acer-w9_3-trained-pending-bilateral-verify, test_accuracy=0.9991, test_f1=0.9996 on 47288 test edges from BOTH_CURRENT_AND_HISTORICAL corpus (315249 edges, 99.99% suspicious label ratio). Bilateral verify constraint C4 not yet met.
+  RECEIPT: C:/Users/acer/Asolaria/services/gnn-sidecar/gslgnn_w9_3_seq47_v2_manifest.json — d11 field + constraints_honored
+
+* L0 EdgeLevelGNN at :4792 (inference_server.py, PID 26768, ~113MB RSS) is also LIVE and responding. POST /infer returns ok=true, scores=[0.8975763916969299]. This is the port fabric-thinker-gnn.mjs actually calls by default.
+  RECEIPT: C:/Users/acer/Asolaria/services/gnn-sidecar/inference_server.py:HTTPServer(('0.0.0.0', 4792)...) + netstat LISTENING PID 26768 + empirical POST /infer {ok:true}
+
+* The STATUS constant in fabric-thinker-gnn.mjs line 194 lists state_dict_rekey_pending for L1/L2/L4: 'L1/L2/L4 .pt files exist but torch-version key drift blocks load; L0 partial-load functional'. L4 is listed in cascade_layers array but the rekey note was superseded — the gslgnn_inference_server.py includes its own rekey fix and loads successfully.
+  RECEIPT: D:/bigpickle-rebuild/src/fabric-thinker-gnn.mjs:194 — state_dict_rekey_pending field; C:/Users/acer/Asolaria/services/gnn-sidecar/gslgnn_inference_server.py lines 20-34 show live rekey logic
+
+* Closure integration test (closure-cross-vantage.test.mjs) targets GNN_HOST=192.168.1.50:4792 (acer LAN IP, L0), not :4793. It is gated on BIGPICKLE_CLOSURE_LIVE=1 and is CI-skipped. No integration test exercises the :4793 pipe at all.
+  RECEIPT: D:/bigpickle-rebuild/tests/integration/closure-cross-vantage.test.mjs:38-41 — GNN_PORT default 4792; no 4793 reference anywhere in test suite
+
+--- HONEST GAPS ---
+
+* The named pipe string 'gnn-l4-gslgnn' does not appear verbatim in any file in D:/bigpickle-rebuild or C:/HyperBEHCS. It was supplied as a pipe label by the caller. The audit inferred it maps to the :4793 GSLGNN L4 citizen from model-citizen-rotator id='gnn-l4' + gslgnn_inference_server.py. If the name maps to something else in a pipe registry not found (e.g. liris-side or a separate registry), that registry was not found.
+  SEVERITY: low — the structural mapping is unambiguous from model-citizen-rotator + port binding + server name
+
+* The /health endpoint on :4793 returns HTTP 501 (not GET-capable, only POST /infer). The checkReady() function in fabric-thinker-gnn.mjs uses GET /health and would therefore always return ok=false for :4793, even though the server is up and functional on POST /infer. This means the pipe would always report DARK via the built-in health probe.
+  SEVERITY: medium — health-check path is broken for :4793; would cause false-dark readings in checkReady()
+
+* The 89 gnn-live-edges entries were last written 2026-05-29T12:56:10Z. Today is 2026-05-31. No new entries have been written in ~2 days. Cannot confirm whether the GNN edge ledger writer is still actively feeding or has stopped.
+  SEVERITY: low — file exists with real timestamps; staleness may be expected if no agent run has triggered writes since then
+
+* The manifest constraint C4 (bilateral bus dispatch sha + manifest before swap-in) and d11=OBSERVED-acer-w9_3-trained-pending-bilateral-verify have not been confirmed resolved. Cannot verify whether liris-side has verified the checkpoint sha to complete the bilateral proof.
+  SEVERITY: low — this is a governance gate, not a liveness gate; the server runs regardless
+
+--- WOULD ACTIVATE IF ---
+Any caller of realInfer() passes opts.gnn_port=4793 (and opts.gnn_host='127.0.0.1'). Concretely: (1) change DEFAULT_GNN_PORT in fabric-thinker-gnn.mjs line 27 from 4792 to 4793, OR (2) call realInfer(pid, query, { gnn_port: 4793 }) explicitly, OR (3) wire model-citizen-rotator's gnn-l4 citizen into the dispatch path that currently says 'Future: route via fabric-thinker-gnn' at line 109. The server is ready — it only needs a caller.

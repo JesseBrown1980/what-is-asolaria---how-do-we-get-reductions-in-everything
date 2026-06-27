@@ -1,0 +1,44 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: cosign-snapshot-emit
+Kind: pipe
+Node: acer
+LIVE: false | Port: :4953=LIVE (cosign chain daemon — downstream consumer is ready but upstream is unwired)
+Last message: N/A — no messages have ever flowed through this pipe
+Message count: 0 (cosign-pending files: 0; hookwall rows attributable to this pipe: 0)
+D11: DARK
+One-line: cosign-snapshot-emit is DARK: no process has ever called registerCncSnapshotEmit or cncCosignEmit in production, the cosign-pending drop directory does not exist, and the hookwall shows only 3 stale rows from 2026-05-27 with zero traffic since.
+
+--- REAL FINDINGS ---
+
+* cncCosignEmit() writes cnc-harvest-<ts>-<rand>.hbp files to C:/Users/acer/Asolaria/data/cosign-pending/ by default. That directory does NOT exist on disk — no files have ever been written there.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:764 (default pendingPath); Bash: ls data/cosign-pending → NOT_FOUND; find cnc-harvest-*.hbp → 0 results
+
+* registerCncSnapshotEmit() (the scheduled version of the pipe) is defined and exported at line 900-906, registers a schedule entry named '<band>-cnc-snapshot-emit' (default 'helm-cnc-snapshot-emit'), cadence 30 000 ms. It is called by NOBODY in production — zero callers found outside the test file.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:900-906; Grep across src/ returns only test references in bhOmniflywheelRouter.test.js:795; no caller found in acer-acer or asolaria-acer packages
+
+* The bhOmniflywheelRouter module has never been run in production as a long-lived process. The hookwall ndjson has exactly 3 rows, all timestamped 2026-05-27T18:44 (rotation 1/2/3 from AGT-FALCON-SISTER-ORGAN), file mtime May 27 18:44. No new rows since.
+  RECEIPT: C:/Users/acer/Asolaria/data/bh-omniflywheel-hookwall.ndjson — 3 lines, mtime 2026-05-27 18:44 UTC
+
+* The GNN edges ndjson has 7 rows. Last 3 rows are also from 2026-05-27T21:44:03Z (AGT-FALCON-SISTER-ORGAN → citizen:liris). No traffic since then.
+  RECEIPT: C:/Users/acer/Asolaria/data/bh-omniflywheel-gnn-edges.ndjson — 7 lines; tail shows ts=2026-05-27T21:44:03.837Z / .843Z / .847Z
+
+* The cosign chain daemon IS live at :4953 (PID 4676, C:/HyperBEHCS/bin/asolaria-cosign-chain-daemon.py, started 2026-05-28T09:01Z). It accepts POST /api/cosign/append and is the intended downstream consumer of cncCosignEmit drops — but the upstream file-drop producer (cosign-pending dir) has never been created.
+  RECEIPT: netstat -ano | grep :4953 → LISTENING PID 4676; wmic process 4676 → asolaria-cosign-chain-daemon.py; daemon source line 37 CHAIN = C:/asolaria-acer/COSIGN_CHAIN.ndjson
+
+* Port :4950 (omnidispatcher, PID 21056) and :4952 (vote-quorum, PID 9540) are LIVE. :4947 is LIVE. :4781 is LIVE. None of these call into bhOmniflywheelRouter's cosign-snapshot-emit pipe.
+  RECEIPT: netstat -ano output; wmic process 21056 → omnidispatcher.mjs
+
+* The bhOmniflywheelDashboard (bhOmniflywheelDashboard.js) reads from a snapshot file if opts.snapshotPath is set (round-7 patch 13, line 17-23). No snapshot file path is currently wired or being written, so the dashboard — if it were running — would serve per-process zeros.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelDashboard.js:17-23, 127-131; no BH_CNC_SNAPSHOT_PATH env set; no --snapshot arg evidence
+
+--- HONEST GAPS ---
+
+* Cannot confirm whether any external script in C:/asolaria-acer/ (non-federation-remake-1024 path) calls registerCncSnapshotEmit — grep on that large tree timed out. The acer-federation-remake-1024 subtree returned no matches.
+  SEVERITY: low — the hookwall and cosign-pending dirs show zero output regardless
+
+* Cannot determine if bhOmniflywheelDashboard is currently running on :4956 — port was not in the netstat sample. If dark, snapshot wiring is doubly moot.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+A startup script or daemon boot sequence calls registerCncSnapshotEmit(filePath, { cadenceMs: 30000 }) after require('./bhOmniflywheelRouter'), AND that daemon also processes envelopes through pipeline() so the flywheel has non-zero rotations to snapshot. The cosign-pending directory will be auto-created by mkdirSync on first cncCosignEmit call (line 765) — that is not the blocker. The blocker is: nobody calls registerCncSnapshotEmit or cncCosignEmit in any running process. Minimal activation: add registerCncSnapshotEmit('/path/to/cnc-snapshot.hbp') to the bhOmniflywheelDashboard startup (bhOmniflywheelDashboard.js main block, after start()), or wire it into the omnidispatcher boot sequence."

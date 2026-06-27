@@ -1,0 +1,59 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: hookwall-gate
+Kind: hookwall
+Node: acer
+LIVE: true | Port: hookwall.mjs binds NO port. :4947 LISTENING (PID 2388) is a different process — the LAW-001 bus lives at 192.168.100.1:4947 (unreachable). :4781 LIVE, :4950 LIVE, :4952 LIVE (downstream targets).
+Last message: 2026-05-29T12:56:10.560Z — hookwall-observation.v1, event=tick, channel=omni-asolaria/acer/x/y, gate=universal-route-default, passed_at=1780059370560
+Message count: 89 observation rows in data/hookwall-observations.ndjson (H9100 cosign/heartbeat events). In-process passedCount for 1M/10M/100M runs not persisted to ndjson — reported only via stdout chunk summaries.
+D11: hookwall-gate is LIVE as an in-process envelope gate. The Hookwall class itself has no port. 89 real observation rows in data/hookwall-observations.ndjson prove past traffic (last: 2026-05-29T12:56:10Z). High-throughput packet passes (1M/10M/100M) run in-memory only with no per-packet ndjson write. The observation lane writes via universal-route.mjs file-append (not HTTP) because the LAW-001 bus at 192.168.100.1:4947 is unreachable from acer. The architectural 'envelope-source → omnidispatcher' label is conceptual; no code wires hookwall output directly to the :4950 omnidispatcher port.
+One-line: LIVE in-process gate, 89 proven observation rows, last write 2026-05-29; high-volume packet passes are in-memory only with no ndjson trail.
+
+--- REAL FINDINGS ---
+
+* Hookwall class is pure in-process: validates required fields (type, tupleTag), tags envelope with gate name + passed_at, increments passedCount/rejectedCount. No port binding in hookwall.mjs itself.
+  RECEIPT: D:\bigpickle-rebuild\src\hookwall.mjs:14-53 — class Hookwall, pass() method, REQUIRED_FIELDS=['type','tupleTag']
+
+* Hookwall.pass() is called inline in every real fire script before downstream GNN/ledger. 1M/10M/100M runs all wired it. deep-wave-dispatcher creates one Hookwall instance per room per wave.
+  RECEIPT: D:\bigpickle-rebuild\fire-10m-real-free-agents-2026-05-28.mjs:15,71,109-112 — import + new Hookwall + hookwall.pass(envelope) inside packet loop; same pattern in fire-100m and fire-Nx1M
+
+* Observation lane has 89 real rows in hookwall-observations.ndjson. First substantive row: 2026-05-26T18:29:04.495Z (cosign_seq=3363, HRM_GPU_OK event). Last row: 2026-05-29T12:56:10.560Z (heartbeat tick). All have real gate=universal-route-default and passed_at epoch timestamps.
+  RECEIPT: D:\bigpickle-rebuild\data\hookwall-observations.ndjson:1 (first), :89 (last, ts=2026-05-29T12:56:10.560Z)
+
+* Parallel GNN lane has 89 rows in gnn-live-edges.ndjson, exactly mirroring hookwall-observations. Both files written by universal-route.mjs dualEmitObservation() via appendFileSync (file-append, not HTTP) — chosen because :4920 and :4947 LAW-001 bus are CONNECTION REFUSED / different network segment from acer.
+  RECEIPT: D:\bigpickle-rebuild\src\universal-route.mjs:22-24 (comment: ':4949 hookwall + :4920 GNN drain endpoints are CONNECTION REFUSED acer-side'), lines 180-184 appendNdjsonSoft to DEFAULT_HOOKWALL_PATH
+
+* Port :4947 IS currently bound on acer (LISTENING, PID 2388), but helm-engines.json registers asolaria-bus-LAW-001 at 192.168.100.1:4947 — a different network segment. The local :4947 process is not the LAW-001 bus. Hookwall gate does not use this port; observation writes are file-only.
+  RECEIPT: D:\bigpickle-rebuild\helm-engines.json:229-231 — url=http://192.168.100.1:4947, note='unreachable from acer+liris (different network segment)'; netstat shows 0.0.0.0:4947 LISTENING PID 2388
+
+* Port :4781 is LIVE (LISTENING PID 24276) with multiple CLOSE_WAIT connections; :4950 LIVE (PID 21056); :4952 LIVE (PID 9540). These are downstream omnidispatcher, dual-emit-gate, and vote-quorum — the targets hookwall-passed envelopes route toward.
+  RECEIPT: netstat output: TCP 0.0.0.0:4781 LISTENING 24276, TCP 127.0.0.1:4950 LISTENING 21056, TCP 127.0.0.1:4952 LISTENING 9540
+
+* Hookwall is registered in helm-engines.json as kind=file, path=D:/bigpickle-rebuild/src/hookwall.mjs, note='envelope-emission gate'. It is an engine module, not a daemon. No standalone process entry.
+  RECEIPT: D:\bigpickle-rebuild\helm-engines.json:23-27
+
+* upgrade-pipes-maps-registries-to-D manifest registers PIPE-HOOKWALL with canonical=true, spec=D:/bigpickle-rebuild/src/hookwall.mjs+behcs-bus-4947. The +behcs-bus-4947 reference in the manifest is aspirational (the real LAW-001 bus at 192.168.100.1:4947 is unreachable).
+  RECEIPT: D:\bigpickle-rebuild\upgrade-pipes-maps-registries-to-D-+-subscription-canon-2026-05-29.mjs:41
+
+* Total message count through hookwall gate traceable from ndjson: 89 observation rows (H9100 subnet). High-throughput in-process passes (1M/10M/100M runs) are NOT written to ndjson — they use in-memory passedCount only, emitting chunk summary rows to stdout/HBP sidecar files, not to hookwall-observations.ndjson.
+  RECEIPT: D:\bigpickle-rebuild\fire-10m-real-free-agents-2026-05-28.mjs:174 — stdout FIRE-1M-DONE line shows hookwall_pass=total count; separate from ndjson observation lane
+
+--- HONEST GAPS ---
+
+* hookwall.mjs has NO direct import of universal-route.mjs and makes NO observation writes itself. The 89 ndjson rows are written by callers (cosign-bridge.mjs → dualEmitObservation) NOT by the Hookwall.pass() call. If a caller skips dualEmitObservation, hookwall passes silently with no file evidence.
+  SEVERITY: medium
+
+* High-throughput passes (1M, 10M, 100M, deep-wave cascades) are in-memory only — passedCount increments but zero observation rows written per packet. The 89 ndjson rows are exclusively H9100 cosign-chain events and heartbeat ticks, not the BigPickle packet stream.
+  SEVERITY: medium
+
+* The 'from→to: envelope-source → omnidispatcher' claim for this pipe is an architectural label, not an observable network flow. No code in hookwall.mjs or its callers forwards the gated envelope to :4950 omnidispatcher. The omnidispatcher receives jobs via its own HTTP interface, not via hookwall output.
+  SEVERITY: medium
+
+* Last observation write was 2026-05-29T12:56:10Z (2 days ago as of 2026-05-31). No evidence of writes today. The heartbeat daemon that produces the tick rows may not be running currently.
+  SEVERITY: low
+
+* The local :4947 listener (PID 2388) identity is unresolved — not identified as the LAW-001 bus (which is at 192.168.100.1:4947) nor as any named bigpickle-rebuild daemon. Cannot confirm what is bound there.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+Already active for every call to Hookwall.pass() in fire scripts and deep-wave-dispatcher. To get per-packet ndjson observation writes (currently absent from high-volume runs), callers would need to call dualEmitObservation() from universal-route.mjs after each hookwall.pass() call — currently only cosign-bridge events trigger that path.

@@ -1,0 +1,53 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: helm-supervisor
+Kind: router
+Node: acer
+LIVE: false | Port: none — filesystem queue drain only, no HTTP server
+Last message: smoke-001.json in done/ ts=2026-05-24T17:15:17.781Z; heartbeat tick=1 ts=2026-05-24T18:32:54.554Z
+Message count: 1 real job (smoke-001) + 3 citizen ledger rows (registration + bilateral-closure + heartbeat-tick-1)
+D11: N/A — helm-supervisor is not port-bound; it is a filesystem queue consumer with no HTTP server
+One-line: helm-supervisor is DARK as a running process (no active interval loop, empty queue in/, single heartbeat tick 7 days stale) but its queue infrastructure and one smoke-001 job are fully proven on disk with real timestamps and a complete 3-row chained HBP citizen ledger.
+
+--- REAL FINDINGS ---
+
+* Source module confirmed at D:\bigpickle-rebuild\src\helm-supervisor.mjs. It is a queue-drain orchestrator, NOT a port-bound server. It polls a filesystem queue directory D:\Asolaria-External\helm\queue\in\ via setInterval (default 1000ms). From→To: queue in/ jobs → done/ receipts + hbp/ envelopes + out/ stdout. The module exports createSupervisor, tickOnce, and start; start() is what launches the polling loop.
+  RECEIPT: helm-supervisor.mjs:211-219 (start), helm-supervisor.mjs:68-91 (createSupervisor), bin/helm:74-88 (start command)
+
+* One real job has been processed end-to-end. smoke-001 was enqueued with verb=helm-smoke, processed via mock backend at 2026-05-24T17:15:17.781Z, exited 0, child PID=4321929cceb59bf3, parent PID=ca17a62ea379617d. The receipt, HBP envelope (with 47D tuple D20=2026-05-24T17:15:17.774Z, D29=helm-smoke), .hbi, .hex, and .sha256 sidecar trinity all exist on disk.
+  RECEIPT: D:\Asolaria-External\helm\queue\done\smoke-001.json (ts=2026-05-24T17:15:17.781Z); D:\Asolaria-External\helm\queue\hbp\smoke-001-4321929cceb59bf3.hbp lines 1-52
+
+* Citizen ledger has 3 rows with real timestamps: row 1=citizen-registration (2026-05-24T18:10:49.111Z, row_hash=449a9f1f312c1e29), row 2=bilateral-closure (2026-05-24T18:20:55.993Z, row_hash=caf71b909aacbed4, bilateral pipe verdict=HEALTHY-END-TO-END, d4920 ingest_total went 21→22 on test POST), row 3=heartbeat-tick#1 (2026-05-24T18:32:54.554Z, row_hash=f79dc244b68cd845, all 5 hyperbehcs daemons d4920-d4924 showed ok=1). Chain is fully contiguous: antecedents field in each row matches the prior row_hash.
+  RECEIPT: C:\HyperBEHCS\data\v48-citizens\AGT-L3-HELM-CLAUDE-SUP-H8EF7.hbp lines 1-3; .hbi row_count=3 last_ts=2026-05-24T18:32:54.554Z
+
+* status.json confirms state=registered, last_tick=1, last_tick_ts=2026-05-24T18:32:54.554Z, hbp_row_count=3. Pipe snapshot at that tick: d4920_ok=1 ingest_total=22 total_processed=24476; d4921_ok=1 mints_total=259700; d4922_ok=1 indexed_total=13321; d4923_ok=1 wave_count=139247; d4924_ok=1 indexed_total=184673.
+  RECEIPT: C:\Users\acer\Asolaria\runtime\citizens\claude-helm-supervisor\status.json full content
+
+* The queue in/ directory is currently empty (no pending jobs). The supervisor loop is NOT running as a live process right now — the only confirmed run was the smoke-001 manual tick on 2026-05-24. No SIGINT/SIGTERM handler suggests the process was terminated, and there is no process supervisor (cron, Task Scheduler, or pm2 entry) visible in the repo keeping it alive.
+  RECEIPT: D:\Asolaria-External\helm\queue\in\ glob = no results; bin/helm:85-88 only SIGINT/SIGTERM handler, no persist-on-restart mechanism
+
+* inbox.ndjson at the citizen runtime path is empty (1 blank line). transcript.log has only one entry: the registration at 2026-05-24T18:10:49.111Z. No heartbeat ticks beyond tick=1 have been appended — the heartbeat tick script (bin/helm-heartbeat-tick.mjs) was run once manually and is not scheduled.
+  RECEIPT: C:\Users\acer\Asolaria\runtime\citizens\claude-helm-supervisor\inbox.ndjson (empty); transcript.log line 1 only
+
+* The supervisor uses mock backend by default (helm-worker.mjs:31-47). The claude-cli backend is available (helm-worker.mjs:50-117) but requires subscription auth. The http-proxy backend (helm-worker.mjs:120-154) targets :4951 which helm-engines.json notes has no public /api endpoint as of 2026-05-24. Real agent dispatch through claude-cli or :4951 proxy is operator-gated.
+  RECEIPT: helm-worker.mjs:15 VALID_BACKENDS; helm-engines.json entry asolaria-bridge-claude-cli url=http://127.0.0.1:4951 note
+
+* No port binding at all. The helm supervisor has zero HTTP server code. It is purely a filesystem queue consumer. The D11 field is reported as N/A for port-bound status.
+  RECEIPT: helm-supervisor.mjs full file — no http.createServer, no net.createServer, no express/fastify import
+
+--- HONEST GAPS ---
+
+* Last heartbeat tick was 2026-05-24T18:32:54.554Z — 7 days ago as of 2026-05-31. No evidence of any tick since then. Cannot confirm the 5 hyperbehcs daemons (:4920-:4924) are still alive right now without a live probe; the snapshot is stale.
+  SEVERITY: medium
+
+* No Windows Task Scheduler entry, cron job, or process manager config was found to keep helm start running continuously. The loop only runs if someone manually invokes `node bin/helm start`. Whether it is running right now cannot be determined from filesystem alone.
+  SEVERITY: high
+
+* The bilateral-closure row references liris_d15_path=C:/Users/rayss/Asolaria/... and a D15 cell for helm-citizen admission — cannot verify from acer whether liris accepted the citizen into its own fabric index, as no liris-side probe was performed.
+  SEVERITY: low
+
+* cp field in citizen-registration row is PENDING-APEX-MINT. The 30-voxel atlas mint (v44 voxels hilbert 789-795) and the seq=38 chain integrity gap both remain unresolved per memory files, meaning the promotion chain is blocked and this citizen has not been apex-minted.
+  SEVERITY: medium
+
+--- WOULD ACTIVATE IF ---
+Run `node bin/helm start --queue D:/Asolaria-External/helm/queue --backend mock` (or claude-cli for real agent dispatch). Drop a .json job file into D:\\Asolaria-External\\helm\\queue\\in\\ — the 1-second poller will pick it up on the next tick. For real claude-cli dispatch: ANTHROPIC_API_KEY must be set or subscription auth active. For heartbeat continuity: schedule `node bin/helm-heartbeat-tick.mjs` via Windows Task Scheduler every 60s.
