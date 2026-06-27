@@ -1,0 +1,7 @@
+HBP|schema=asolaria.usb_image_ocr_receipt.v1|date=2026-06-21|seat=liris|status=MEASURED_NO_LOCAL_USB_IMAGES|json=0
+FABRIC|tag=UNVERIFIED_STALE_FALLBACK|health=ok_true_but_fallback_stale|cached_at=2026-06-18T13:18:07.194Z|reason=all_bases_unavailable|json=0
+USB|tag=MEASURED|device=PHYSICALDRIVE1|friendly=VendorCo_ProductCode|bus=USB|size_gb=117.19|mounted=D:|label=RECUPERACAO|fs=FAT32|partition=MBR_part1_FAT32_LBA|sector0_sha16=f24aad075a280a08|json=0
+CENSUS|tag=MEASURED|usb_files_total=261|usb_bytes_mb=11984.29|image_ext_count=0|safe_image_ext_count=0|json=0
+OCR|tag=BLOCKED|reason=no_image_files_on_local_usb_and_tesseract_absent|tesseract_where=false|program_files_tesseract=false|json=0
+BOUNDARY|tag=MEASURED_VANTAGE_SPLIT|value=Acer_transcript_7199_USB_only_images_not_present_on_this_Liris_USB; requires Acer_2TB_USB_or_copied_unified_table_to_continue|json=0
+FOOT|rows=5|json=0
