@@ -1,0 +1,8 @@
+INGESTHDR|proof=GOOGLE-DRIVE-TO-CUBE-INGEST|form=hbp-tuple|source=claude.ai-Drive-MCP(existing,no-gcloud,no-key)|drive_id=10o7YJzU3NKi0bAoQq43Z-ps95als5QTOit15NZ6WzvM|title=ASOLARIA-CANON-SOURCE-02|owner=plasmatoid@gmail.com|held_safe=read-only+referential+no-provider-call|json=0
+INGESTSLICE|raw_bytes=3920|sha256_16=2c4ffb17349eaf87|tokens=480|distinct_content_terms=267|json=0
+INGESTCUBE|cube10=2c4ffb17349eaf87ffff|host_handle8=2c4ffb17349eaf87|quant8=101,127,103,137,126,124,97,107|schema=asolaria.drive_ingest.cube.v1|descriptor_only=1|json=0
+INGESTREDUCTION|raw_bytes=3920|host_handle=8B|cube_glyph=10B|raw->handle=490x|raw->cube=392x|note=referential-content-address-not-lossless|json=0
+INGESTCATALOG|kind=verb-noun-glyph-vocabulary|distinct_terms=267|sample_top10=live:7:g247610f4 plus:5:g383ef369 google:4:gbbdefa29 external:4:g3c462384 asolaria:3:g4869d99c canon:3:g7a535665 fabric:3:gad2a542c proposal:3:gecd1378b free:3:gad95d5fa fires:3:g03ce67f2|each_term=glyph-tuple-addressable|json=0
+INGESTLINEAGE|path=drive-doc->slice->tuple/HBP->quant8->cube10->verb-noun-glyph-catalog|maps_into=existing-BEHCS-cubes+index-language-catalogs|new_infra_required=NONE-beyond-this-ingestor|json=0
+INGESTBOUNDARY|raw_content_published=0|provider_calls=0|device_mutation=local-receipt-only|gemini_notebooklm=PROPOSE/slice-sources-not-dependencies|notebooklm_write_api=UNVERIFIED|json=0
+INGESTFTR|sha256=12a21080b0a3da2b2ed4904f5cda0f86fb8340e8dc1b7a617fcdede044a433ae|rows=7|verdict=INGEST-NOT-INTEGRATE-PROVEN-on-1-real-drive-doc|json=0
