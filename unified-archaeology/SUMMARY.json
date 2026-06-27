@@ -1,0 +1,54 @@
+{
+  "total": 591286,
+  "unique": 457858,
+  "dups": 133428,
+  "dedup_pct": 22.6,
+  "by_source": {
+    "C": 446854,
+    "D": 123101,
+    "USB": 21037,
+    "GDRIVE": 253,
+    "WSL": 41
+  },
+  "by_class": {
+    "CORPUS": 59401,
+    "DATA": 377486,
+    "CARVE": 5812,
+    "MEDIA": 27883,
+    "RUNTIME": 120704
+  },
+  "by_kind": {
+    "paper": 34370,
+    "data": 207861,
+    "other": 18332,
+    "doc": 1496,
+    "image": 28859,
+    "code": 20731,
+    "pdf": 1276,
+    "video": 761,
+    "packet": 274397,
+    "audio": 2801,
+    "archive": 402
+  },
+  "by_tier": {
+    "τ3^5": 91584,
+    "τ3": 91730,
+    "τH": 92017,
+    "τ1": 91388,
+    "τ3^3": 91139
+  },
+  "by_lane": {
+    "0": 152807,
+    "1": 152514,
+    "2": 152537
+  },
+  "ts_known": 570668,
+  "ts_range": [
+    "2018-06-23",
+    "2026-06-20T15:00:31.604Z"
+  ],
+  "significance_flagged": 460,
+  "corpus_view_rows": 25641,
+  "papers": 37142,
+  "carve_names_only": 5812
+}
