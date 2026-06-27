@@ -1,0 +1,8 @@
+INGESTHDR|proof=DOC-TO-CUBE-INGEST|form=hbp-tuple|source=arXiv-2605.05115-Goodfire+Stanford(Wurgaft-et-al)|ref_id=arXiv:2605.05115v1|title=Manifold-Steering-Goodfire-2605.05115|held_safe=read-only+referential+no-provider-call|json=0
+INGESTSLICE|raw_bytes=5312|sha256_16=21ce021ea7b78bec|tokens=627|distinct_content_terms=282|json=0
+INGESTCUBE|cube10=21ce021ea7b78bec9d66|host_handle8=21ce021ea7b78bec|quant8=70,102,125,150,130,144,106,138|schema=asolaria.drive_ingest.cube.v1|descriptor_only=1|json=0
+INGESTREDUCTION|raw_bytes=5312|host_handle=8B|cube_glyph=10B|raw->handle=664x|raw->cube=531x|note=referential-content-address-not-lossless|json=0
+INGESTCATALOG|kind=verb-noun-glyph-vocabulary|distinct_terms=282|sample_top10=manifold:19:g4dd5b6e2 linear:17:g7f2fe580 steering:15:g01f542f9 behavior:10:g08bf2418 activation:8:gb15526c9 control:6:g0fcd568a isometry:6:gb7c9e31d geometry:5:g8148b7fe representation:5:ga8ad1f5f goodfire:5:g8aaed483|each_term=glyph-tuple-addressable|json=0
+INGESTLINEAGE|path=drive-doc->slice->tuple/HBP->quant8->cube10->verb-noun-glyph-catalog|maps_into=existing-BEHCS-cubes+index-language-catalogs|new_infra_required=NONE-beyond-this-ingestor|json=0
+INGESTBOUNDARY|raw_content_published=0|provider_calls=0|device_mutation=local-receipt-only|gemini_notebooklm=PROPOSE/slice-sources-not-dependencies|notebooklm_write_api=UNVERIFIED|json=0
+INGESTFTR|sha256=f92e810c06087cd8910ced291684ce6027d67768375b6185044574f5e02f76bf|rows=7|verdict=INGEST-NOT-INTEGRATE-PROVEN-on-1-real-drive-doc|json=0
