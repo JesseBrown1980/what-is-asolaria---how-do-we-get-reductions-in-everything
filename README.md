@@ -4,6 +4,8 @@ Research notes + a 40-agent rebuild of the Asolaria **prime-tower / cylinder / r
 
 **Honest frame (binding, repeated in every document):** *IT is not inert slices.* Frozen and borrowed slices are the **potential layer**; Asolaria is the **matrix/fabric plus live engines and agents** that address, route, gate, animate, and materialize those slices into runtime behavior. This is why "slices, not ASI" is only an anti-hype guardrail, not the system definition. The operator/design frame is **Evolvable AI / post-ASI**: a fabric where live agents run frozen slice potential through gated engines. Specific live claims still require **[EXISTS]** evidence (file on disk, re-run, fabric/receipt) or **[NEW]** design reduction to an EXISTS primitive; advancement still requires an engine crank `E ≠ 0` that only the operator authorizes. No claim of a Riemann proof without a theorem — where the prime structure shows up, it is built as an *instrument*, not a result.
 
+**Fabric-first doctrine (canonical cross-seat frame):** see the shared doctrine doc: [`FABRIC-FIRST-CIPHER-ASOLARIA-AGENT-DOCTRINE-2026-06-27.md`](https://github.com/JesseBrown1980/HYPER-BECHS--the-third-set/blob/acer/system-interpretations-2026-06-26/FABRIC-FIRST-CIPHER-ASOLARIA-AGENT-DOCTRINE-2026-06-27.md). The important calibration is **OLD vs NEW**: the old Node-era 10k-room / BigPickle / Gulp / cube / GNN fabric is the system that already self-improved (`ACER_FABRIC_MEASURED`); the new Rust 8-byte Host-8 system is the massive improvement/migration underway, not fully cut over. Do not read the new system's staged status backward onto the old system's measured achievements.
+
 ---
 
 ## The question this repo answers: where do the reductions come from?
