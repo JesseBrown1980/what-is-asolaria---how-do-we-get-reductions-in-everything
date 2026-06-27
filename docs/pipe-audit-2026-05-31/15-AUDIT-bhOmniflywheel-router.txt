@@ -1,0 +1,56 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: bhOmniflywheel-router
+Kind: router
+Node: acer
+LIVE: false | Port: none — :4956 (dashboard) not bound; :4947 is behcs-bus not omniflywheel
+Last message: 2026-05-27T21:44:03.847Z — GNN-EDGE src=AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 dst=citizen:liris w=3 era=new-asolaria
+Message count: 3 hookwall observations + 7 GNN edges (all from 2026-05-27, frozen)
+D11: DARK. The bhOmniflywheelRouter module is a pure library (no self-starting server). Its last live traffic was 2026-05-27 at ~21:44Z (3 hookwall observations + 7 GNN edges from a one-off wave). No process running today loads or calls it. The bhOmniflywheelDashboard (:4956) is not bound. The CNC snapshot file-drop mechanism and cosign-pending directories were never created. The module is structurally complete (all 9 stages + round-7 patches) but sits idle waiting for a caller to require() it and invoke pipeline() or route().
+One-line: DARK — last traffic 2026-05-27T21:44Z (3 hookwall rows / 7 GNN edges), no process loads it today, dashboard port :4956 unbound.
+
+--- REAL FINDINGS ---
+
+* Source file exists and is structurally complete: 9 pipeline stages (filter→verify→translate→catalog→route→room→schedule→hookwall→whiteroom-mint), round-7 cross-process snapshot patch included, 1065 lines.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js:1-1065
+
+* hookwall ndjson has exactly 3 rows, all timestamped 2026-05-27T21:44:03Z, all from caller AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 → target citizen:liris, rotations 1-3. No writes since 2026-05-27 18:44 local.
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-hookwall.ndjson (3 rows, LastWriteTime 5/27/2026 6:44:03 PM)
+
+* GNN-edges ndjson has 7 rows: 4 from AGT-VECTOR-HAPPY-W155-P03-N00008 (2026-05-27T21:36Z) and 3 from AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 (2026-05-27T21:44Z). No new edges since 2026-05-27.
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-gnn-edges.ndjson (7 rows, LastWriteTime 5/27/2026 6:44:03 PM)
+
+* Port :4956 (bhOmniflywheelDashboard default port) is NOT bound. No dashboard daemon is running.
+  RECEIPT: netstat -ano | Select-String ':4956' → empty
+
+* Port :4947 is LIVE and LISTENING but is owned by PID 2388 = behcs-bus.js, NOT bhOmniflywheelRouter. behcs-bus does not reference bhOmniflywheelRouter.
+  RECEIPT: netstat -ano :4947 LISTENING PID 2388; Get-Process 2388 CommandLine = tools/behcs/behcs-bus.js
+
+* No running node process loads bhOmniflywheelRouter.js today. Checked all 20 node processes: omnidispatcher (21056), behcs-bus (2388), federation-overlay (6516), super-dashboard (22984), asolaria-dashboard-4944 (8144), omnifile-share (1076/18660), mcp servers (15428/22844/23472/24560) — none reference the router.
+  RECEIPT: Get-Process node + CommandLine scan; Select-String checks on asolaria-dashboard-daemon-4944.js returned no matches
+
+* archUpdateSupervisor.js requires bhOmniflywheelRouter.js (line 19) but there is no running process executing it. The file exists in src/ but no daemon entry point in tools/ currently launches it.
+  RECEIPT: C:\Users\acer\Asolaria\src\archUpdateSupervisor.js:19 const flywheel = require('./bhOmniflywheelRouter.js')
+
+* No CNC harvest snapshot file exists (no cnc-harvest-*.hbp or bh-cnc-* in data/). The cross-process snapshot mechanism from round-7 patch 12 has never been activated.
+  RECEIPT: Get-ChildItem data\ -Filter 'cnc-harvest*' and 'bh-cnc*' → empty
+
+* No cosign-pending drop directory exists with pending CNC files. L9 cncCosignEmit file-drop path has never fired.
+  RECEIPT: Get-ChildItem data\cosign-pending → directory missing / error
+
+* The bhOmniflywheelDashboard.js (src/) requires the router and exposes :4956, but no standalone launcher for it exists in tools/ — it was built as a library, never wired to a startup daemon.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelDashboard.js:7 const r = require('./bhOmniflywheelRouter.js'); port 4956 not bound
+
+--- HONEST GAPS ---
+
+* Cannot confirm whether archUpdateSupervisor was launched during a previous session and has since died — process list only shows current state. The ndjson last-write of 2026-05-27 suggests it ran that day and then stopped.
+  SEVERITY: low
+
+* The tools/ directory search timed out (large repo). Cannot guarantee no other tool launcher in tools/ references bhOmniflywheelRouter beyond what was checked.
+  SEVERITY: low
+
+* The 3 hookwall rows and 7 GNN-edge rows have real PIDs and real timestamps but no cosign_token or row_hash verification was performed against those archived rows — cannot confirm they passed the full pipeline vs. being test-fired.
+  SEVERITY: medium
+
+--- WOULD ACTIVATE IF ---
+A process requires() bhOmniflywheelRouter.js and calls pipeline() or route() with a FEDENV envelope. Three concrete activation paths: (1) launch bhOmniflywheelDashboard.js as a standalone daemon (node src/bhOmniflywheelDashboard.js — starts :4956 and exposes all CNC endpoints); (2) launch archUpdateSupervisor.js as a daemon (it already requires the router and calls registerStabilityHarvest); (3) add hookwall integration to an existing live daemon (e.g. behcs-bus on :4947 or omnidispatcher on :4950) so every routed envelope passes through pipeline(). The round-7 cross-process snapshot path also needs registerCncSnapshotEmit() called with a known file path so the dashboard can read cross-process state.

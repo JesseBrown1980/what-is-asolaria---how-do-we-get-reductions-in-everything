@@ -1,0 +1,47 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: gnn-edges-file-sink
+Kind: bus
+Node: acer
+LIVE: false | Port: false — not port-bound; this is a file-append sink triggered by library callers, not a network service
+Last message: GNN-EDGE|src=AGT-FALCON-SISTER-ORGAN-W155-P03-N00016|dst=citizen:liris|w=3|era=new-asolaria|ts=2026-05-27T21:44:03.847Z
+Message count: 7 GNN-EDGE rows confirmed on disk (838 bytes total)
+D11: DARK-STALE
+One-line: Sink file is real and has had 7 edges written (last 2026-05-27T21:44Z, now 97 hours stale); the module is a passive library so no new rows are written until an active caller routes an envelope through pipeline() or hookwallEmit() with caller_pid and target set.
+
+--- REAL FINDINGS ---
+
+* Sink file exists with 7 real GNN-EDGE rows, last written 2026-05-27T21:44:03Z (~97 hours ago). Two distinct agent PIDs produced traffic: AGT-VECTOR-HAPPY-W155-P03-N00008 (4 rows, 21:36 UTC) and AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 (3 rows, 21:44 UTC). Both eras (old-asolaria and new-asolaria) are represented.
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-gnn-edges.ndjson — size 838 bytes, 7 non-empty lines, mtime 2026-05-27T21:44:03.851Z
+
+* The write gate requires BOTH observation.caller_pid AND observation.target to be truthy (line 302 in source). The pipeline's hookwall stage always passes both (lines 1007-1011), so any routed envelope with a caller_pid and target will produce a GNN-EDGE row. Envelopes missing either field skip GNN but still write hookwall.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js lines 301-306: `if (typeof observation === 'object' && observation.caller_pid && observation.target) { const edge = 'GNN-EDGE|...' fs.appendFileSync(gnnPath, edge + '\n'); edgeWritten = true; }`
+
+* Default sink path is computed at call-time as path.join(__dirname, '..', 'data', 'bh-omniflywheel-gnn-edges.ndjson') (line 291). No daemon or scheduler is running in this module that writes to the GNN file independently — the file is only written when an external caller invokes hookwallEmit() or pipeline() with hookwall opts enabled. No continuous consumer holds this file open.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js line 291: `function _defaultGnnPath() { return path.join(__dirname, '..', 'data', 'bh-omniflywheel-gnn-edges.ndjson'); }`
+
+* The module is a library (no self-executing server/daemon). The bhOmniflywheelDashboard.js exposes hookwallStatus() at /v1/hookwall-status but does NOT expose a GNN-row feed endpoint; the dashboard only reads row counts and byte sizes from the file, not the rows themselves. There is no live subscriber draining the GNN ndjson.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelDashboard.js — only hookwallStatus() called, which reads stat + row count; no GNN row streaming route found
+
+* Port :4947 is LIVE (PID 2388, established connections from :8633 and :15264). Port :4781 is LIVE (PID 24276, many CLOSE_WAIT + one ESTABLISHED). Port :4950 LIVE (PID 21056). Port :4952 LIVE (PID 9540). Port :4953 LIVE (PID 4676). The 97-hour gap in GNN sink writes is not a port-death issue — it is because the module is passive and only produces edge rows on-demand when callers invoke pipeline() or hookwallEmit().
+  RECEIPT: netstat output: `TCP 0.0.0.0:4947 LISTENING PID 2388`, `TCP 0.0.0.0:4781 LISTENING PID 24276`, `TCP 127.0.0.1:4950 LISTENING PID 21056`, `TCP 127.0.0.1:4952 LISTENING PID 9540`, `TCP 127.0.0.1:4953 LISTENING PID 4676`
+
+* The cosign-pending directory (C:\Users\acer\Asolaria\data\cosign-pending) does not exist, meaning cncCosignEmit() has never been called or the directory was cleaned. The L9 promotion path via file-drop is dark.
+  RECEIPT: powershell Get-ChildItem check: directory 'C:\Users\acer\Asolaria\data\cosign-pending' not found
+
+* A separate gnn-live-edges.ndjson (3871 bytes, last written 2026-05-27T15:04:32Z) exists in the same data directory and uses a different schema (gnn-live-edge.v1 JSON objects). It is written by a different subsystem (falcon/omnicoder path), not bhOmniflywheelRouter.js. Last 3 rows include cosign_seq=3386. This is a distinct sink and should not be confused with the bhOmniflywheelRouter GNN file.
+  RECEIPT: C:\Users\acer\Asolaria\data\gnn-live-edges.ndjson — last row ts=2026-05-27T15:04:05.381Z, schema=gnn-live-edge.v1
+
+--- HONEST GAPS ---
+
+* Cannot confirm which specific Node process (PID 2388 / 21056 / 24276) is the caller that produced the 7 GNN rows on 2026-05-27. CommandLine was not surfaced by Get-Process in this session (blank column). The caller could be a test harness, a smoke script, or the main server.
+  SEVERITY: low
+
+* The 97-hour staleness could reflect a real production gap (no agent routed through pipeline since 2026-05-27) OR it could mean callers are passing hookwall: false to pipeline(). There is no counter in the ndjson itself to distinguish these cases without instrumenting a running process.
+  SEVERITY: medium
+
+* No downstream GNN reader/consumer is visible from the file system. Whether the 7 existing GNN-EDGE rows have ever been consumed by a GNN inference engine (at :4947 or elsewhere) cannot be confirmed read-only.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+Any caller invokes pipeline(env, { hookwall: true, hookwallOpts: { gnnPath: '...' } }) OR hookwallEmit(obs, { gnnPath: '...' }) with obs.caller_pid and obs.target both set. The module is fully wired — the gnnPath default resolves to the correct file, mkdirSync ensures the directory exists, and appendFileSync writes atomically per row. A single routed envelope from any active agent (e.g. via the :4950 omnidispatcher or :4947 subscriber) is sufficient to restart the flow.

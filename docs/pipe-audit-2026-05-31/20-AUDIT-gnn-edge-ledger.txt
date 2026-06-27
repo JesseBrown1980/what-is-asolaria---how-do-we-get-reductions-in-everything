@@ -1,0 +1,50 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: gnn-edge-ledger
+Kind: bus
+Node: acer
+LIVE: false | Port: none — gnn-edge-ledger.mjs is in-process only; persistence goes to flat file data/gnn-live-edges.ndjson via universal-route.mjs appendNdjsonSoft
+Last message: 2026-05-29T12:56:10.560Z — schema=gnn-live-edge.v1, from=cosign_seq_99, to=channel_omni_asolaria_acer_x_y, verb=tick (D:\\bigpickle-rebuild\\data\\gnn-live-edges.ndjson line 89)
+Message count: 89 rows total in D:\\bigpickle-rebuild\\data\\gnn-live-edges.ndjson (76 tick/heartbeat from cosign_seq_99, 13 semantic federation events from cosign_seq_3363-3375). Zero rows from routing decisions or AoT branches.
+D11: The in-memory ledger (gnn-edge-ledger.mjs) is a pure library with no I/O. The only active write path to the ndjson file is cosign-bridge → universal-route (last write 2026-05-29). The deep-wave routing-decision path silently no-ops due to a missing recordEdge method. Helm-supervisor appends in-memory only — no flush path. 89 real rows exist in the file; the pipe as described (routing-decisions → gnn-live-edges-ndjson) is structurally DARK for its primary data source.
+One-line: Pipe is PARTIAL-DARK: the cosign/heartbeat lane wrote 89 rows (last 2026-05-29) but the routing-decision lane (deep-wave + AoT branches) silently no-ops due to a missing recordEdge method and an unset production flag.
+
+--- REAL FINDINGS ---
+
+* gnn-edge-ledger.mjs is a pure in-memory module (createGNNEdgeLedger). It holds edges in a JS array — no port, no HTTP, no file I/O. It is a library, not a daemon.
+  RECEIPT: D:\bigpickle-rebuild\src\gnn-edge-ledger.mjs:1-25 — entire file is 25 lines, exports only createGNNEdgeLedger() returning { entries, size, append, clear }
+
+* The ndjson output store (gnn-live-edges.ndjson) is written by universal-route.mjs via appendNdjsonSoft, not by gnn-edge-ledger.mjs. The actual persistence layer is universal-route.dualEmitObservation → cosign-bridge.durableNotify.
+  RECEIPT: D:\bigpickle-rebuild\src\universal-route.mjs:36 (DEFAULT_GNN_EDGES_PATH = 'data/gnn-live-edges.ndjson') + line 185-189 (appendNdjsonSoft call)
+
+* gnn-live-edges.ndjson contains 89 real rows written on two separate dates. First entry 2026-05-26T18:29:04Z (cosign_seq_3363, HRM_GPU_OK gate), last entry 2026-05-29T12:56:10Z. File is 28,888 bytes.
+  RECEIPT: D:\bigpickle-rebuild\data\gnn-live-edges.ndjson — line 1 ts=2026-05-26T18:29:04.495Z, line 89 ts=2026-05-29T12:56:10.560Z; file size 28888 bytes
+
+* 76 of 89 rows are verb=tick from cosign_seq_99, emitted during heartbeat test runs (2026-05-27 through 2026-05-29). The remaining 13 rows are real federation events: LAW ratifications, 100B stage-1 complete, HRM GPU gate, 1M run complete, etc.
+  RECEIPT: D:\bigpickle-rebuild\data\gnn-live-edges.ndjson — PowerShell verb-group count: tick=76, 13 distinct semantic verbs (cosign_seq_3363..3375)
+
+* The aot-runner.mjs path (routing-decisions → in-memory ledger) is DARK in the ndjson file. aot-runner only appends to the injected gnnEdgeLedger object when envelope.record_branches_as_edges=true AND deps.gnnEdgeLedger is provided. No caller in src/ passes record_branches_as_edges=true in production; it is test-only. deep-wave-dispatcher.mjs calls ledger.recordEdge?.(…) at line 96 — a no-op because createGNNEdgeLedger() does not expose recordEdge.
+  RECEIPT: D:\bigpickle-rebuild\src\aot-runner.mjs:97-108 (flag check); D:\bigpickle-rebuild\src\deep-wave-dispatcher.mjs:96 (optional chain no-op — createGNNEdgeLedger has no recordEdge method); D:\bigpickle-rebuild\src\gnn-edge-ledger.mjs:6-24 (returned object has no recordEdge)
+
+* helm-supervisor.mjs creates a GNNEdgeLedger at sup.gnn and calls append at step 6 of tickOnce (line 192). These edges go into the per-process in-memory ledger only — never flushed to gnn-live-edges.ndjson. No flush or write path exists in helm-supervisor.mjs.
+  RECEIPT: D:\bigpickle-rebuild\src\helm-supervisor.mjs:87 (gnn: createGNNEdgeLedger()), line 192 (sup.gnn.append). No writeFileSync or appendNdjsonSoft call in that file.
+
+* The only live production path writing to gnn-live-edges.ndjson is cosign-bridge.durableNotify → dualEmitObservation → universal-route.appendNdjsonSoft. Last write was 2026-05-29T12:56:10Z (over 2 days ago relative to today 2026-05-31).
+  RECEIPT: D:\bigpickle-rebuild\src\cosign-bridge.mjs:178-180 (universalRoute guard + dualEmitObservation call); PowerShell Get-Item LastWriteTime = Friday, May 29, 2026 9:56:10 AM
+
+--- HONEST GAPS ---
+
+* helm-supervisor GNN edges (helm-spawn parent→child) accumulate in memory and are never persisted. There is no flush-to-ndjson or flush-to-file path. If the process exits, those edges are lost.
+  SEVERITY: class-2 — loss of routing-decision edge history on process restart; does not break current functionality but creates a blind spot in nightly self-train input
+
+* deep-wave-dispatcher.mjs calls ledger.recordEdge?.() (line 96) — optional-chained against an interface that does not have recordEdge. The intent was to record per-1000-packet lane edges, but it silently no-ops every time. Routing decisions from deep-wave runs produce zero edges.
+  SEVERITY: class-1 — the primary routing-decisions → gnn-live-edges-ndjson flow described in the pipe spec does not execute
+
+* gnn-live-edges.ndjson is stale — last write 2026-05-29T12:56:10Z (about 1.5 days old as of 2026-05-31). No daemon is currently alive feeding it.
+  SEVERITY: class-2 — file is not being updated; any live-train consumer reads stale data
+
+* record_branches_as_edges flag in aot-runner.mjs is only exercised in tests. No production caller passes it. AoT branch outcomes never reach the ledger in a live run.
+  SEVERITY: class-2 — feature exists but is test-only; production AoT branches produce no edges
+
+--- WOULD ACTIVATE IF ---
+Two fixes needed: (1) Add recordEdge to createGNNEdgeLedger (D:\\bigpickle-rebuild\\src\\gnn-edge-ledger.mjs) so deep-wave-dispatcher.mjs line 96 stops no-opping, then wire that ledger's flush (appendNdjsonSoft) to the file at the end of dispatchWave. (2) Add a flush-to-ndjson call in helm-supervisor.mjs after sup.gnn.append (line 192) — or add a periodic flush via universal-route.appendNdjsonSoft. For AoT production use, set record_branches_as_edges=true in the production envelope and pass a gnnEdgeLedger instance as deps in the aot-runner call site.

@@ -1,0 +1,47 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: aolaria-surface-registry
+Kind: router
+Node: acer
+LIVE: false | Port: none — module declares 4781 as STOPPED_REFERENCE and 8765 as STOPPED_REFERENCE; it binds no port itself
+Last message: n/a — no traffic ever flows through this module at runtime
+Message count: 0 — no ndjson, no log file, no I/O calls in module
+D11: DARK
+One-line: aolaria-surface-registry is a DARK static-data factory: it renders HBP/HBI/HEX inventory packets in memory but is never imported by any server, daemon, or route; the live ix-surface-registry data file is produced by a separate CLI tool that reads markdown directly.
+
+--- REAL FINDINGS ---
+
+* Module is a pure static-data factory with no port binding, no HTTP routes, and no event emission. It exports buildSurfaceRegistryPacket() which renders HBP/HBI/HEX strings from frozen constant arrays. No require/import of this module exists anywhere in the active server stack.
+  RECEIPT: C:/Users/acer/Asolaria/src/asolariaSurfaceRegistry.js:148-167 (buildSurfaceRegistryPacket), grep over src/*.js shows zero callers besides the module itself
+
+* Only two files in the entire codebase reference asolariaSurfaceRegistry: the module itself and ixFabricAtlasStore.js — but ixFabricAtlasStore.js does NOT import asolariaSurfaceRegistry. It has its own getIxSurfaceRegistry() at line 433 which reads from a separate JSON file at data/behcs/index/ix-surface-registry.v1.json.
+  RECEIPT: C:/Users/acer/Asolaria/src/ixFabricAtlasStore.js:10 (SURFACE_REGISTRY_PATH), line 433-436 (getIxSurfaceRegistry reads JSON file, not the JS module)
+
+* The ix-surface-registry.v1.json data file that ixFabricAtlasStore actually reads has generatedAt=2026-04-25T03:35:54.568Z. It was last written by build-ix-fabric-atlas.js (a CLI tool) which also does NOT import asolariaSurfaceRegistry.js — it parses markdown/JSON docs directly.
+  RECEIPT: C:/Users/acer/Asolaria/data/behcs/index/ix-surface-registry.v1.json:4 (generatedAt timestamp)
+
+* The unit test file for this module (asolaria-surface-registry.unit.test.js) exercises buildSurfaceRegistryPacket via direct require — this is the ONLY code path that ever calls the function. No integration path or server route invokes it.
+  RECEIPT: C:/Users/acer/Asolaria/tests/asolaria-surface-registry.unit.test.js:4-6
+
+* Port 4781 is LISTENING (PID 24276) with FIN_WAIT_2 / CLOSE_WAIT connections, confirming active server. But asolariaSurfaceRegistry.js has main-server port=4781 marked status=STOPPED_REFERENCE, authority=blocked_until_review — the registry's own self-description admits it is a reference document, not a live router binding to that port.
+  RECEIPT: C:/Users/acer/Asolaria/src/asolariaSurfaceRegistry.js:16-21, netstat output (4781 LISTEN PID 24276)
+
+* Ports 4947 (LISTEN PID 2388), 4792 (LISTEN PID 26768), 4793 (LISTEN PID 5444) are bound — none of them are declared in asolariaSurfaceRegistry.js PORT_SURFACES. The registry's port table only lists 4781 and 8765, both STOPPED_REFERENCE.
+  RECEIPT: C:/Users/acer/Asolaria/src/asolariaSurfaceRegistry.js:129-134 (PORT_SURFACES), netstat output
+
+* No logs/, no ndjson, no traffic counters are produced by this module. It has no fs.appendFile, no EventEmitter, no HTTP server calls anywhere in its 301 lines.
+  RECEIPT: C:/Users/acer/Asolaria/src/asolariaSurfaceRegistry.js:1-301 (full file — zero I/O calls)
+
+* BLOCKED_ACTIONS array explicitly includes service_restart, route_execution, network_check, vault_unlock, vault_secret_read, delete, json_artifact, receipt_mutation — this is a safety fence document, not an active pipe.
+  RECEIPT: C:/Users/acer/Asolaria/src/asolariaSurfaceRegistry.js:136-146
+
+--- HONEST GAPS ---
+
+* build-ix-fabric-atlas.js was not confirmed to NOT import asolariaSurfaceRegistry — grep returned no output (exit 1 = no match), but the tool script builds ix-surface-registry.v1.json from markdown sources, so the JS module is still unused at build time.
+  SEVERITY: low
+
+* old-liris-deploy-integration-cube-cubed.cube.js references a named_surface_registry descriptor with status=merge_audit_required — unclear whether a future merge path would wire asolariaSurfaceRegistry.js into a live route.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+A server file (e.g. server.js or gateway/server.js) or the omniflywheelRouter adds `const { buildSurfaceRegistryPacket } = require('./asolariaSurfaceRegistry')` and calls it on an HTTP route (e.g. GET /api/surface-registry) or emits its output to a hookwall/GNN pipe. Currently zero import paths exist outside the unit test.

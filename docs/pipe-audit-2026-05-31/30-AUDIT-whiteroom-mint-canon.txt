@@ -1,0 +1,53 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: whiteroom-mint-canon
+Kind: bus
+Node: acer
+LIVE: false | Port: none — :4956 (dashboard) is down; :4953 (cosign chain, downstream) is live but receives nothing from this pipe
+Last message: 2026-05-27T21:44:03.847Z — GNN-EDGE src=AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 dst=citizen:liris w=3 era=new-asolaria (C:\Users\acer\Asolaria\data\bh-omniflywheel-gnn-edges.ndjson last line)
+Message count: 3 confirmed routed envelopes (hookwall rows) from 2026-05-27T21:44Z; 7 GNN edges total. Zero whiteroom-mint rows persisted to disk.
+D11: DARK — dashboard :4956 is not bound. No live HTTP consumer of whiteroom-mint-report. No persistent whiteroom ndjson. In-process seenPatterns/mintedWhiterooms exist only while a process actively holds the bhOmniflywheelRouter module; last confirmed load was 2026-05-27T21:44Z.
+One-line: whiteroom-mint-canon pipe is code-complete and ran 3 rotations on 2026-05-27 but is currently DARK: :4956 dashboard dead, no persistent mint ndjson, no cosign-pending drops, in-process state gone.
+
+--- REAL FINDINGS ---
+
+* mintWhiteroom() is Stage 9 in pipeline(), called when opts.whiteroomMint !== false. It detects novel pattern combos (cube×band, caller×band, glyph×era, target×meta) and appends WHITEROOM-MINT rows to opts.whiteroomOpts.whiteroomPath if supplied. The in-process mintedWhiterooms[] and seenPatterns Set are the only always-on stores.
+  RECEIPT: C:\Users\acer\Asolaria\src\bhOmniflywheelRouter.js:611-649 (mintWhiteroom), line 1015-1021 (pipeline integration)
+
+* 3 real hookwall observations exist from 2026-05-27T21:44:03Z (all AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 → citizen:liris, rotations 1-2-3, era=new-asolaria, supervisor=falcon). These are the only confirmed real envelopes ever routed through the flywheel. File last modified 2026-05-27 18:44:03 local (21:44 UTC).
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-hookwall.ndjson — 3 rows; stat Modify: 2026-05-27 18:44:03
+
+* 7 GNN edges exist: 4 from AGT-VECTOR-HAPPY-W155-P03-N00008 (2026-05-27T21:36Z) and 3 from AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 (2026-05-27T21:44Z). These are the upstream of whiteroom-mint — envelopes that made it past hookwall-emit would have triggered mintWhiteroom() next, but only in-process state survives (no persistent whiteroom ndjson file was written because no caller passed opts.whiteroomOpts.whiteroomPath).
+  RECEIPT: C:\Users\acer\Asolaria\data\bh-omniflywheel-gnn-edges.ndjson — 7 rows
+
+* No whiteroom-mint ndjson file exists anywhere in C:\Users\acer\Asolaria\data\. The BEHCS omniwhite-room JSON files are a separate subsystem (space-agent whiterooms), NOT bhOmniflywheelRouter Stage-9 output.
+  RECEIPT: find C:/Users/acer/Asolaria/data -name '*whiteroom*.ndjson' → 0 results; behcs/omniwhite-room/ holds *.v1.json files unrelated to Stage 9
+
+* Dashboard port :4956 is DEAD (curl timeout). No bhOmniflywheelDashboard process is running. The dashboard is the only HTTP consumer of whiteroomMintReport().
+  RECEIPT: curl http://127.0.0.1:4956/whiteroom-mint-report → PORT_4956_DEAD
+
+* cosign-pending/ directory does NOT exist. cncCosignEmit() (L9 promotion path, round-5 patch 9) has never fired in production — no file-drops to the cosign chain daemon at :4953.
+  RECEIPT: test -d C:/Users/acer/Asolaria/data/cosign-pending → DIR_ABSENT; :4953 health confirmed live (head_seq=3559) but no pending pickup files present
+
+* From→To topology: FEDENV-v1/v2 envelope callers (any agent with caller_pid) → bhOmniflywheelRouter.pipeline() [Stage 9: mintWhiteroom()] → in-process mintedWhiterooms[] (bounded cap 1000) + optional file at opts.whiteroomOpts.whiteroomPath → optional bhOmniflywheelDashboard :4956 /v1/whiteroom-mint-report → optional cncCosignEmit() → cosign-pending/ → :4953 daemon.
+  RECEIPT: bhOmniflywheelRouter.js:611-649 (Stage 9), line 1015-1021 (pipeline), bhOmniflywheelDashboard.js:46 (/v1/whiteroom-mint-report), bhOmniflywheelRouter.js:761-771 (cncCosignEmit)
+
+* The 3 real hookwall observations prove that pipeline() ran 3 times with real envelopes (rotations 1-3). mintWhiteroom() would have been called for each (whiteroomMint defaults to not-false in pipeline). The resulting minted patterns lived only in-process memory and were lost when that process exited — no snapshot file was written (snapshotWhiteroomsToFile was never called in that run).
+  RECEIPT: bhOmniflywheelRouter.js:1015 (opts.whiteroomMint !== false = default on); no whiteroom snapshot file found on disk
+
+--- HONEST GAPS ---
+
+* No whiteroom-mint ndjson file on disk and no snapshot file means zero durable proof of how many patterns were actually minted during the 3-rotation test run on 2026-05-27. The in-process state is gone.
+  SEVERITY: medium — historical data lost, but not a safety issue
+
+* No evidence of who called pipeline() to produce the 3 rotations. The hookwall rows show AGT-FALCON-SISTER-ORGAN caller but no caller script or test name is identifiable from the ndjson alone.
+  SEVERITY: low
+
+* Port :4956 (dashboard) and :4781 (Asolaria main) are DEAD right now. If the flywheel router IS loaded by another live daemon (e.g., via require()) there would be no way to query its in-process counters without the dashboard running.
+  SEVERITY: medium — blind spot in observability
+
+* cncCosignEmit() has never run in production (no cosign-pending dir). The L9 promotion path from whiteroom-mint to the cosign chain at :4953 is code-complete but operationally dark.
+  SEVERITY: medium — L9 is blocked, canon promotion of mint events cannot happen
+
+--- WOULD ACTIVATE IF ---
+1) Start bhOmniflywheelDashboard on :4956 (node -e "require('./src/bhOmniflywheelDashboard').start(4956)" from C:\Users\acer\Asolaria\) — this makes /v1/whiteroom-mint-report live. 2) Pass opts.whiteroomOpts.whiteroomPath to pipeline() calls so mint rows persist to disk across restarts. 3) Call snapshotWhiteroomsToFile() on a schedule so seenPatterns survive daemon restarts. 4) Call cncCosignEmit() after each mint batch to create the cosign-pending dir and feed :4953, completing the L9 promotion path to canon.

@@ -1,0 +1,53 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: translator-7layer
+Kind: router
+Node: acer
+LIVE: false | Port: 4956=DARK (dashboard not running); 4947=LIVE; 4781=LIVE; 4950=LIVE; 4952=LIVE
+Last message: 2026-05-27T21:44:03.847Z — GNN-EDGE src=AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 dst=citizen:liris w=3 era=new-asolaria
+Message count: 3 hookwall rows, 7 GNN edge rows (total 10 real messages, all from 2026-05-27T21:36-21:44Z)
+D11: DARK
+One-line: translator-7layer is DARK: module intact, 3 hookwall rows + 7 GNN edges from 2026-05-27 are the complete traffic record, no routing has occurred since, :4956 dashboard unbound, cosign-pending dir absent, flywheel rotation_counter=0 on fresh load.
+
+--- REAL FINDINGS ---
+
+* Module loads clean: node require() returns status() with rotation_counter=0, last_rotation_ts=null, spin_started_at=2026-05-31T22:44:33.370Z — confirms module is syntactically intact but the in-process flywheel state is freshly initialized (no running daemon holds state)
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:135-148 + live node probe 2026-05-31
+
+* Hookwall ndjson exists with 3 real rows, all from caller AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 targeting citizen:liris, era=new-asolaria, supervisor=falcon, rotations 1-3. Last write: 2026-05-27T21:44:03.848Z (UTC-3). File size 663 bytes.
+  RECEIPT: C:/Users/acer/Asolaria/data/bh-omniflywheel-hookwall.ndjson:1-3, mtime 2026-05-27 18:44:03 UTC
+
+* GNN edges ndjson has 7 real rows across 2 distinct caller PIDs: AGT-VECTOR-HAPPY-W155-P03-N00008 (4 edges, old+new era, dst=vector-supervisor and ghost-target-not-registered) and AGT-FALCON-SISTER-ORGAN-W155-P03-N00016 (3 edges, new-asolaria, dst=citizen:liris). Last write same timestamp as hookwall. File size 838 bytes.
+  RECEIPT: C:/Users/acer/Asolaria/data/bh-omniflywheel-gnn-edges.ndjson:1-7, mtime 2026-05-27 18:44:03 UTC
+
+* Port :4956 (bhOmniflywheelDashboard) is NOT bound. Dashboard process is dark — not serving. This means no live HTTP consumer is pulling CNC harvest from the router right now.
+  RECEIPT: netstat output: :4956-NOT-BOUND (2026-05-31 audit)
+
+* Port :4947 LISTENING (PID 2388) and :4781 LISTENING (PID 24276) are confirmed alive per known-port table. :4950 (omnidispatcher, PID 21056) and :4952 (vote-quorum, PID 9540) are also LISTENING. These are the upstream callers that would feed envelopes into the router.
+  RECEIPT: netstat output, 2026-05-31
+
+* cosign-pending/ directory does not exist — cncCosignEmit() L9 promotion path has never fired or the directory was never seeded. No file-drop substrate evidence.
+  RECEIPT: C:/Users/acer/Asolaria/data/cosign-pending/ — MISSING (ls returned empty)
+
+* The 7-layer translate stage (STAGE 5, lines 386-423) is a pure library function: translateLayers(). It is invoked only when pipeline() is called with opts.translateTo set. No daemon calls pipeline() autonomously — translate fires only when a caller explicitly invokes it.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:385-423, 951-1023
+
+* OmniflywheelCouplingLayer (omniflywheelCoupling.js) has enabled: false by default and requiresEnableToken: true. No active broadcast/write path to the router from the coupling layer is possible without explicit COUPLING_ENABLE_APPROVED token.
+  RECEIPT: C:/Users/acer/Asolaria/src/omniflywheelCoupling.js:5-14
+
+--- HONEST GAPS ---
+
+* Last real traffic was 2026-05-27T21:44:03Z — 4 days ago. No evidence of any routing since. The 3 hookwall rows and 7 GNN edge rows are the complete historical record. No rotation since then is proven by rotation_counter=0 on fresh require and no newer file mtime.
+  SEVERITY: high
+
+* No snapshot file path is known for the dashboard (opts.snapshotPath). Even if the dashboard were started, it would read from its own require() instance showing zeros rather than from the process that fired the 3 real envelopes. Cross-process state gap (Round-7 patch 12 fix) requires a shared file path configured at startup, which has not been set.
+  SEVERITY: medium
+
+* The 'from' side of this pipe is underdetermined: two distinct caller PIDs appear in the ndjson (AGT-VECTOR-HAPPY and AGT-FALCON-SISTER-ORGAN) but it is unknown which daemon or script drove those envelopes — no caller-side code was located.
+  SEVERITY: medium
+
+* ERA_MIDPOINTS['new-asolaria'] is hardcoded as '2026-05-25T00:00:00.000Z' (line 397) but today is 2026-05-31 — 6 days stale. Any L6-era-rebase translate targeting new-asolaria will rebase ts to May 25, not today. Flagged as stale in round-5 patch comments.
+  SEVERITY: low
+
+--- WOULD ACTIVATE IF ---
+A process calls pipeline() or route() on the bhOmniflywheelRouter module with a valid FEDENV-v1/v2 envelope. The most direct path: omnidispatcher (:4950, PID 21056) or :4947 daemon requires the module and passes an envelope through pipeline(). For the dashboard to surface real data, start bhOmniflywheelDashboard on :4956 with opts.snapshotPath pointing to a shared file, and ensure the routing process calls registerCncSnapshotEmit(filePath, {cadenceMs:30000}) at boot so the snapshot file is populated every 30s.

@@ -1,0 +1,9 @@
+VOTEHDR|finding=COUNCIL-VOTE-PARTICIPATION|cycle=CLOUD-CYCLE-002|form=hbp-tuple|trigger=operator-flag-hundreds-of-supervisors-not-voting|method=asked-the-fabric(council-skeleton+verdicts+roster)|json=0
+VOTEMECH|mechanism=council_query selects voters by KEYWORD/CLUSTER overlap with the query|consequence=narrow query -> few/zero voters BY DESIGN (domain routing, not a fault)|verbs=mint,heal,veto,cosign,wave,abstain|json=0
+VOTEEVIDENCE|hrm_query=council-q-sjla2u ABSTAIN 0/251 (no keyword overlap)|shannon_query=council-q-r37ae1 CONVERGE 2/251 (ga_svm.feature+output matched information_value)|voting_query=council-q-iw7tl8 pending|json=0
+VOTECOUNTS|council_heatmap_skeleton=234|verdict_total_supervisors=251|full_office_roster=705-726|note=roster includes NON-voting-class seats (substrates/corpus/agents/kernels/profs) so hundreds are not voting-class at all|json=0
+VOTEGAP_REAL|gap1=live vote feed GET /api/council/votes (long-poll) is TODO per council-skeleton (pipe from cycle-orchestrator+meta-supervisor-hermes) -> broad continuous participation not surfaced; only 4 sample_votes shaped|json=0
+VOTEGAP_REAL|gap2=keyword match is thin/literal (overlap-with-cluster) -> domain experts miss a query whose keywords do not literally match; cluster-embedding match would widen relevant turnout|json=0
+VOTEVERDICT|dual_lens=MOSTLY-BY-DESIGN (per-query domain gating + most roster seats non-voting-class) PLUS 2 real low-risk gaps (wire /api/council/votes feed; broaden keyword->cluster-embedding match)|tag=MEASURED(skeleton+verdicts)+CANON(roster)|json=0
+VOTEBOUNDARY|not_a_failure=council is honest+domain-routed by design|not_nothing=feed-TODO+thin-keywords are real|next=low-risk: surface participation feed (read-only) + widen matcher; held-safe operator-gated to wire live|json=0
+VOTEFTR|sha256=0a5fe6c5b829431a1f10e93964cad0c0447e25c173ec7104b87cebfef54c1372|rows=8|json=0

@@ -1,0 +1,53 @@
+PIPE AUDIT REPORT
+==========================================
+Pipe: gc-farm-rejection
+Kind: bus
+Node: acer
+LIVE: false | Port: not applicable — gc-farm is an in-process stage, not port-bound; nearest observable surface is /v1/gc-sweep on bhOmniflywheelDashboard (:4956, live status unknown)
+Last message: None — no ghost envelope has ever been written to disk. Last hookwall activity: 2026-05-27T21:44:03.847Z (GNN edge, test run AGT-FALCON-SISTER-ORGAN)
+Message count: 0 ghost envelopes in memory; 0 GHOST-ENVELOPE rows on disk; hookwall has 3 rows (all 2026-05-27, test traffic only)
+D11: DARK — zero ghost envelopes in memory, zero GHOST-ENVELOPE rows on disk, zero GHOST-SNAPSHOT files, flywheel rotation_counter=0. No live process is calling pipeline() with envelopes and predicates. The last actual hookwall activity was 2026-05-27T21:44 (4 days ago, 3 rows from a test run).
+One-line: gc-farm-rejection is DARK: gcFarm() is implemented (bhOmniflywheelRouter.js:561) and wired inside pipeline(), but no production caller feeds envelopes with predicates, ghostEnvelopes[]={}, no ghost files exist on disk, and the flywheel shows 0 rotations since process start.
+
+--- REAL FINDINGS ---
+
+* gcFarm() function defined at bhOmniflywheelRouter.js:561-583. In-memory ghostEnvelopes array (cap 1000). GHOST-ENVELOPE rows appended to opts.ghostPath only when caller passes that option.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:561-583
+
+* pipeline() calls gcFarm on filter-reject (line 969) and verify-reject (line 980) but ONLY when opts.gc !== false and opts.predicates/opts.verify are provided. No standing caller in production code passes predicates with real envelopes.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelRouter.js:964-984
+
+* Live node probe: ghostEnvelopes.length=0, rotation_counter=0, active_rooms=0. The module has received zero envelopes since last process start.
+  RECEIPT: node -e probe, confirmed 2026-05-31
+
+* bh-omniflywheel-hookwall.ndjson contains exactly 3 rows, all from 2026-05-27T21:44:03 (AGT-FALCON-SISTER-ORGAN test run). No gc_farm or GHOST-ENVELOPE rows exist anywhere in that file.
+  RECEIPT: C:/Users/acer/Asolaria/data/bh-omniflywheel-hookwall.ndjson:1-3
+
+* bh-omniflywheel-gnn-edges.ndjson contains 7 rows, last timestamp 2026-05-27T21:44:03.847Z. Zero gc-farm-related edges.
+  RECEIPT: C:/Users/acer/Asolaria/data/bh-omniflywheel-gnn-edges.ndjson:1-7
+
+* No GHOST-SNAPSHOT or GHOST-ENVELOPE files exist anywhere under C:/Users/acer/Asolaria/data/. No cosign-pending directory. No CNC snapshot file at default path C:/Users/acer/Asolaria/data/bh-cnc-snapshot.hbp.
+  RECEIPT: ls C:/Users/acer/Asolaria/data/ (filtered for ghost/gc/harvest/reject) — all absent
+
+* Only two production callers import bhOmniflywheelRouter: bhOmniflywheelDashboard.js (exposes /v1/gc-sweep endpoint, returns gcSweep() read-only) and archUpdateSupervisor.js (uses registerStabilityHarvest only, no pipeline/gcFarm calls). Neither feeds envelopes into the pipeline.
+  RECEIPT: C:/Users/acer/Asolaria/src/bhOmniflywheelDashboard.js:7,45 and C:/Users/acer/Asolaria/src/archUpdateSupervisor.js:19
+
+* From→To direction: envelope producers (any caller with a FEDENV envelope) → pipeline() filter/verify stages → gcFarm() → in-memory ghostEnvelopes[] → optional ghostPath file-drop. The sink (ghostPath file) is never configured in production callers, so even if envelopes were flowing the farm would silently accumulate in-memory only until process exit.
+  RECEIPT: bhOmniflywheelRouter.js:575-579 (ghostPath opt-in, swallows on error)
+
+--- HONEST GAPS ---
+
+* No production code calls pipeline() with live envelopes and opts.predicates set. Impossible to confirm gcFarm activates at all outside tests.
+  SEVERITY: critical
+
+* ghostPath option is never passed by any production caller found. Even if gcFarm ran, GHOST-ENVELOPE rows would not persist to disk — farm data evaporates on process restart.
+  SEVERITY: high
+
+* bhOmniflywheelDashboard.js port (:4956) is listed as a known binding but was not probed live during this audit — port-up state unknown right now.
+  SEVERITY: medium
+
+* archUpdateSupervisor.js is referenced but not confirmed running as a daemon process — stability-harvest schedule may never tick.
+  SEVERITY: medium
+
+--- WOULD ACTIVATE IF ---
+A caller invokes pipeline(envelope, { predicates: [builtinPredicates.ttl_not_expired, builtinPredicates.cosign_window_valid], gc: true, gcOpts: { ghostPath: 'C:/Users/acer/Asolaria/data/ghost-envelopes.ndjson' } }) with a FEDENV envelope that fails TTL or cosign validation. The ghostPath must be supplied for farm data to survive past process lifetime. No code change needed to the router — activation requires a production caller that (a) constructs real FEDENV envelopes, (b) passes predicates to pipeline(), and (c) supplies gcOpts.ghostPath.

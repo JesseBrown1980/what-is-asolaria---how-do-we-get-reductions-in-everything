@@ -1,0 +1,3 @@
+MANIFEST|schema=ASOLARIA-MICRO-KERNEL-V1|count=1|substrate=kernels/notebooklm-curate-microkernel|ts=2026-06-17T11:39:31Z|canon_anchor=NOTEBOOKLM-CURATE-repo-local-stub
+MK|idx=0|pid=232652cbabe02827|prime=257|anchor=NOTEBOOKLM-CURATE-MK-00000|beat_range=0..65535|lanes=7|result_path=results/notebooklm-curate-mk-00000.sample.hbp|status=STUBBED
+MKGATE|pid=232652cbabe02827|spawn_mode=on_demand|runtime=0|descriptor_only=1|ingest_lane_read_only=1|upload_lane_operator_gated=1|provider_call_allowed=0|route_mutation_allowed=0|json=0

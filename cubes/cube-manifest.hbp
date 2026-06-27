@@ -1,0 +1,24 @@
+MANIFESTHDR|proof=CROSS-CUBE-CATALOG-UNION|cycle=CLOUD-CYCLE-002|form=hbp-tuple|schema=asolaria.cube_manifest.v1|members=11|held_safe=read-only+referential|json=0
+MANIFESTMEMBER|slug=absorb4-gc-wiring|title=absorption-wave-2026-05-20-ABSORB-4-gc-extension-wiring.md|cube10=045f1e90c046dfcdfe9b|handle8=045f1e90c046dfcd|raw_bytes=9503|distinct_terms=364|sample_glyphs=10|json=0
+MANIFESTMEMBER|slug=cold-backup-proof|title=ASOLARIA-COLD-BACKUP-ACTIVATION-PROOF-2026-06-16|cube10=98a09859abc26f44e487|handle8=98a09859abc26f44|raw_bytes=1354|distinct_terms=79|sample_glyphs=10|json=0
+MANIFESTMEMBER|slug=morning-brief|title=MORNING-BRIEF-2026-05-23.md|cube10=d3cda6645f555cb260e3|handle8=d3cda6645f555cb2|raw_bytes=5580|distinct_terms=318|sample_glyphs=10|json=0
+MANIFESTMEMBER|slug=source-01|title=ASOLARIA-CANON-SOURCE-01|cube10=bea9422eec880ef9dd5f|handle8=bea9422eec880ef9|raw_bytes=4357|distinct_terms=293|sample_glyphs=10|json=0
+MANIFESTMEMBER|slug=source-02|title=ASOLARIA-CANON-SOURCE-02|cube10=2c4ffb17349eaf87ffff|handle8=2c4ffb17349eaf87|raw_bytes=3920|distinct_terms=267|sample_glyphs=10|json=0
+MANIFESTMEMBER|slug=source-03|title=ASOLARIA-CANON-SOURCE-03|cube10=85a75b608c7b639108da|handle8=85a75b608c7b6391|raw_bytes=3424|distinct_terms=245|sample_glyphs=10|json=0
+MANIFESTMEMBER|slug=v23-readme|title=v23-README.md|cube10=21a89c8800ba1a207a1c|handle8=21a89c8800ba1a20|raw_bytes=5015|distinct_terms=224|sample_glyphs=10|json=0
+MANIFESTMEMBER|slug=v24-audit-gap-ledger|title=v24-AUDIT-GAP-LEDGER-2026-05-22.md|cube10=3a4c651a8864bbf73f5f|handle8=3a4c651a8864bbf7|raw_bytes=9163|distinct_terms=469|sample_glyphs=10|json=0
+MANIFESTMEMBER|slug=v24-design|title=v24-DESIGN.md|cube10=05ad95065a134ae2d1d9|handle8=05ad95065a134ae2|raw_bytes=8833|distinct_terms=428|sample_glyphs=10|json=0
+MANIFESTMEMBER|slug=v24-staging-helper|title=v24-staging-build-helper-DRAFT.py|cube10=6f7d29834c0c0e610d6f|handle8=6f7d29834c0c0e61|raw_bytes=2048|distinct_terms=87|sample_glyphs=10|json=0
+MANIFESTMEMBER|slug=v9-pid-voxels|title=v9-pid-voxels-2026-05-22.txt|cube10=b47153b8c3d2f771baac|handle8=b47153b8c3d2f771|raw_bytes=4354|distinct_terms=104|sample_glyphs=10|json=0
+MANIFESTDEDUP|total_members=11|distinct_cube10=11|duplicate_content_addresses_collapsed=0|note=content-address-dedup-over-full-doc-sha|json=0
+MANIFESTREUSE|scope=sampled-top10-catalogs|total_distinct_glyph_tuples=91|shared_across>=2_docs=12|reuse_ratio=0.1319|note=verb-noun-tuple-reuse-is-the-measured-quantity|json=0
+MANIFESTREUSETOP|shared_glyphs=g4869d99c:4 gbbdefa29:4 g7a535665:4 g38d11342:3 g44575cf5:2 gad2a542c:2 g961eb436:2 g3c462384:2 gbf5b6382:2 g383ef369:2 g1063854b:2 g9ac00055:2|json=0
+MANIFESTREDUCTION|corpus_raw_bytes=57551|distinct_cube10x10B=110|dedup_referential_reduction=523x|naive_per_doc_reduction=523x|note=dedup<=naive-because-content-addresses-collapse|json=0
+MANIFESTCENSUS|category=google-doc-natural-language|count=4|detail=SOURCE-01/02/03 + COLD-BACKUP-ACTIVATION-PROOF (ingestible)|json=0
+MANIFESTCENSUS|category=readable-md-txt-py|count=18|detail=v24-DESIGN/AUDIT, v23-README, MORNING-BRIEF, 13x wave-report, ABSORB-4, v9-pid-voxels, staging-helper.py|json=0
+MANIFESTCENSUS|category=encoded-canon-hbp|count=56|detail=bigpickle-*, absorption-wave ABSORB-1..10, sovlinux-*, federation/gemini/google-cloud/antigravity/profile-index/session-slice/v24-DESIGN.hbp (ALREADY cubes)|json=0
+MANIFESTCENSUS|category=sidecar-hex|count=30|detail=.hex encodings of the .hbp canon (trinity)|json=0
+MANIFESTCENSUS|category=sidecar-hbi|count=30|detail=.hbi HBP-index of the .hbp canon (trinity)|json=0
+MANIFESTCENSUS|category=sidecar-sha256|count=31|detail=.sha256 attestations of the .hbp canon (trinity)|json=0
+MANIFESTCENSUSTOTAL|drive_canon_files_observed=169|folder=1xorgABBhPJvKzXpkb4vZFl1wsjkE_veb|source=2-search-pages|ingested-this-cycle=8-of-readable|encoded-canon=already-cubes-referenced-not-reingested|json=0
+MANIFESTFTR|sha256=0960bb27c1794456636b2fc2980ab36af34fd40c10a278ba201453479515d18e|rows=23|recompute=node cubes/emit-cube-manifest.mjs|verdict=CORPUS-REUSE-MEASURED-REPRODUCIBLE|json=0
