@@ -1,0 +1,3 @@
+HOSTPROC|schema=ASOLARIA-8BYTE-HOST-V1|pid=cc38e33e4ba7dee5|anchor=NOTEBOOKLM-CURATE-HOST-00000|micro_kernel_pid=232652cbabe02827|room_pid=8433c5d350f7743f|lane_pid=8351e0ee9f8c3659|kernel_anchor=ASOLARIA-FEDERATION-REMAKE-1024-PID-2026-05-11|kernel_spine=ADDRESS+CONTENT+INTEGRITY+SCORE+ROUTE|spawn_policy=on_demand|resident=0|json=0
+HOSTBOUNDARY|pid=cc38e33e4ba7dee5|cookie_read_allowed=0|repo_secret_write_allowed=0|provider_call_allowed=0|notebooklm_upload_allowed=0|local_backup_read_allowed=1|local_receipt_write_allowed=1|json=0
+HOSTSTAGE|pid=cc38e33e4ba7dee5|stage_helper_path=tools/notebooklm/nlm-backup-to-cube.py|stage_helper_role=off_hot_path_receipt_helper|retire_target=move_receipt_logic_into_host_runtime|json=0
