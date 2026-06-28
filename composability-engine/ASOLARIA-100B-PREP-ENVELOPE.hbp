@@ -1,0 +1,10 @@
+ENVHDR|kind=100B-system-improvement-run-PREP|seat=acer|status=STAGED_E0_UNSIGNED_AWAITING_FIRE_GATE|date=2026-06-21|json=0
+AUTHORITY|cosign_seq=3572|event=LAW_RATIFIED_QUINTET|window_to=2027-06-20|approves=ENV1-SCALEOUT|row_hash=b66fe4cd4866de8d|referenced_not_resigned=true
+OPERATOR|OP-JESSE-DANIEL-BROWN apex-real-human|authorized=all-prep-steps under standing quintuple|2026-06-21
+OBJECTIVE|system_fitness=composability_coverage+composable_pairs|baseline_before=0/0|measured_after=0.329909/17128|delta_typed=+289|delta_pairs=+17128
+FEEDBACK_PATH|run->system-change=applyProposal(promote-on-improvement)|proof=290 accepted UNSIGNED proposals|LAW-037-bridge=BUILT
+PROVEN|machinery=13/13|micro=+20typed/+76pairs|full_resolvable=+289typed/+17128pairs
+ARTIFACTS|manifest_sha256=db1052d3a77b3ac3|proposal_sha256=d9d2a6d89da7e650|registry_typed=289
+GATE|authority=GREEN|interrogable=GREEN|objective=GREEN|applicator=GREEN|composable_corpus=AMBER(33pct)|auto_fire_allowed=FALSE-HELD|quorum_4952=REQUIRED|exec_freeze=IN_FORCE
+BOUNDARY|E=0 nothing fired|driver/prep never flips auto_fire nor releases EXEC-FREEZE|fire=operator+quorum+parity decision|past-100B-run=real+complete+stored(separate)
+FOOT|rows=9|status=STAGED_E0|json=0
