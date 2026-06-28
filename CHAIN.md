@@ -24,3 +24,6 @@ Traversed backwards (newest update -> the running fleet):
       = THE FLEET (terminus): spindles + dispatcher-citizen + agent + kernel fleets
 ```
 
+- up the chain (further from the fleet): **Algorithms-of-Asolaria**
+- toward the fleet: **Asolaria-the-full-works-200-nanoseconds-agent-emitter-plus-**
+- terminus / full walk: **JesseBrown1980/Asolaria-hermes-work** -> `THE-CHAIN.md`
