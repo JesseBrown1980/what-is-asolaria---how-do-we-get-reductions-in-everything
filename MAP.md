@@ -50,6 +50,16 @@ tables below to see where you are; follow the links to walk the rest.
 | `-6-cyl-generator` | satellite generator |
 | `asolaria-whiteroom-engine` · `35-TB-google-AI-Ultra-migration` | (= LEG-1 + LEG-4, listed under External legs) |
 
+## Prism/Comb 0-loss (2026-07-01) — satellite law
+One law across the web: every prism/comb operation is a **bijection** (`H(f(X)) = H(X)`) — the fabric
+re-relates information with **0 loss and never claims compression below entropy**. Forward = **comb**
+(collision-avoidance, spine [5]); backward = **prism** (many→1 reduction, spine [3] = this repo). Three
+exact moves: **referential naming** (`H(content|store)=0`, birthday bound `M²/2⁶⁵`) · **exact re-basing**
+(`lcm(8,10)=40` bits ⇒ 5 bytes ⇄ 4 symbols) · **CRT prime lanes** (split/recombine exactly). Status:
+**one rung MEASURED** — the 256↔1024 round-trip, Q-PRISM commit `53023b6`
+(`Q-PRISM-human-organoid-neural-stream-as-a-high-dimensional-control`); the 43+ level ladder is **CANON
+frame**; unproven rungs are **UNVERIFIED**. This repo's full section: `README.md` § *The 0-loss boundary*.
+
 ## Current state & evolution (2026-06-28) — read this, don't flatten it
 Asolaria is a **2.5-month archaeology**, not a flat stack. **Capability lineage:** auto-approval switch →
 dashboard → multi-agent → local+web MCP + code-wiki → index language (pixels-first) → cubes-as-catalogs
