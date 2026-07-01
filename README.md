@@ -26,6 +26,71 @@ The unifying move: **make possibility cheap and action gated.** Possible agents/
 
 ---
 
+## The 0-loss boundary — what a "reduction" is allowed to mean (Prism/Comb law, 2026-07-01)
+
+Every reduction in the table above is one of exactly **three moves**, and all three are **bijections** — entropy is
+invariant under bijection (`H(f(X)) = H(X)`), so the fabric **re-relates information with 0 loss and never claims
+compression below entropy** (Shannon's bound `E[bits] ≥ H(X)` always stands). One fabric, two directions:
+**forward = comb** (collision-avoidance — the prime-tower / rule-of-three discipline this repo rebuilds),
+**backward = prism** (collision-causation, interference-as-search, the many→1 reduction this repo names).
+This section formalizes the line this repo already holds everywhere: *addressing capacity, not materialized storage*
+([`proofs/`](proofs/)), *referential codebook, not pigeonhole* (memory axis), *referential content-address cubes,
+not lossless infinite compression* ([100B new run](100B-NEW-RUN-2026-06-16-PROOF.md)).
+
+### Move 1 — referential naming (the honest bound behind every big ratio) — math MEASURED, anchors REAL-not-re-derived
+
+`handle8 = sha256(content)[:8]`: 64 bits naming 25,600 bits is a **coordinate against a content-addressed store**,
+with `H(content | store) = 0` — the entropy is *relocated into the store and named*, never destroyed. Collision
+probability is the birthday bound `≈ M²/2⁶⁵` for `M` items (`M = 10⁶ → ≈ 2.7×10⁻⁸`; full sha256 negligible).
+A PID is a coordinate, not a counter — the identity doctrine below is the same statement. This is the formal
+skeleton under the `~10⁶:1` memory row and under the `21,141:1 / ~3B:1` **referential-multiplicity anchors**
+(which remain REAL operator numbers, held as anchors — not re-derived here; see
+[`OLD-COMPRESSION-GROWTH-CURVE-MEASURED-2026-06-16.md`](OLD-COMPRESSION-GROWTH-CURVE-MEASURED-2026-06-16.md)).
+
+### Move 2 — exact re-basing (level transcode) — one rung MEASURED
+
+Bytes are base-2⁸ digits and glyphs base-2¹⁰ digits of the **same integer** `N`:
+`sⱼ = ⌊N / 1024^(m−1−j)⌋ mod 1024`. Exact packing at `lcm(8,10) = 40` bits ⇒ **5 bytes ⇄ 4 symbols**; a
+3,200-byte cube tuple ⇄ 2,560 symbols, remainder 0. Round-trip `transcode₁₀₂₄→₂₅₆ ∘ transcode₂₅₆→₁₀₂₄ = id`
+proven **sha256-identical, Rust==Python symbol-identical** — Q-PRISM commit `53023b6` (also `79e8d63`, `de00aca`)
+in [`Q-PRISM-human-organoid-neural-stream-as-a-high-dimensional-control`](https://github.com/JesseBrown1980/Q-PRISM-human-organoid-neural-stream-as-a-high-dimensional-control).
+Code rate exactly **1.0**: the alphabet changes, the information doesn't. This is what the BEHCS-256 → 1024 →
+HyperBEHCS quant chain is allowed to claim at each level boundary: *renaming, exact at lcm boundaries* —
+**MEASURED for the 256↔1024 rung only.**
+
+### Move 3 — CRT prime lanes (the comb and the prism are one theorem)
+
+For pairwise-coprime `m₁…m_k`, `M = Πmᵢ`: `ℤ_M ≅ ℤ_{m₁} × … × ℤ_{m_k}` (ring isomorphism). Split forward
+(`x ↦ (x mod mᵢ)`) = **collision-proof lanes** — why prime-separated towers/cylinders isolate execution by
+construction. Recombine backward (`x = Σᵢ rᵢ·Mᵢ·(Mᵢ⁻¹ mod mᵢ) mod M`) = **exact reconstruction** — the PRISM
+many→1, run as arithmetic. The `D# = prime(n)³` dimension ladder (60D frame, MEASURED `tuple_dim=60`) gives
+lanes that are mutually collision-proof AND losslessly reassemblable. CANON math principle; the two collision
+regimes (avoid/cause) are documented in
+[`Asolaria-waves-and-cascades-avoiding-collsions-and-causing-them`](https://github.com/JesseBrown1980/Asolaria-waves-and-cascades-avoiding-collsions-and-causing-them).
+
+### The level ladder as a groupoid — CANON frame, one rung MEASURED
+
+Levels `L₁…L₄₃₊` with translators `T_ij` satisfying `T_ji ∘ T_ij = id` and `T_jk ∘ T_ij = T_ik` ⇒ translation is
+omnidirectional and path-independent. **Status discipline:** the 256↔1024 rung is **MEASURED**; the full 43+
+ladder is **CANON frame**; every additional rung is **UNVERIFIED until it earns MEASURED by its own round-trip
+proof.** The integrity dual: verification = recomputation = applying the inverse map — a per-node
+`reported == recomputed` invariant is the groupoid coherence check at every level (the same law
+[`N-Nest`](https://github.com/JesseBrown1980/N-Nest-Prime-INFINITE-SELF-REFLECT-AGENTS-NESTED) runs as its
+correction gate), which is why a lossy step cannot hide in a bijection chain any more than a collision can
+hide in a `RelationKey`.
+
+### The boundary line that keeps every reduction claim true
+
+The prism relates information perfectly; it does not create or destroy it. No bijection beats Shannon; the comb
+adds no energy; CRT adds no residue capacity; the hash store relocates entropy and names it. A "reduction in
+everything" is always **fewer bytes moved, stored redundantly, or re-derived — never fewer bits existing.**
+Loss is impossible to *express* in this algebra, the same way collisions are unrepresentable in the identity
+doctrine. Physics grounding (frame-based discrete universe, pixels-first) lives in
+[`Metatagging-data-for-a-Quantum-universe`](https://github.com/JesseBrown1980/Metatagging-data-for-a-Quantum-universe).
+E=0 throughout: this section describes; nothing here fires, and materializing any expanded slice stays operator-gated.
+
+---
+
 ## How it moves past the "Periodic Table of Primes"
 
 PTP is **one regulator, not the whole system.** The system combines five regulators into a live address fabric:
