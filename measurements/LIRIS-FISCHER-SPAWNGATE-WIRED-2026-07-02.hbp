@@ -1,0 +1,7 @@
+LIRISFISCHERSPAWNGATE|doc=LIRIS-FISCHER-SPAWNGATE-WIRED-2026-07-02|seat=LIRIS_CODEX|repo=JesseBrown1980/asolaria-federation-1024|pr=30|branch=liris/fischer-eval-spawngate-2026-07-02|head=fbc1d5f3306284c98e28a27d54c8fe7c3119d440|status=PR_GREEN_DRAFT|fire=0|process_launch=0|json=0
+CHANGE|surface=Host8_launch_plan|files=Cargo.lock,servers/host8-serve/Cargo.toml,servers/host8-serve/src/main.rs,servers/host8-serve/src/spawn_cognition.rs|meaning=wire_fischer_eval_cognition_into_spawn_gate_720|kernel_spawn_gate_changed=0|json=0
+SAFETY|composition=strictest_wins|raw_spawn_gate=preserved_as_spawn_gate_verdict|final_gate=gate_verdict_after_fischer|fischer_can_tighten_only=1|proceed_cannot_loosen_hold=1|process_launch=0|fire=0|json=0
+VALIDATION_LOCAL|toolchain=rust_1.81_liris_wsl|fmt=PASS|check_host8=PASS|test_host8=32_PASS|clippy_local=NOT_RUN_clippy_component_missing_for_1.81|main_rs_lines=1997_under_2000|json=0
+VALIDATION_GITHUB|class=MEASURED_GITHUB|run=28614726139|cargo_check_workspace=SUCCESS|cargo_fmt=SUCCESS|cargo_clippy=SUCCESS|no_bloat=SUCCESS|cosign_shalink=SUCCESS|ndjson_schema=SUCCESS|node_lint=SUCCESS|json=0
+BOUNDARY|liris_source_pr_only=1|acer_rebuild=0|acer_restart=0|host8_cutover=0|live_cross_seat_call=0|unrelated_kernel_Cargo_toml_crlf_dirty_excluded=1|json=0
+NEXT|owner=Acer_or_operator|action=attack_verify_PR30_then_merge_or_request_changes|after_merge=acer_build_test_port_then_cutover_if_operator_cranked|json=0
