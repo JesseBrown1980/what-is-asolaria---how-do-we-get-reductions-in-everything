@@ -1,0 +1,6 @@
+HBISTREAM|doc=UNIFIED-DASHBOARD-FABLE5-ROOM-PROPOSAL-2026-07-02|seat=LIRIS_CODEX|format=human_readable_tuple_stream|json=0
+HBIROW|kind=proposal|target=unified_asolaria_dashboard|panel=FABLE-5_ROOM_SEC-FABLE5-1720|route=GAC->graphify->dashboard|status=queued_not_applied
+HBIROW|kind=evidence|fabric=SYSTEM_AFFIRMED|gac_map=MEASURED_GITHUB|not_wedged=MEASURED_GITHUB|receiver=MEASURED_GITHUB|acer_build=OPERATOR_OBSERVED_PENDING_RECEIPT
+HBIROW|kind=panel_semantics|frontend=raw_projection_inert|source=raw_hbi_hbp_room_stream|terminal=projection_only|execute=0|fire=0|dispatch=0
+HBIROW|kind=guardrails|kernel=required|microkernels=required|gac_levels=required|hookwall=required|gnn_edges=required|agentterms=required|levels=43_plus_expandable_not_cap
+HBIROW|kind=merge_gate|required=Acer_ROOM_VIEWER_BUILT_hbi_hbp_sha|owner_accept=GAC_graphify_dashboard|json_hot_path=0|hbi_hbp_hot_path=1|secrets=0|pii=0|external_send=0
