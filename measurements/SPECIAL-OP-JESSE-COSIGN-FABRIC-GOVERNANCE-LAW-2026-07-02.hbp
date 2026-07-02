@@ -1,0 +1,10 @@
+SPECIALOPJESSECOSIGN|doc=SPECIAL-OP-JESSE-COSIGN-FABRIC-GOVERNANCE-LAW-2026-07-02|seat=LIRIS_CODEX|operator=SPECIAL-OP-JESSE|target=FABRIC-GOVERNANCE-LAW-2026-07-02|status=COSIGNED_BY_OPERATOR_ON_LIRIS|ts=2026-07-02T13:18:17.3971443-03:00|json=0
+AUTHORITY|operator_text_sha256=e81d09ed7bf5135a1d6f085c3f5c78268c099aaf44528fbf8e3484a7a54848d2|operator_text_scope=cosign_fabric_governance_law|admin=SPECIAL_OP_JESSE_only|source=operator_chat_current_turn|json=0
+TARGET|law_path=C:\Users\rayss\Asolaria\runtime\special-op-jesse\FABRIC-GOVERNANCE-LAW-2026-07-02.hbp|law_sha256=b9993324b72978da72378a9380d2f55c52203c58bf16533221b0163dd2ace95c|law_status=loaded_by_running_daemon|json=0
+DAEMON|seat=LIRIS_CODEX|heartbeat_path=C:\Users\rayss\Asolaria\runtime\special-op-jesse\heartbeat.hbp|heartbeat_sha256=9e9ab402fa986feb18ec0165185e63f7a12afa3d600eed78751bc5f2a9586b61|state=RUNNING|pid=72040|json=0
+FABRIC|health=SYSTEM_AFFIRMED|service=super-asolaria-os-dashboard-liris-mirror|port=4944|operator_pair=OP-JESSE-PID+OP-RAYSSA-PID|json=0
+BOUNDARY|cosign_chain_append=0|reason=Acer_cosign_chain_unreadable_from_Liris|acer_append=awaiting_acer_attack_verify_or_owner_route|json=0
+BOUNDARY|execution=0|fire=0|dispatch=0|remote_control=0|process_kill=0|external_send=0|danger_full_access=0|json=0
+LAW|autonomy=propose+verify+prepare|execution=operator_cranked_E_ne_0|admin=SPECIAL_OP_JESSE_only|default=fire_0|json=0
+PIPE|sequence=proposal->route->hookwall->GNN->AgentTerms/GAC->cosign->SPECIAL-OP-JESSE_approve_or_deny->execute|json=0
+COSIGNDIGEST|model=sha256_receipt_not_ed25519|digest=6546cdf59e275c534beeed290ec1876f9a9ee8fd4feb44a032facf0c8ef2de73|inputs=operator_text_sha256+law_sha256+heartbeat_sha256+timestamp|json=0
