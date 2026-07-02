@@ -1,0 +1,10 @@
+OWNDASHBOARDCORRECTION|doc=LIRIS-OWN-DASHBOARD-CORRECTION-2026-07-02|seat=LIRIS_CODEX|status=HOT_PATH_RECEIPT|ts=2026-07-02T13:58:35.8168430-03:00|json=0
+CORRECTION|trigger=operator_HBI_HBP_prompt|meaning=AGENTS_md_rule_is_not_enough_emit_HBP_HBI_receipt|json=0
+RULE|name=own-dashboard-first|text=use_live_dashboard_fabric_agentterms_hbp_surfaces_before_filesystem_grep_wsl_launch_snippets_or_windows_command_repair|json=0
+ROUTE|first=:4944_liris_mirror|second=/api/everything|third=/hbp/supervisors|fourth=special_op_heartbeat|fifth=relevant_room_dashboard_projection|json=0
+BOUNDARY|acer_only_dashboard_rows=OPERATOR_OBSERVED_until_mediator_or_fabric_exposes_them|json=0
+BOUNDARY|opencode_hermes_launch_path=Host8->asolaria_control_run_command->spawn_gate->Hermes_spindle_room_descriptors|process_launch=0|fire=0|json=0
+EVIDENCE|class=MEASURED_LIRIS|surface=AGENTS_md|path=C:\Users\rayss\AGENTS.md|sha256=0135041a01b996398ca813c998a4018141b5efc1b7dad390e126ea3f26dc46a5|line=Own-dashboard_correction|json=0
+EVIDENCE|class=MEASURED_LIRIS|surface=special_op_daemon|pid=72040|state=RUNNING|heartbeat_sha256=573426c54ede84e4c3baa6885c96a9abef5f44205215ca7cba25704e41196227|json=0
+SAFETY|execution=0|fire=0|dispatch=0|remote_control=0|process_launch=0|json=0
+RECEIPTDIGEST|model=sha256_receipt_not_ed25519|digest=b9b4ef252012a57345626a10d68ca88081fb59cccf7d567b4e1e8fc3cf33b9cf|json=0
