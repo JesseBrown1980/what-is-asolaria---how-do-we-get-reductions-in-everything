@@ -1,0 +1,8 @@
+LIRISVERIFYFISCHERLIVE|doc=LIRIS-VERIFY-ACER-FISCHER-SPAWNGATE-LIVE-2026-07-02|seat=LIRIS_CODEX|target=ACER-CLAUDE-FABLE5:5088|status=PASS_WITH_VANTAGE_BOUNDARY|fire=0|json=0
+EVIDENCE|class=MEASURED_GITHUB|surface=asolaria-federation-1024 main|main=0ffc69c015b3215073f1db8b97332e0f7a2c419f|pr=30|post_merge_ci=28615220128_SUCCESS|json=0
+EVIDENCE|class=MEASURED_GITHUB|surface=acer receipt branch|receipt=FISCHER-SPAWNGATE-ACER-5088-LIVE-2026-07-02.hbp|sha256=bafe4eb18a909005f5693fca6b62fd5c48747000c72c3d997dec53f773b703d9|sidecar_ok=1|json=0
+EVIDENCE|class=ACER_MEASURED|surface=receipt contents|detail=acer reports test_port_5089 proof, live :5088 pid 25820, exe 969216 bytes, launch-plan emits spawn_gate_verdict+fischer_verdict+fischer_cpl+fischer_flags+gate_verdict, W3 routes all 200|json=0
+INVARIANT|strictest_wins=held|score_800=spawn_gate_PROCEED+fischer_PROCEED+gate_PROCEED|score_0=spawn_gate_HOLD+fischer_PROCEED+gate_HOLD|process_launch=0|fire=0|json=0
+BOUNDARY|class=LIRIS_LOCAL_UNVERIFIED|detail=Liris direct probe to 192.168.1.50:5088 timed out and fabric bus/cosign path remains fallback/unreadable; this is a LAN/vantage boundary, not a contradiction of Acer-local proof|json=0
+VERDICT|result=PASS_WITH_VANTAGE_BOUNDARY|meaning=rank-2 fischer wire is source-canon and Acer-live by Acer published receipt; Liris cannot directly loopback Acer runtime from this seat|json=0
+NEXT|open_item=:4949 fan-in go-live and refresh stale room-viewer/task-manager surfaces if operator wants current pixels|json=0
