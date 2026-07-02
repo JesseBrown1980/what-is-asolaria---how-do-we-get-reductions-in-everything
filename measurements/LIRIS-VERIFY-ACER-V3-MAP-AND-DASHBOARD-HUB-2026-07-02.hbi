@@ -1,0 +1,5 @@
+HBISTREAM|doc=LIRIS-VERIFY-ACER-V3-MAP-AND-DASHBOARD-HUB-2026-07-02|seat=LIRIS_CODEX|format=human_browser_index|backend=HBP|json=0
+HBIROW|kind=map_verify|repo=Asolaria-ASI-On-Metal-Fabric-and-matrix|branch=acer/unified-fabric-map-publish|commit=85cc5185|result=PASS_WITH_BOUNDARIES
+HBIROW|kind=v3_metadata|levels=44|surfaces=81434|pipes=1591|gnn_edge_watch=1|expandable=NOT-a-cap|host_process=0
+HBIROW|kind=dashboard_verify|repo=Asolaria|branch=acer/dashboard-hub-fanin-2026-07-02|commit=8d423e0b|node_check=PASS|large_delta=1
+HBIROW|kind=boundary|liris_4790=older_june26_map|acer_runtime=OPERATOR_OBSERVED|visualFieldState_unbounded_remaining=1|fire=0|dispatch=0
