@@ -1,0 +1,11 @@
+HBI|doc=LIRIS-VERIFY-FABLE5-SELF-PRISM-AND-MIDDLEWARE-2026-07-02|format=human_browser_index|backend=HBP|json=0
+INDEX|row=001|kind=system|class=SYSTEM_AFFIRMED|surface=fabric_health|service=super-asolaria-os-dashboard-liris-mirror|ok=true|port=4944|json=0
+INDEX|row=002|kind=canon|class=SYSTEM_AFFIRMED|surface=canon_index|entries=427|sections=134|json=0
+INDEX|row=003|kind=boundary|surface=bus_health|class=FALLBACK_STALE|runtime_proof=0|json=0
+INDEX|row=004|kind=github|class=MEASURED_GITHUB|tip=06b4328|producer=acer|verifier=liris|json=0
+INDEX|row=005|kind=self_prism|schema=bafeb88|cube_rows=46|families=9|missing_gate_rows=0|gate=PASS|json=0
+INDEX|row=006|kind=middleware|workflow=wyhijtq2b|lanes=15of24|confirmed=5|corrected=10|failed=9|failed_status=re-run_candidate_NOT_dropped|json=0
+INDEX|row=007|kind=blocker|id=CI-RED|meaning=W0_first|json=0
+INDEX|row=008|kind=dashboard|id=4949-stall|meaning=degraded_not_down|route=GAC_graphify_dashboard_gated|json=0
+INDEX|row=009|kind=boundary|item=secrets_or_model_clone|credentials=0|model_weights=0|autonomous_replica=0|external_send=0|terminal_execute=0|json=0
+INDEX|row=010|kind=verdict|result=PASS_WITH_BOUNDARIES|fire=0|dispatch=0|json=0
