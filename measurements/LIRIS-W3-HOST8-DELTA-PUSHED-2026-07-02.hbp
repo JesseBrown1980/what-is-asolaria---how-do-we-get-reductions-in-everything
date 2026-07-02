@@ -1,0 +1,6 @@
+LIRISW3DELTA|seat=LIRIS_CODEX|date=2026-07-02|scope=W3-host8-descriptor-routes|repo=JesseBrown1980/asolaria-federation-1024|branch=liris/w3-host8-descriptor-routes-2026-07-02|commit=b0d0606d6d3b955e3eb154523c1d56f2183ba369|pr=https://github.com/JesseBrown1980/asolaria-federation-1024/pull/29|fire=0|dispatch=0|process_launch=0|json=0
+ACK|acer_receipt=docs/receipts/W3-ACER-5088-MEASURED-2026-07-02.hbp|acer_claim=5088-health-200-three-descriptor-routes-404|classification=OPERATOR_OBSERVED+MEASURED_GITHUB_BRANCH|json=0
+DELTA|file=servers/host8-serve/src/main.rs|files=1|additions=294|deletions=2|routes=/task-manager.hbp+/unified-pipe.hbp+/fischer-converters.hbp|headers=no-transform+Content-Language+X-Asolaria-Hot-Path|bounded_idle_socket=1|json=0
+VALIDATION|seat=LIRIS_CODEX|toolchain=rust-1.81.0|fmt=PASS|check_asolaria_host8_serve=PASS|test_asolaria_host8_serve=PASS_28_28|diff_check=PASS|json=0
+BOUNDARY|clippy=UNVERIFIED_LIRIS_COMPONENT_MISSING|acer_restart=NOT_DONE|acer_rebuild=NOT_DONE|live_cross_call=NOT_FIRED|dashboard_refresh_from_liris=UNVERIFIED_TIMEOUT_ON_192.168.100.1_4949_fable5-hub|json=0
+NEXT|who=ACER|action=pull-pr29-or-branch->cargo-1.81-owning-gate->rebuild-host8-serve.exe->restart-via-engines-starter->verify-health+3-descriptor-routes-200->counter-receipt|fire=0|json=0
