@@ -1,0 +1,21 @@
+BILATERALFUNCTIONHDR|schema=ACER-LIRIS-BILATERAL-FUNCTION.v1|function=ACER-LIRIS-AS-ONE-GATED-FUNCTION|handle8=21d12f6b8934bd9b|packet_sha256=21d12f6b8934bd9b2a28145df107fcf7989bb14be8563ade0229ceb61498077a|status=DESCRIPTOR_REGISTERED|ts=2026-07-02T13:27:34.4462095-03:00|json=0
+CLAIM|class=DESIGN_WITH_MEASURED_ANCHORS|text=acer_and_liris_can_operate_as_a_joint_addressable_function_through_fabric_hilbra_atlas_recall_github_host8_cubes_and_special_op_gates|json=0
+EVIDENCE|class=SYSTEM_AFFIRMED|surface=asolaria_fabric_health|service=super-asolaria-os-dashboard-liris-mirror|port=4944|operator_pair=OP-JESSE-PID+OP-RAYSSA-PID|json=0
+EVIDENCE|class=MEASURED_LIRIS|surface=special-op-daemon|pid=72040|state=RUNNING|heartbeat_sha256=3b17768108f6fdcaae43f5fdd5699bbef6c5633b47fecf2999ccff4dbe1f3e4f|json=0
+EVIDENCE|class=MEASURED_GITHUB|surface=liris-law-cosign|commit=c9ae7be|sha256=87fb17456da51293e70d0de58c4949fc83b91843575e3adbc6c2baf9261c6ab8|json=0
+EVIDENCE|class=MEASURED_GITHUB|surface=liris-queue-approval|commit=c96e615|sha256=d2d1b8e48c83c3eb0d80fa80548f732f4fdade70d5783655757ec3f1bd72980e|json=0
+EVIDENCE|class=MEASURED_GITHUB|surface=acer-chain-append-receipt|commit=ebfd2da|seq=3581|row_hash=c9fb9eef39f0a2b7|antecedent_prev=af9db39e2413a418|link=intact|sha256=3c15979c8cda41108b4e9fc3798c6516d4a025f3b7c1c7d6af1fa0e5c7fd86f7|json=0
+SEATFUNCTION|seat=ACER|local_name=ACER-CLAUDE-FABLE5|role=fable5_function+cubes+dashboard+host8+acer_chain|vantage=acer_owned|callable_by=driver_packet+github_mediator+fabric_gate|live_remote_execution=0|json=0
+SEATFUNCTION|seat=LIRIS|local_name=LIRIS_CODEX|role=codex_function+host8_runtime+fabric_mirror+special_op_gate|vantage=liris_owned|callable_by=driver_packet+github_mediator+fabric_gate|live_remote_execution=0|json=0
+ROUTE|n=1|name=request_packet|from=operator_or_seat_function|form=HBP_HBI_driver_packet|risk_named=exec|execute=0|json=0
+ROUTE|n=2|name=resolve_local_context|uses=local_HILBRA+Recall+ATLAS+Graphify+multi-cylinder-addresses|seat_boundary=preserved|json=0
+ROUTE|n=3|name=exchange_receipts|uses=github_mediator+fabric_health+host8_hbp_routes+cube_descriptors|secrets=0|credentials=0|json=0
+ROUTE|n=4|name=watch_and_score|uses=hookwall+GNN_edges+AgentTerms+GAC+danger_verb_classifier|fire=0|json=0
+ROUTE|n=5|name=cosign_and_grant|uses=Special-OP-JESSE_gate+OP_pair_context+cosign_receipts|grant_records_permission_only|json=0
+ROUTE|n=6|name=execute_if_cranked|requires=separate_E_ne_0_operator_crank+owning_route+fresh_receipt|default=not_executed|json=0
+FROZENSLICES|meaning=each_machine_keeps_its_own_slice_runtime_and_map; joint_function_composes_addresses_and_receipts_not_raw_filesystem_control|json=0
+NEURALNETWORK|meaning=fabric_hilbra_internet_addresses_between_cylinders; atlas_maps_where; recall_remembers_what; graphify_projects; host8_serves_hbp; cubes_make_functions_addressable|json=0
+CRYPTOFARMINGSTACK|meaning=server_stack_to_server_stack_receipt_farming_and_attack_verify_loop; not_token_farming; not_secret_export; not_autonomous_execution|json=0
+BOUNDARY|execution=0|fire=0|dispatch=0|remote_control=0|process_launch=0|process_kill=0|external_send=0|danger_full_access=0|json=0
+BOUNDARY|bus_health=FALLBACK_STALE_FROM_LIRIS|live_direct_cross_call=UNVERIFIED|safe_next=publish_descriptor_for_acer_attack_verify_then_build_read_only_host8_endpoint|json=0
+FUNCTIONDIGEST|model=sha256_descriptor_not_ed25519|digest=29f62a05e5027c9a044ed6c27909fe3323b8d7dc39cc41e5a5b454cdc0e69e46|json=0
