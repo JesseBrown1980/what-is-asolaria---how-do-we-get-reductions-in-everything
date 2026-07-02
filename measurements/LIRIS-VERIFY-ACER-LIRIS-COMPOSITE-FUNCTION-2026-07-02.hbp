@@ -1,0 +1,13 @@
+LIRISVERIFYCOMPOSITE|doc=LIRIS-VERIFY-ACER-LIRIS-COMPOSITE-FUNCTION-2026-07-02|seat=LIRIS_CODEX|target=ACER-LIRIS-COMPOSITE-FUNCTION|status=PASS_WITH_BOUNDARIES|ts=2026-07-02T13:29:53.5722852-03:00|json=0
+INPUT|name=acer_composite|commit=272212f|sha256=5ae1eba1de814a48ac0b36d64d2f54bf0eb1637c4bfcea7013d03d48c09831ff|rows=9|pid=ddbf49ae884d5823|json=0
+INPUT|name=liris_bilateral|commit=3ab4314|sha256=5c81a498c718eed947b40681101fdc8c989b97910803228e954f9eb6ef37c032|handle8=21d12f6b8934bd9b|digest=29f62a05e5027c9a044ed6c27909fe3323b8d7dc39cc41e5a5b454cdc0e69e46|json=0
+EVIDENCE|class=MEASURED_LIRIS|surface=special-op-daemon|pid=72040|state=RUNNING|heartbeat_sha256=350a453aa9b0b9377da6385d2c94205372d0a7a550e60d6321cbc8599d4c123f|json=0
+MATCH|field=concept|acer=two-frozen-slices-as-ONE-composable-function-pair|liris=ACER-LIRIS-AS-ONE-GATED-FUNCTION|result=PASS|json=0
+MATCH|field=governance|acer=FABRIC-GOVERNANCE-LAW+special-op|liris=Special-OP-JESSE_gate+cosign_receipts|result=PASS|json=0
+MATCH|field=transport|acer=fabric-hilbra-internet+github-fallback|liris=fabric+hilbra+atlas+recall+github+host8+cubes|result=PASS|json=0
+MATCH|field=addressing|acer=multi-cylinder-v3+handle8|liris=driver_packet+local_HILBRA_ATLAS_Recall_multi-cylinder|result=PASS|json=0
+MATCH|field=safety|acer=fire0_dispatch0_no-danger-full-access|liris=fire0_dispatch0_remote_control0_process_launch0|result=PASS|json=0
+BOUNDARY|byte_identity=0|reason=independent_seat_materializations_are_expected_to_differ|semantic_match=1|json=0
+BOUNDARY|live_cross_seat_call=UNVERIFIED|reason=liris_bus_health_fallback_stale_and_no_E_ne_0_call_was_cranked|json=0
+BOUNDARY|execution=0|fire=0|dispatch=0|remote_control=0|process_launch=0|external_send=0|json=0
+VERIFYDIGEST|model=sha256_receipt_not_ed25519|digest=6bcadb76aad2df64f8f2c217cfe800f5aa94473818f973543631a27fd923e2db|json=0
