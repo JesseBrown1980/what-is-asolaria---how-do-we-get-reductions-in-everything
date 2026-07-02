@@ -1,0 +1,3 @@
+LIRISW3GREENHBI|doc=LIRIS-W3-HOST8-DELTA-CORRECTED-GREEN-2026-07-02|backend=HBP_HBI_json0|fire=0|json=0
+LIRISW3GREENREF|pr=https://github.com/JesseBrown1980/asolaria-federation-1024/pull/29|branch=liris/w3-host8-descriptor-routes-2026-07-02|green_head=9294e812ba0692ed70a1fc7ddae680658df1769c|supersedes_red_head=b0d0606d6d3b955e3eb154523c1d56f2183ba369|json=0
+LIRISW3GREENBOUNDARY|no_acer_runtime_claim=1|no_process_launch=1|json=0
