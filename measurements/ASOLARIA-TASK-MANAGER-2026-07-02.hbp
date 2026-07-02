@@ -1,0 +1,17 @@
+ASOLARIATASKMGR|pid=9af4238c6780ffa8|seat=ACER-CLAUDE-FABLE5|date=2026-07-02|replaces=windows-task-manager|view_only=1|no_kill=1|no_fire=1|gpu_less=1|json=0
+PROC|port=4781|service=asolaria-gateway|state=UP|os_pid=24444|mem_mb=401|runtime=node|json=0
+PROC|port=4949|service=super-dashboard|state=UP|os_pid=10500|mem_mb=234|runtime=node|json=0
+PROC|port=4950|service=omnidispatcher|state=UP|os_pid=7068|mem_mb=18|runtime=node|json=0
+PROC|port=4913|service=agent-keyboard|state=UP|os_pid=25680|mem_mb=17|runtime=node|json=0
+PROC|port=4947|service=behcs-bus|state=UP|os_pid=26276|mem_mb=16|runtime=node|json=0
+PROC|port=4790|service=maps-atlas|state=UP|os_pid=6840|mem_mb=13|runtime=tailscaled|json=0
+PROC|port=4794|service=fischer-live|state=UP|os_pid=23260|mem_mb=9|runtime=node|json=0
+PROC|port=4793|service=gnn-gsl|state=UP|os_pid=22012|mem_mb=8|runtime=python|json=0
+PROC|port=49374|service=ai-memory|state=UP|os_pid=22428|mem_mb=8|runtime=ai-memory|json=0
+PROC|port=4792|service=gnn-oracle|state=UP|os_pid=23736|mem_mb=7|runtime=python|json=0
+PROC|port=4796|service=recall-serve rust|state=UP|os_pid=22576|mem_mb=3|runtime=recall-serve|json=0
+PROC|port=4815|service=graphify-60D|state=UP|os_pid=23236|mem_mb=3|runtime=python|json=0
+PROC|port=4952|service=vote-quorum|state=UP|os_pid=19592|mem_mb=3|runtime=python|json=0
+PROC|port=4953|service=cosign-chain|state=UP|os_pid=17192|mem_mb=3|runtime=python|json=0
+PROC|port=5088|service=host8-serve rust|state=UP|os_pid=17724|mem_mb=1|runtime=host8-serve|json=0
+TOTALS|node_procs=12|node_mem_mb=792|python_procs=6|python_mem_mb=27|ram_free_mb=6151|ram_total_mb=16226|json=0
