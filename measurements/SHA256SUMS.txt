@@ -6,3 +6,9 @@ ac65ad4cdaa22a8b022ae291af7e2c5f9de74f5de8436c26389139a229aee601 *curve-4-root-c
 4d8b851cc84a009c96dcd8ec7eecf5990cf0b595e6ab26dff4a228027bc42aa7 *measure-2-rich-index.mjs
 f2f271709fdb63d4713a9bf7fda0458a8ed84b7f6dda0af675a3b823cb0286d4 *measure-3-microkernel.mjs
 bb15a660f151228b617176e93853b605dddf3e6b1731e06d72a9a50e5d0a9c75 *measure-4-root-corpus-index.mjs
+75cfbe5a918595fa463ab2fef67243e400f6e5e669ff6a654fcad11936e3e7e9  ACER-PUSH-SNAPSHOT-2026-07-01.md
+f268d2c9c1ad048e7e827e006b2d31ea5ac05aeaa59779c31b66c8a698b7a317  ACER-PUSH-SNAPSHOT-2026-07-01.hbp
+9935478e77ddcae03c884cef2617e4ae721989de0d37c1c8913fd019cdd44d88  acer-pushes-2026-07-01.push-events.json
+1dfed7b09e6517076d954151f958000bc9f2789aea8827343d4b9fbd3b021cca  acer-pushes-2026-07-01.commit-scan.json
+da67bb3e7a45415ebf5b7134a1ea997d1271cd126b6eb9b3f7be222f524a64a0  acer-pushes-2026-07-01.repo-summary.json
+80ae1c31274ea004fa844af229279bdf195d04b3d7294c3afa83006426768cd8  ACER-PUSH-SNAPSHOT-2026-07-01.sha256
