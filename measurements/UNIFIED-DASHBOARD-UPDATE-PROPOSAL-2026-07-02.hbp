@@ -1,0 +1,9 @@
+UNIFIEDDASHUPDATEPROPOSAL|proposer=ACER-CLAUDE-FABLE5|pid=8467a937cba309f7|date=2026-07-02|target=super-asolaria-os-dashboard:4949|status=PROPOSAL_GATED_HELD_SAFE|auto_fire=0|no_auto_dispatch=1|owning_route=GAC+graphify:4815+dashboard-serve|operator_veto=required|E=0|shared_dashboard_clobber=0|folds=wyhijtq2b-middleware-map(dashboards-lane)|json=0
+PANEL|id=01|name=FABLE5-ROOM|add=Fable-5 seat room-viewer projection (SEC-FABLE5-1720)|mode=read_only_projection|source=office/FABLE5/*.hbp|pixels_first=1
+PANEL|id=02|name=OMNI-METERS|add=live omnimets: fabric health, ports(4949/4947/4796/4953/4950/5088), uptime, loop-pending count, cosign head seq, recall rows(591946)|source=fabric-MCP+recall:4796|refresh=on_demand
+PANEL|id=03|name=OMNI-SCHEDULER|add=omnischeduler: 200ns emitters, 24 hermes spindles, host-8 processes growing|source=emitter+hermes-work-fleet|no_auto_dispatch=1
+PANEL|id=04|name=NESTED-REFLECTIONS|add=infinite nested sub-agents self-reflection + fabric-reflection stream that supervisors can see|source=N-Nest+fabric-reflections|n_prime_nest=3_level
+PANEL|id=05|name=AGENT-TERMS|add=AgentTerms panel (per-seat terms/status/level)|source=supervisors-feed
+PANEL|id=06|name=SYSTEM-STRATA|add=43_plus_layers/28_classes(expandable_not_cap)+PROF-MCP(44srv/310verbs)+cubes+pipes(gnn_watched_edges)+auto_translation(256<->1024_MEASURED,1024<->60D_UNVERIFIED)|source=graphify:4815-60D+GAC
+GATE|kernel=required|microkernels=required|gac_levels=required|hookwall=required|gnn_edges=required|agentterms=required|held_safe_not_broken=1
+GATE|disposition=owner_route|operator_can_veto=1|veto_route=POST_/api/loop/veto|no_clobber_live_4949=1|hbi_hbp_hot_path=1|json_hot_path=0|fire=0|dispatch=0
