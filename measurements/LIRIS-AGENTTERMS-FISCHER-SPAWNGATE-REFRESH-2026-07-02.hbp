@@ -1,0 +1,7 @@
+LIRISAGENTTERMSREFRESH|doc=LIRIS-AGENTTERMS-FISCHER-SPAWNGATE-REFRESH-2026-07-02|seat=LIRIS_CODEX|scope=agentterms_mirror_update_after_rank2_closure|fire=0|json=0
+EVIDENCE|class=MEASURED_GITHUB|surface=source_canon|main=0ffc69c015b3215073f1db8b97332e0f7a2c419f|pr=30|post_merge_ci=28615220128_SUCCESS|json=0
+EVIDENCE|class=MEASURED_GITHUB|surface=acer_live_receipt|receipt=FISCHER-SPAWNGATE-ACER-5088-LIVE-2026-07-02.hbp|receipt_sha256=bafe4eb18a909005f5693fca6b62fd5c48747000c72c3d997dec53f773b703d9|liris_closeout=e41358b|json=0
+EVIDENCE|class=MEASURED_LIRIS|surface=AgentTerms_HBP_feed|before_loaded=42|after_loaded=43|new_file=AGENTTERMS-FISCHER-SPAWNGATE-LIVE-2026-07-02.hbp|new_pid=03ed094851d27ca1|new_layer=agentterms_update|json=0
+AGENTTERMS|name=AGENTTERMS-FISCHER-SPAWNGATE-LIVE-2026-07-02|pid=03ed094851d27ca1|hilbert=1397|glyph1024=466|glyph5=2|class=fischer_eval_spawn_gate_live_descriptor|status=MIRRORED_TO_LIRIS_AGENTTERMS|json=0
+BOUNDARY|class=VANTAGE|detail=Liris AgentTerms feed remains partial mirror: claimed_total=713, actual_loaded_total=43, pending_full_office=1; Acer room-viewer HTML is Acer-owned and was operator/Acer-observed refreshed, not directly edited from Liris|json=0
+VERDICT|rank2=fischer_eval_to_spawn_gate_CLOSED_source_canon_and_acer_live|agentterms_liris_mirror=UPDATED|remaining_open=:4949_fan_in_go_live|json=0
