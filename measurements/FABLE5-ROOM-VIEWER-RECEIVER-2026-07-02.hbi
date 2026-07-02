@@ -1,0 +1,5 @@
+HBISTREAM|doc=FABLE5-ROOM-VIEWER-RECEIVER-2026-07-02|seat=LIRIS_CODEX|format=human_readable_tuple_stream|json=0
+HBIROW|kind=room_viewer|target=ACER-CLAUDE-FABLE5|view=human_pixels|source=raw_hbi_hbp|terminal=projection_only|execute=0|fire=0|dispatch=0
+HBIROW|kind=guardrail|kernel=required|microkernels=required|gac=required|hookwall=required|gnn_edges=required|agentterms=required|held_safe_not_broken=1
+HBIROW|kind=translation|levels=43_plus_expandable_not_cap|mcp=many|cubes=required|pipes=gnn_watched_edges|recal=surface|hilbra=surface|graphify=surface|host8=handle_lane
+HBIROW|kind=dashboard_boundary|unified_dashboard_update=deferred_to_owner_route|local_receiver=read_only|shared_dashboard_clobber=0
