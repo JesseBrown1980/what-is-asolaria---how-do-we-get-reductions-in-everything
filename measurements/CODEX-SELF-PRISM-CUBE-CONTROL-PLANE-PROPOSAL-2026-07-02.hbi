@@ -1,0 +1,6 @@
+HBISTREAM|doc=CODEX-SELF-PRISM-CUBE-CONTROL-PLANE-PROPOSAL-2026-07-02|seat=LIRIS_CODEX|format=human_readable_tuple_stream|json=0
+HBIROW|kind=proposal|name=codex_self_prism_cube_control_plane|meaning=seat_office_dashboard_mcp_connectors_as_addressable_cubes|not=model_weight_clone|fire=0|dispatch=0
+HBIROW|kind=cube_family|names=SEATCUBE,OFFICECUBE,CONNECTORCUBE,DASHBOARDCUBE,HOOKWALLCUBE,GNNCUBE,KERNELCUBE,TRANSLATORCUBE,RECEIPTCUBE|required_fields=pid_or_handle8,source_sha256,owner_route,access_tier,evidence_tag
+HBIROW|kind=connector_policy|authorized_connectors=descriptor_only|credentials=0|secrets=0|live_use=existing_authorization_plus_hookwall_gac_operator_gate
+HBIROW|kind=dashboard_policy|frontend=raw_projection_inert|pixels_first=1|terminal=projection_only|execute=0|backend=HBI_HBP|json_hot_path=0
+HBIROW|kind=route|steps=resolve_cube->hookwall_classify->gnn_score->gac_agentterms_owner_tier->operator_or_policy_authorize->emit_receipt->invoke_existing_connector
