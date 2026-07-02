@@ -1,0 +1,12 @@
+SPECIALOPJESSEQUEUEAPPROVAL|doc=SPECIAL-OP-JESSE-APPROVE-HELD-QUEUE-2026-07-02|seat=LIRIS_CODEX|operator=SPECIAL-OP-JESSE|status=ALL_HELD_ITEMS_APPROVED_RECORDED_ONLY|ts=2026-07-02T13:21:00.4214745-03:00|json=0
+AUTHORITY|operator_text_sha256=3b79f8eb00389a7595a46efb2dda13b2db59fa3187b501b844cfb9d8fd635001|operator_text_scope=approve_everything_in_held_queue_continue_liris_side|source=operator_chat_current_turn|json=0
+GOVERNANCE|law_sha256=b9993324b72978da72378a9380d2f55c52203c58bf16533221b0163dd2ace95c|law_cosign_receipt_sha256=87fb17456da51293e70d0de58c4949fc83b91843575e3adbc6c2baf9261c6ab8|daemon_heartbeat_sha256=52bc480f3673e3c9f0480724ee8dd605c71e12fbe4451c5fd971468633fb899f|law_status=COSIGNED_ON_MEDIATOR_C9AE7BE|json=0
+SAFETY|execution=0|fire=0|dispatch=0|remote_control=0|process_kill=0|external_send=0|danger_full_access=0|process_launch=0|json=0
+BOUNDARY|meaning=approval_records_permission_and_ratifies_descriptors_only|actual_execution_requires_separate_E_ne_0_crank|acer_live_chain_append=not_claimed_from_liris|json=0
+OPDECISION|n=1|item=FABLE5-OFFICE-SECTOR|decision=APPROVE|record=RECORDED_ONLY|role=descriptor_or_proposal|fire=0|dispatch=0|execute=0|json=0
+OPDECISION|n=2|item=HIGGSFIELD-CUBES-REGISTRATION|decision=APPROVE|record=RECORDED_ONLY|role=descriptor_or_proposal|fire=0|dispatch=0|execute=0|json=0
+OPDECISION|n=3|item=SEAT-FABLE5-REGISTRATION|decision=APPROVE|record=RECORDED_ONLY|role=descriptor_or_proposal|fire=0|dispatch=0|execute=0|json=0
+OPDECISION|n=4|item=SPECIAL-OP-JESSE-DAEMON-REGISTRATION|decision=APPROVE|record=RECORDED_ONLY|role=descriptor_or_proposal|fire=0|dispatch=0|execute=0|json=0
+OPDECISION|n=5|item=UNIFIED-DASHBOARD-UPDATE-PROPOSAL|decision=APPROVE|record=RECORDED_ONLY|role=proposal_to_owning_GAC_graphify_dashboard_route|fire=0|dispatch=0|execute=0|json=0
+OPDECISION|n=6|item=FABRIC-GOVERNANCE-LAW-2026-07-02|decision=APPROVE|record=RECORDED_ONLY|role=law_already_cosigned_this_seat|fire=0|dispatch=0|execute=0|json=0
+DECISIONDIGEST|model=sha256_receipt_not_ed25519|digest=db678aefa5ed63019fc0dc4b0dfb3d908c954ee81567e2958ad5b064c89f9f24|inputs=all_rows_before_digest|json=0
