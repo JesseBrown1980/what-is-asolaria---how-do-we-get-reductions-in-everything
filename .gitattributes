@@ -2,3 +2,7 @@
 # HBP proof/cube artifacts: byte-identity matters — the footer sha256 is computed over the
 # LF-joined body. Never apply CRLF conversion or the sha will not reproduce across hosts.
 *.hbp -text eol=lf
+.gitattributes text eol=lf
+docs/session-2026-07-03-fable5/*.hbp text eol=lf
+docs/session-2026-07-03-fable5/*.md text eol=lf
+docs/session-2026-07-03-fable5/*.sha256 text eol=lf
