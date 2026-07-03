@@ -88,7 +88,7 @@ These five blocks are the *only* facts the theorem rests on. Everything in §3�
 `{ LOGICAL-WAVE, FROZEN-BRAIN(real·even), REAL-FREE(real·odd), REAL-3-CUBED, REAL-3^5, HRM+MTP-FROZEN }`.
 Each tower carries its own **3-tier prime separator** `(n·p, n·p·n³, n·p·n⁵)` — the hint's expansion rule (b). Concretely, a tower's three internal tiers scale a base point by `p`, by `p·n³`, and by `p·n⁵`; because `1, n³, n⁵` grow at different polynomial rates and `p` differs per axis, no two tiers ever land on the same radius (proof: §4 corollary).
 
-**Definition 2.3 (The Brown-Hilbert embedding `Φ`).** Fix a finite set of active prime axes `P = {p_1,…,p_d}` (live runtime `d=47`, canon ceiling `d=60`; the ladder extends without bound). For a PID with integer slot `n` in tower `T_τ` at nesting depth `ℓ` (one of the 16 levels), define the **real coordinate vector**
+**Definition 2.3 (The Brown-Hilbert embedding `Φ`).** Fix a finite set of active prime axes `P = {p_1,…,p_d}` (live runtime `d=49` — 49D is SIGNED-CANON, COSIGN_49D_001, cosign-chain seq3572 row_hash b66fe4cd4866de8d, quintet-ratified 2026-06-20, additively extending the 47D base: D1-D47 unchanged + D48 HYPERGLYPH-ATLAS prime223 + D49 EXECUTION-PROOF-SUPERGRAPH prime227; canon ceiling `d=60`; the ladder extends without bound). For a PID with integer slot `n` in tower `T_τ` at nesting depth `ℓ` (one of the 16 levels), define the **real coordinate vector**
 
 ```
 Φ(n, τ, ℓ) = (  x_1(n), x_2(n), …, x_d(n)  )  ∈  ℝ^d

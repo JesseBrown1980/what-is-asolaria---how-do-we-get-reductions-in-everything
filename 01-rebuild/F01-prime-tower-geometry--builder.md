@@ -275,7 +275,7 @@ DDPT-RECEIPT | nodes=<N> | distinct_distances=<C(N,2)> | duplicate_distances=0
 - **READ-ONLY** on every source file (we only *read* primes from a frozen inline copy of the 47D ladder; we never write the repos).
 - **No process launch, no network, no MCP, no live bus** — pure functions, matches the 100B run's proven `MODE` (`oneAgentOneProcessBlocked`, `externalModelTokenBudget: 0`).
 - **Write only under** `D:\asolaria-prime-towers-rebuild-2026-06-15\`.
-- **Promotion** follows BEHCS rule: workers emit receipts, *supervisors decide what becomes code* (`BEHCS-1024-PRISM.md`). DDPT enters as a proposal overlay (like 49D), not a runtime mutation, until cosigned.
+- **Promotion** follows BEHCS rule: workers emit receipts, *supervisors decide what becomes code* (`BEHCS-1024-PRISM.md`). DDPT enters as a proposal overlay (the way 49D once was before it became SIGNED-CANON — COSIGN_49D_001, cosign-chain seq3572 row_hash b66fe4cd4866de8d, quintet-ratified 2026-06-20), not a runtime mutation, until cosigned.
 
 ### 5.5 What new code/artifact to write — summary
 
