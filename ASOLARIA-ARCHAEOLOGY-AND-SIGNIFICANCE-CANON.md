@@ -15,6 +15,10 @@ This file is about the **formation history and significance** side. Runtime iden
 - [`canon/ROOM-SECTOR-SUBSTRATE-CANON.md`](canon/ROOM-SECTOR-SUBSTRATE-CANON.md)
 - [`canon/FABRIC-IDENTITY-DOCTRINE.md`](canon/FABRIC-IDENTITY-DOCTRINE.md)
 
+## July 5, 2026 - free-model possibility ladder
+
+The July 5 dedeflation work added a separate receipt packet for free-model intake: [`archaeology/significance-2026-07-05/free-model-possibility-ladder/`](archaeology/significance-2026-07-05/free-model-possibility-ladder/). The significance is the layer split: live Asolaria `$0` free-agent lanes stay `MEASURED_FABRIC_LIVE`; the `free-claude-code` proxy stays `MEASURED_LOCAL_PROXY`; OpenRouter free catalog entries stay `MEASURED_CATALOG_POSSIBILITY`; and NVIDIA NIM, DeepSeek, Mistral, or other provider routes stay `CONFIG_POSSIBILITY` until an operator-approved key/account/grant and a call receipt exist. The archaeology rule is symmetric: do not inflate catalog possibilities into live completions, and do not deflate live fabric receipts into future-only options.
+
 ## Phase 1 — first Asolaria and the index-language compression push
 
 The remembered early order begins with:

@@ -1,0 +1,7 @@
+HBP|schema=asolaria.free_model_possibility_ladder.v1|date=2026-07-05|json=0
+LEVEL|n=0|tag=MEASURED_FABRIC_LIVE|models=opencode/big-pickle,opencode/hy3-preview-free,opencode/ling-2.6-flash-free,opencode/minimax-m2.5-free,opencode/nemotron-3-super-free|cost=$0|driver=tools/behcs/fabric-real-free-agent-driver.mjs|receipt=638828a8 from big-pickle 89s VERIFIED
+LEVEL|n=1|tag=MEASURED_LOCAL_PROXY|repo=C:/Users/rayss/free-claude-code|providers=NVIDIA_NIM,OpenRouter,DeepSeek,LM_Studio,llama.cpp|remote_call=0
+LEVEL|n=2|tag=MEASURED_CATALOG_POSSIBILITY|provider=OpenRouter|free_count=26|catalog=C:/tmp/openrouter-models-20260705.json|csv=C:/tmp/free-model-possibility-ladder-20260705/openrouter-free-models-20260705.csv|called=0
+LEVEL|n=3|tag=CONFIG_POSSIBILITY|providers=NVIDIA_NIM,DeepSeek,Mistral|requires=operator_approved_key_or_account_grant|called=0
+LEVEL|n=4|tag=LOCAL_ENGINE_POSSIBILITY|providers=LM_Studio,llama.cpp,local_Whisper|requires=local_server_or_model_loaded
+RULE|name=dedeflation_scope|text=scoped gates stay scoped; catalog_only does not erase live fabric receipts; live claims need call receipts

@@ -8,6 +8,8 @@ Research notes + a 40-agent rebuild of the Asolaria **prime-tower / cylinder / r
 
 **Public anti-collapse rule (2026-07-05):** the 100B / BigPickle / free-agent history must not be flattened from a scoped substrate gate into global denial. In these proof files, phrases such as `childProcessSpawns=0`, `externalModelTokens=0`, `network=0`, `stubbed room`, `not materialized`, or `future lane` are lane-local materialization boundaries unless the owning proof says otherwise. They do not erase `OPERATOR_WITNESSED_REALITY`, Acer/Codex authenticated GitHub audit receipts, Liris public/local proof review, live fabric HBP evidence for the free-agent driver, or the public 100B proof anchors. Correct reading: real local supervisors plus logical PID/room/port/prism cascades plus real free/open answer workers plus HBP/HBI/RECAL/GNN receipts.
 
+**Free-model possibility ladder (2026-07-05):** the July 5 receipt packet is mirrored at [`archaeology/significance-2026-07-05/free-model-possibility-ladder/`](archaeology/significance-2026-07-05/free-model-possibility-ladder/). It separates live `$0` Asolaria free-agent lanes from local proxy capability, OpenRouter free catalog possibilities, and provider-key/configuration possibilities. A catalog entry is not a live completion until it has a call receipt; a scoped catalog boundary must not erase live fabric receipts.
+
 ---
 
 ## The question this repo answers: where do the reductions come from?
