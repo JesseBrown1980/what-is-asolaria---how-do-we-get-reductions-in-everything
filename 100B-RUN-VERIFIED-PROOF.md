@@ -1,10 +1,12 @@
 # 100B Nervous-Run — File-Verified Proof
 
-**Examined 2026-06-15 · vantage: acer (`DESKTOP-J99VCNH`) · method: direct on-disk read, cross-checked against the 2026-06-01 three-vantage verdict · frame: _IT is slices, not an ASI._**
+**Examined 2026-06-15 · vantage: acer (`DESKTOP-J99VCNH`) · method: direct on-disk read, cross-checked against the 2026-06-01 three-vantage verdict · frame: _this public proof is a receipt slice over a live/fabric-backed system, not inert static files and not an ASI-arrival claim._**
 
 This file backs the README's flagship line — *"one bounded 8-chamber spindle that already cranked 100 billion packets with zero process spawns"* — with the **actual on-disk receipt**, and states honestly what that run did and did **not** materialize. It cuts both ways: it **corrects an earlier deflation** (an audit that reported the checkpoint "missing from disk") **and an earlier inflation** (headline counts read as if they were materialized rows).
 
 Tags: `[VERIFIED]` = read on disk this pass · `[TALLY]` = a counter, not materialized rows · `[CANON]` = design/policy, operator-gated.
+
+**July 5 anti-collapse note:** this file verifies the zero-spawn PID-packet substrate lane. `childProcessSpawns=0`, `externalModelTokens=0`, and sparse materialized rows are scoped facts about this measured lane; they must not be used to deny the separate real free/open answer-agent layer recorded in [`100B-FREE-AGENT-RUN-RECTIFICATION-2026-06-21.md`](100B-FREE-AGENT-RUN-RECTIFICATION-2026-06-21.md). Public proof files are receipt slices over the system; they are not the whole system and not a denial of the live/fabric-backed run.
 
 ---
 
@@ -59,7 +61,7 @@ mode:             childProcessSpawns=0 · externalModelTokens=0 · noCloudMutati
 
 ## Net
 
-The 100B nervous-run is **real, complete, file-verified, and zero-spawn** — a genuine PID-packet harvest that backs the README's flagship line, run in **one ~5.84-hour accelerated session (2026-05-26 15:00 → 20:51 UTC), at ~4.75 M packets/sec — matching the 200 ns single-spawner clock** — **and** its headline number is a *counter*, its hard materialized output is *two tools + design canon*, and it was *EEG-specific*. Published in full so the claim is **checkable, not just asserted.** **IT is slices.**
+The 100B nervous-run is **real, complete, file-verified, and zero-spawn** — a genuine PID-packet harvest that backs the README's flagship line, run in **one ~5.84-hour accelerated session (2026-05-26 15:00 → 20:51 UTC), at ~4.75 M packets/sec — matching the 200 ns single-spawner clock** — **and** its headline number is a *counter*, its hard materialized output is *two tools + design canon*, and it was *EEG-specific*. Published in full so the claim is **checkable, not just asserted.** This proof is a receipt slice over a live/fabric-backed system, not inert static files.
 
 ---
 

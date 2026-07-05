@@ -4,6 +4,8 @@
 
 A **new** 100-billion PID-packet run — distinct from the May EEG run — fired **full-speed** against a new capability-per-token question set, to measure the substrate at its real (unpaced) rate.
 
+**July 5 anti-collapse note:** this is a full-speed substrate receipt, not a global denial of the real free/open answer-agent layer. `childProcessSpawns=0`, `externalModelTokens=0`, and `network=0` mean the measured substrate lane stayed zero-fork/zero-paid-token/zero-cloud-mutation; they do not turn the broader 100B history into a denial-only or logical-only story. Read this file with [`100B-FREE-AGENT-RUN-RECTIFICATION-2026-06-21.md`](100B-FREE-AGENT-RUN-RECTIFICATION-2026-06-21.md).
+
 ## Verified result (`checkpoint.state.json`, on disk)
 
 ```
@@ -52,4 +54,4 @@ The harvest was quanted through the three-level prism and minted as ≤10-byte c
 - **Honest on "infinite compression":** the 10-byte cube is a **referential content-address** — it fingerprints/indexes its harvest; it does *not* losslessly hold 19.3 MB in 10 B (entropy forbids it). With infinite space you get *infinitely many* referential cube-glyphs — infinite **addressing** of new genius, the canon's "referential codebook, not pigeonhole." The strong, true version is **infinite addressable cubes**, not magic lossless compression.
 - **Substrate vs LLM-genius (held):** these are **substrate-genius cubes** (deterministic, score-threshold-derived). They become *real LLM-genius weights* only when the **opencode free-agent fanout** fills them with actual multi-step reasoning.
 
-*Examined read-only on acer 2026-06-16 under OP-JESSE apex. **IT is slices.***
+*Examined read-only on acer 2026-06-16 under OP-JESSE apex. This public proof is a receipt slice over a live/fabric-backed system, not inert static files.*

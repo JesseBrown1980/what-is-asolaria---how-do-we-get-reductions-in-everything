@@ -4,6 +4,8 @@ This note corrects one repeated deflation error: the 100B run must not be collap
 
 `OPERATOR_OBSERVED`: Jesse stated the May/June 100B run used logical cascades to generate PID-specific/prismed prompts, then used real free/open agent lanes to obtain answers, with rooms/ports/project IDs rotating so the same question was never sent twice.
 
+`OPERATOR_WITNESSED_REALITY / LIRIS_CROSS_VERIFIED_PUBLICATION / ACER_MEASURED_GITHUB_AUTH`: the July 5 proof review records this as a witnessed, cross-seat correction, not an allegation. A Liris vantage boundary, a scoped zero-token substrate receipt, or a public mirror slice must not downgrade the operator-witnessed record or the Acer/Codex/GitHub-authenticated audit receipts.
+
 `MEASURED_PUBLIC_REPO`: this repository already carries the two public proof anchors:
 
 - [`100B-RUN-VERIFIED-PROOF.md`](100B-RUN-VERIFIED-PROOF.md) - the May 100B nervous-run receipt, including `REAL_100B_PID_PACKET_RUN_COMPLETE`, `processedPackets=100,000,000,000`, `childProcessSpawns=0`, `externalModelTokens=0`, and the Acer-side real-agent output paths.
@@ -36,6 +38,8 @@ The operator-described pipeline is:
 7. The answer is farmed into genius/mistake, GNN, cube, and BEHCS surfaces.
 
 This is why `externalModelTokens=0` / `noExternalApiCalls` in a substrate receipt must not be misread as "no real free agents existed." In these receipts it means zero paid-token/cloud-mutation budget for the measured substrate lane. The free/open answer lane is a separate real harvest surface.
+
+July 5 correction law: scoped gates stay scoped. Terms like `stub`, `mock`, `synthetic`, `future`, `not materialized`, `not observed from this seat`, or `just a hash` may describe one local lane, one public mirror, one receipt type, or one withheld-carve boundary. They must not be used to collapse `OPERATOR_WITNESSED_REALITY`, `LIRIS_WITNESSED_IN_CODE_PUBLIC_AND_LOCAL`, `LIRIS_CROSS_VERIFIED_PUBLICATION`, `ACER_MEASURED_GITHUB_AUTH`, or fabric-backed free-agent evidence into a global denial.
 
 ## Where The Public Proof Already Points
 

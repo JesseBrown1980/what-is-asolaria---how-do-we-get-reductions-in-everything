@@ -6,6 +6,8 @@ Research notes + a 40-agent rebuild of the Asolaria **prime-tower / cylinder / r
 
 **Fabric-first doctrine (canonical cross-seat frame):** see the shared doctrine doc: [`FABRIC-FIRST-CIPHER-ASOLARIA-AGENT-DOCTRINE-2026-06-27.md`](https://github.com/JesseBrown1980/HYPER-BECHS--the-third-set/blob/acer/system-interpretations-2026-06-26/FABRIC-FIRST-CIPHER-ASOLARIA-AGENT-DOCTRINE-2026-06-27.md). The important calibration is **OLD vs NEW**: the old Node-era 10k-room / BigPickle / Gulp / cube / GNN fabric is the system that already self-improved (`ACER_FABRIC_MEASURED`); the new Rust 8-byte Host-8 system is the massive improvement/migration underway, not fully cut over. Do not read the new system's staged status backward onto the old system's measured achievements.
 
+**Public anti-collapse rule (2026-07-05):** the 100B / BigPickle / free-agent history must not be flattened from a scoped substrate gate into global denial. In these proof files, phrases such as `childProcessSpawns=0`, `externalModelTokens=0`, `network=0`, `stubbed room`, `not materialized`, or `future lane` are lane-local materialization boundaries unless the owning proof says otherwise. They do not erase `OPERATOR_WITNESSED_REALITY`, Acer/Codex authenticated GitHub audit receipts, Liris public/local proof review, live fabric HBP evidence for the free-agent driver, or the public 100B proof anchors. Correct reading: real local supervisors plus logical PID/room/port/prism cascades plus real free/open answer workers plus HBP/HBI/RECAL/GNN receipts.
+
 ---
 
 ## The question this repo answers: where do the reductions come from?

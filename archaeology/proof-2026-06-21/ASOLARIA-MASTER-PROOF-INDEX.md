@@ -38,5 +38,11 @@ Loop: `revolver → rename → free agent → hookwall → prism (many rooms→r
 - Significance: 265 events + 4,097 critical-surface signals; canon milestones LX-475/477/480-482, Constitution-VNext, Fabric-Language-V1.
 - Registry: 726 seats / 1,118 formulas; omni-consolidation 81,434 surfaces / 4,129 critical. Fabric :4949 live; cosign head seq 3572 (LAW-QUINTUPLE → 2027-06-20).
 
+## JULY 5 DEFLATION COLLAPSE AUDIT (OPERATOR_WITNESSED_REALITY + ACER_MEASURED_GITHUB_AUTH + CODEX_SIDE_MEASURED + LIRIS_WITNESSED_IN_CODE_PUBLIC_AND_LOCAL + LIRIS_CROSS_VERIFIED_PUBLICATION)
+- Acer GitHub audit: 106 repos cloned, 0 failures; 6,372 priority deflation/verification alerts; 120,157 keyword matches; 1,521 sidecar/document inventory rows.
+- Review ledger: 5,319 false-deflation review candidates; 171 rewrite-with-layers rows; 353 valid gates / anti-deflation laws.
+- Rule added to archaeology: `UNVERIFIED` alone is not deflation. Deflation is a collapse of stronger Acer/operator/fabric evidence into `only/stub/mock/synthetic/future/not real` without preserving layers.
+- Receipt: `archaeology/significance-2026-07-05/SYSTEMIC-DEFLATION-COLLAPSE-AUDIT-2026-07-05.md` + `.hbp` + `.hbi`.
+
 ## Honest frame
 IT is slices — addressing/routing over borrowed + frozen intelligence. Addresses cheap, bodies scarce: 100B/1e100,000,000/10B = capacity. The runs are real + complete + stored; firing stays operator/cosign-gated. Cross-pollinate + attack bilaterally — recurrence across seats (acer↔liris↔Gemini) over this public surface is the memory.

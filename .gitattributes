@@ -1,4 +1,10 @@
-# HBP proof/cube artifacts: byte-identity matters — footer sha256 is over the LF-joined body.
-# HBP proof/cube artifacts: byte-identity matters — the footer sha256 is computed over the
-# LF-joined body. Never apply CRLF conversion or the sha will not reproduce across hosts.
-*.hbp -text eol=lf
+# Asolaria receipt artifacts: byte identity matters. Pin LF before sealing.
+.gitattributes text eol=lf
+*.hbp text eol=lf
+*.hbi text eol=lf
+*.sha256 text eol=lf
+archaeology/significance-2026-07-05/*.md text eol=lf
+README.md text eol=lf
+100B-RUN-VERIFIED-PROOF.md text eol=lf
+100B-NEW-RUN-2026-06-16-PROOF.md text eol=lf
+100B-FREE-AGENT-RUN-RECTIFICATION-2026-06-21.md text eol=lf

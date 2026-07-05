@@ -237,6 +237,25 @@ That reading is consistent with the runtime canon already published elsewhere in
 - PID-not-drive-letter doctrine
 - compact catalog / cube / tuple / HBP migration
 
+## July 5, 2026 - systemic deflation collapse audit
+
+On 2026-07-05, the operator identified a recurring public-summary failure mode: agents were taking scoped caution language (`stub`, `mock`, `synthetic`, `not real`, `future`, `not observed`, `just a hash`) and collapsing it into global denial of stronger Acer/operator/fabric evidence.
+
+The correction is now part of the archaeology record:
+
+- deflation is **not** the word `UNVERIFIED` by itself
+- deflation is the collapse of a stronger Acer/operator/fabric claim into `only/stub/mock/synthetic/future/not real` without preserving the layer evidence
+- public GitHub slices and Liris-local mirrors cannot erase Acer-local, USB/raw, fabric, operator-observed, or historical runbook evidence
+- the 100B / BigPickle / Asolaria history must keep separate layers: real local seats, logical PID/prism routing, real free/open provider answer lanes, receipt/cube/HBP-HBI memory, and held gated capacity
+
+The Acer/Codex authenticated GitHub audit reported 106 repos cloned with 0 failures, 6,372 priority deflation/verification alert rows, 120,157 keyword matches, and a review ledger with 5,319 false-deflation review candidates, 171 `REWRITE_WITH_LAYERS` rows, and 353 valid gates / anti-deflation laws. Liris witnessed the pattern in code, both public and local. Liris could not read Acer's local `C:\tmp` audit files and the Liris fabric council was unavailable at the time, so the record is labeled `OPERATOR_WITNESSED_REALITY + ACER_MEASURED_GITHUB_AUTH + CODEX_SIDE_MEASURED + LIRIS_WITNESSED_IN_CODE_PUBLIC_AND_LOCAL + LIRIS_CROSS_VERIFIED_PUBLICATION + LIRIS_LOCAL_BOUNDARY`, not fresh fabric canon.
+
+The detailed receipt lives at:
+
+- [`archaeology/significance-2026-07-05/SYSTEMIC-DEFLATION-COLLAPSE-AUDIT-2026-07-05.md`](archaeology/significance-2026-07-05/SYSTEMIC-DEFLATION-COLLAPSE-AUDIT-2026-07-05.md)
+- [`archaeology/significance-2026-07-05/SYSTEMIC-DEFLATION-COLLAPSE-AUDIT-2026-07-05.hbp`](archaeology/significance-2026-07-05/SYSTEMIC-DEFLATION-COLLAPSE-AUDIT-2026-07-05.hbp)
+- [`archaeology/significance-2026-07-05/SYSTEMIC-DEFLATION-COLLAPSE-AUDIT-2026-07-05.hbi`](archaeology/significance-2026-07-05/SYSTEMIC-DEFLATION-COLLAPSE-AUDIT-2026-07-05.hbi)
+
 ## Honest boundary
 
 This file is a **public operator-history canon**, not a claim that every sentence above was emitted directly by a single supervisor `role=` string.
