@@ -1,0 +1,9 @@
+PATH2v1|date=2026-07-11|path1=dbbh-coms-quant-prism|path2=path2-two-shadow-recovery|dbwh=watcher-gated-reprojection|json=0
+FORMULA|shadow=S_i:X_mod_p_i|joint_injective=product_p_i_ge_R|insufficient=Held::InsufficientJointCapacity|json=0
+FORMULA|dbwh=P_of_R_of_P_X_equals_P_X|checks=sha256+complete_shadows+frequency_shells|mismatch=Held|json=0
+FORMULA|residual_candidates=ceil_R_div_M|residual_bits=ceil_log2_candidates|margin=floor_log2_M_minus_source_bits|json=0
+VERIFY|agent=CLAUDE-FABLE-5|source=operator-supplied-real-third-seat|dbbh=rustc1.97:19of19|path2=rustc1.97:30of30|json=0
+VERIFY|agent=GPT-5.6-PRO|kind=complete-source-test-doc-lineage-audit|local_cargo_claim=0|json=0
+VERIFY|agent=GPT-5.6-PRO|kind=directed-GitHub-Actions|dbbh_run=29134408321:success|path2_run=29134413119:success|qprism3d_run=29134419389:success|rustc=1.97.0|json=0
+STORAGE|persistent=HDD-SSD:cubes+shadows+receipts+queues+cold-bodies|resident=bounded-active-window|gpu=optional-neural-sidecar|disk_is_gpu=0|json=0
+BOUNDARY|shannon_preserved=1|live_hilbra=unverified|physical_quantum_transport=unverified|hardware_single_use_classical=unverified|json=0
