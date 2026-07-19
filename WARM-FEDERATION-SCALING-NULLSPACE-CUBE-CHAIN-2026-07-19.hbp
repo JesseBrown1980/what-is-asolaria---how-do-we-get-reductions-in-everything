@@ -1,0 +1,8 @@
+BENCHRECEIPT|schema=WARM-FEDERATION-SCALING-V1|date=2026-07-19|markdown_sha256=26a1b0f78f9a80feea9014e0031f4d8e57dd0ad2e49e981b69c4ae59542e7292|source=operator_bench|json=0
+TRANSFER|prior_bytes=2097152|target_bytes=102400|cold=0.0785|warm=0.0107|reported_gain_pct=86.3|ratio=7.34|json=0
+TRANSFER|prior_bytes=2097152|target_bytes=1048576|cold=0.0232|warm=0.0110|reported_gain_pct=52.9|ratio=2.11|json=0
+TRANSFER|prior_bytes=2097152|target_bytes=10485760|cold=0.0117|warm=0.0101|reported_gain_pct=13.2|ratio=1.16|json=0
+OOMFIX|old_shape=256x10000000|new_method=chunked_exact_fusion|resident_law=O_256_times_chunk|json=0
+NULLSPACE|targeted=56|random=56|verdict=FREE_BEAM_NEUTRAL|constrained_value=EXPECTED|json=0
+LEVELCHAIN|L1=0.0330|L2=0.2224|L3=0.0529|L4=0.0341|fold=ctx3_plus_cube_mod3|verdict=BAD_FOLD_SHOCK_THEN_RECOVERY|json=0
+PENDING|items=third_seat_replay,catalog_preserving_fold,paired_intervals,sha_parity|json=0
