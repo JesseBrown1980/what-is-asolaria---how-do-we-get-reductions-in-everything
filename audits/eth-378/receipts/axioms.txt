@@ -1,0 +1,6 @@
+'OAI.Algorithms.SubexponentialSAT.SqrtLogSpace.exact_count_and_sat' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'EthAudit.statement_is_solution' depends on axioms: [propext, Classical.choice, Quot.sound]
+'EthAudit.eth_refuted_3sat' depends on axioms: [propext, Classical.choice, Quot.sound]
+'EthAudit.halted_of_answer' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -95,12 +95,13 @@ The first three are proved now. Their axioms are `propext`, `Classical.choice` a
 ## Verdicts
 
 ```text
-FORMAL_BUILD:                    PENDING (bounded legs on GitHub Actions)
-AXIOM_CLOSURE:                   PENDING
-THEOREM_STATEMENT:               SOURCE-LEVEL MATCH (canonical-encoding input; polynomial blow-up proved in E);
-                                 kernel tie pending Check.lean
-RUNTIME_MODEL:                   ETH_REFUTING AS STATED, conditional on the formal build (multi-tape TM;
-                                 implication to 2^(δn) proved in E)
+FORMAL_BUILD:                    PASS (3,095 modules, rc=0, run 40565133971; cached build reused by run 40592926467)
+AXIOM_CLOSURE:                   EXPECTED (propext, Classical.choice, Quot.sound for all four theorems; no sorryAx)
+THEOREM_STATEMENT:               MATCHES (kernel accepted the solution at this audit's statement copy;
+                                 comparator: proved statement = challenge statement; canonical-encoding input,
+                                 polynomial blow-up proved in E)
+RUNTIME_MODEL:                   ETH_REFUTING (multi-tape TM; eth_refuted_3sat : ETHForm 3 kernel-checked)
+COMPARATOR:                      PASS ("Lean default kernel accepts the solution"), with the caveats below
 INDEPENDENT_MATHEMATICAL_REVIEW: PENDING (Impagliazzo, Paturi, Williams)
 ```
 
@@ -142,3 +143,33 @@ enter as an optional shadow behind the CNF-hash and exact-count cross-checks.
 | 1 | 40522825642 | `764944c` (before the fail-closed fix) | **Lost.** The runner received a shutdown signal 2 h 30 min into the build (exit 143). The cache save was skipped, so nothing carried over. This is consistent with memory exhaustion: a Lean process here peaks at about 4.5 GB, and the runner builds 4 at a time in 16 GB. No verdict follows from it. |
 | 1 (again) | 40565133971 | `d12fd94` | **Build complete** (`rc=0`, 3,095 modules, 8,448 s). Peak memory was 15.7 GB in RAM plus 11.4 GB of swap, so the swap file is what kept the runner alive. `Check.lean` compiled, which means the kernel accepted the solution theorem at this audit's copy of the statement. `#print axioms` listed only `propext`, `Classical.choice` and `Quot.sound` for all four theorems. The axiom gate still failed **closed**: Lean wrapped the first theorem's axiom list over three lines, and the strict parser rejected the wrapped line. Comparator was skipped as a result, and the verdict is `NOT_CERTIFIED`. |
 | 2 | see run list | this commit | The parser now joins wrapped lines, meaning lines that don't start with a quote. Acceptance is unchanged. Tested on leg 1's real `axioms.txt`, which passes. It still fails on a `sorryAx` inside a wrapped list, a missing theorem, an error line, a warning line and an extra axiom. The cached build is restored, so this leg runs only the checks and the comparator. |
+
+
+## Final formal result (run 40592926467, workflow `01ebbd7`, leg 2 after leg 1 = 40565133971)
+
+```text
+VERDICT|leg=2|run=40592926467|prev_run=40565133971|build_rc=0|check=success|comparator=success|status=COMPLETE
+AXIOM_CLOSURE|EXPECTED   (four theorems: exact_count_and_sat, statement_is_solution, eth_refuted_3sat, halted_of_answer)
+comparator: Building ComparatorChallenges.SubexponentialSAT → export; Building OAI.Algorithms.SubexponentialSAT.Main
+            → export; "Lean default kernel accepts the solution" / "Your solution is okay!"
+```
+
+The receipts are in `receipts/`, with `SHA256SUMS`. They are pinned to the sources at commit
+`7ef5c0cc…` (tree `2321c93a…`) and Lean 4.34.1.
+
+**What this audit now states.** The Lean artifact appears to formalise the claimed
+ETH-refuting theorem. It proves that for fixed `k ≥ 2`, one deterministic multi-tape
+machine counts exactly the satisfying assignments of every width-`k` CNF, in polynomial
+space and `2^{O_k(n (log log n)²/√log n)}` steps. This audit's kernel-checked corollary
+proves the 3-SAT consequence: at most `2^(δn)` steps for every `δ > 0` and all large `n`.
+
+**Caveats.**
+- **Pre-sandbox compilation.** The solution was compiled outside comparator's sandbox,
+  in leg 1, before the comparator ran. Comparator's own trust model assumes that never
+  happened. The scan in A found no code that runs at build time.
+- **Sandbox strength.** `landrun` ran in best-effort mode, so its strength depended on
+  the runner kernel's Landlock version. The systemd `AF_UNIX` guard was not used.
+- **One kernel.** Only Lean's default kernel was used. No external kernel (nanoda) was
+  run.
+- **Formal check only.** This is not the independent mathematical review now under way.
+  The result is not used in any Yang–Mills receipt.
