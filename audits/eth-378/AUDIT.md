@@ -114,7 +114,7 @@ whose `verdict.hbp` reads
 VERDICT|…|build_rc=0|check=success|comparator=success|status=COMPLETE
 ```
 
-and that leg must run the fail-closed workflow from commit `bdd0c40`-or-later (see below), never
+and that leg must run the fail-closed workflow from commit `0316194` or later (see below), never
 from a green badge. The workflow is fail-closed:
 
 - A build that exits with anything other than `0` (complete) or `124` (the bounded
