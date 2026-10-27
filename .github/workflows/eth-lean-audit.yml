@@ -1,0 +1,115 @@
+name: ETH Lean audit (openai/math result 378, read-only)
+
+# Separate, read-only formal audit. Not part of any Yang-Mills branch or receipt.
+on:
+  push:
+    branches: [audit/eth-lean-378]
+    paths: ['audits/eth-378/**', '.github/workflows/eth-lean-audit.yml']
+  workflow_dispatch:
+    inputs:
+      leg:
+        description: 'build leg number (the workflow re-dispatches itself until the build is complete)'
+        required: false
+        default: '1'
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: eth-lean-audit
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    defaults:
+      run:
+        working-directory: audits/eth-378
+    env:
+      LEG: ${{ github.event.inputs.leg || '1' }}
+      MAX_LEGS: '8'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch and verify the audited sources (pinned commit, hashed tree)
+        run: bash fetch_sources.sh | tee sources.hbp
+
+      - name: Install elan and the pinned toolchain
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o elan-init.sh
+          bash elan-init.sh -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Restore partial build from earlier legs
+        uses: actions/cache/restore@v4
+        with:
+          path: audits/eth-378/.lake/build
+          key: eth378-build-${{ hashFiles('audits/eth-378/sources.hbp', 'audits/eth-378/lakefile.lean', 'audits/eth-378/lake-manifest.json') }}-${{ github.run_id }}
+          restore-keys: eth378-build-${{ hashFiles('audits/eth-378/sources.hbp', 'audits/eth-378/lakefile.lean', 'audits/eth-378/lake-manifest.json') }}-
+
+      - name: Mathlib cache
+        run: |
+          lean --version | tee toolchain.txt
+          lake exe cache get
+
+      - name: Build (bounded; a timeout here is not completion)
+        id: build
+        run: |
+          set +e
+          start=$(date +%s)
+          timeout 315m lake build OAI.Algorithms.SubexponentialSAT.Main ComparatorChallenges.SubexponentialSAT EthAudit.Bridge > build.log 2>&1
+          rc=$?
+          echo "BUILD_LEG|leg=$LEG|rc=$rc|seconds=$(( $(date +%s) - start ))|built=$(grep -c 'Built' build.log)|json=0" | tee build-leg.hbp
+          grep -E '^(error|✖)' build.log | head -50 || true
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+
+      - name: Save partial build
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: audits/eth-378/.lake/build
+          key: eth378-build-${{ hashFiles('audits/eth-378/sources.hbp', 'audits/eth-378/lakefile.lean', 'audits/eth-378/lake-manifest.json') }}-${{ github.run_id }}
+
+      - name: Next leg if the build timed out
+        if: steps.build.outputs.rc == '124'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$LEG" -ge "$MAX_LEGS" ]; then echo "BUILD_LEGS_EXHAUSTED|leg=$LEG|json=0"; exit 1; fi
+          gh workflow run eth-lean-audit.yml --ref "$GITHUB_REF_NAME" -f leg=$(( LEG + 1 ))
+          echo "BUILD_CONTINUES|next_leg=$(( LEG + 1 ))|json=0"
+
+      - name: Kernel check, statement tie and axiom closure
+        if: steps.build.outputs.rc == '0'
+        run: |
+          lake env lean EthAudit/Check.lean 2>&1 | tee axioms.txt
+          grep -q "sorryAx" axioms.txt && { echo "AXIOM_CLOSURE|UNEXPECTED|json=0"; exit 1; } || true
+
+      - name: Comparator (statement equality + permitted axioms, sandboxed)
+        if: steps.build.outputs.rc == '0'
+        run: |
+          set -o pipefail
+          tc=$(cat lean-toolchain)
+          for r in comparator lean4export; do
+            git clone -q --depth 1 -b v4.34.0 https://github.com/leanprover/$r /tmp/$r
+            (cd /tmp/$r && echo "$tc" > lean-toolchain && lake build)
+          done
+          GOBIN=/tmp/gobin go install github.com/zouuup/landrun/cmd/landrun@ec104f6edc1e
+          export PATH=/tmp/lean4export/.lake/build/bin:/tmp/gobin:$PATH
+          lake env /tmp/comparator/.lake/build/bin/comparator comparator.json 2>&1 | tee comparator.txt
+
+      - name: Upload receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eth378-leg-${{ env.LEG }}
+          path: |
+            audits/eth-378/sources.hbp
+            audits/eth-378/toolchain.txt
+            audits/eth-378/build-leg.hbp
+            audits/eth-378/build.log
+            audits/eth-378/axioms.txt
+            audits/eth-378/comparator.txt
+          if-no-files-found: ignore
