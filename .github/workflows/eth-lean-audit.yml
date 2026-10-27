@@ -1,16 +1,19 @@
 name: ETH Lean audit (openai/math result 378, read-only)
 
 # Separate, read-only formal audit. Not part of any Yang-Mills branch or receipt.
+# Dispatch only (no push trigger), so a push can never start a second, parallel chain.
+# The verdict is read from the leg whose VERDICT line says COMPLETE, never from a badge.
 on:
-  push:
-    branches: [audit/eth-lean-378]
-    paths: ['audits/eth-378/**', '.github/workflows/eth-lean-audit.yml']
   workflow_dispatch:
     inputs:
       leg:
         description: 'build leg number (the workflow re-dispatches itself until the build is complete)'
         required: false
         default: '1'
+      prev_run:
+        description: 'run id of the previous leg (empty for leg 1)'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -29,6 +32,7 @@ jobs:
         working-directory: audits/eth-378
     env:
       LEG: ${{ github.event.inputs.leg || '1' }}
+      PREV_RUN: ${{ github.event.inputs.prev_run || '' }}
       MAX_LEGS: '8'
     steps:
       - uses: actions/checkout@v4
@@ -61,9 +65,14 @@ jobs:
           start=$(date +%s)
           timeout 315m lake build OAI.Algorithms.SubexponentialSAT.Main ComparatorChallenges.SubexponentialSAT EthAudit.Bridge > build.log 2>&1
           rc=$?
-          echo "BUILD_LEG|leg=$LEG|rc=$rc|seconds=$(( $(date +%s) - start ))|built=$(grep -c 'Built' build.log)|json=0" | tee build-leg.hbp
+          echo "BUILD_LEG|leg=$LEG|run=$GITHUB_RUN_ID|prev_run=$PREV_RUN|workflow_sha=$GITHUB_SHA|rc=$rc|seconds=$(( $(date +%s) - start ))|built=$(grep -c 'Built' build.log)|json=0" | tee build-leg.hbp
           grep -E '^(error|✖)' build.log | head -50 || true
           echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          # fail closed: only 0 (complete) and 124 (bounded timeout, next leg) are not failures
+          if [ "$rc" -ne 0 ] && [ "$rc" -ne 124 ]; then
+            echo "FORMAL_BUILD|FAIL|rc=$rc|json=0" | tee -a build-leg.hbp
+            exit "$rc"
+          fi
 
       - name: Save partial build
         if: always()
@@ -78,17 +87,41 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           if [ "$LEG" -ge "$MAX_LEGS" ]; then echo "BUILD_LEGS_EXHAUSTED|leg=$LEG|json=0"; exit 1; fi
-          gh workflow run eth-lean-audit.yml --ref "$GITHUB_REF_NAME" -f leg=$(( LEG + 1 ))
+          gh workflow run eth-lean-audit.yml --ref "$GITHUB_REF_NAME" -f leg=$(( LEG + 1 )) -f prev_run="$GITHUB_RUN_ID"
           echo "BUILD_CONTINUES|next_leg=$(( LEG + 1 ))|json=0"
 
       - name: Kernel check, statement tie and axiom closure
+        id: check
         if: steps.build.outputs.rc == '0'
         run: |
+          set -o pipefail
           lake env lean EthAudit/Check.lean 2>&1 | tee axioms.txt
-          grep -q "sorryAx" axioms.txt && { echo "AXIOM_CLOSURE|UNEXPECTED|json=0"; exit 1; } || true
+          # exactly the four expected lines, each within the permitted set, nothing else
+          python3 - <<'PY'
+          import re, sys
+          want = ["OAI.Algorithms.SubexponentialSAT.SqrtLogSpace.exact_count_and_sat",
+                  "EthAudit.statement_is_solution", "EthAudit.eth_refuted_3sat",
+                  "EthAudit.halted_of_answer"]
+          ok_ax = {"propext", "Quot.sound", "Classical.choice"}
+          lines = [l for l in open("axioms.txt").read().splitlines() if l.strip()]
+          got = {}
+          bad = []
+          for l in lines:
+              m = re.fullmatch(r"'(\S+)' depends on axioms: \[(.*)\]", l.strip())
+              if m:
+                  got[m.group(1)] = {a.strip() for a in m.group(2).split(",") if a.strip()}
+              else:
+                  bad.append(l)
+          ok = (not bad) and sorted(got) == sorted(want) and all(v <= ok_ax for v in got.values())
+          for k in want:
+              print("AXIOMS|%s|%s|json=0" % (k, ",".join(sorted(got.get(k, {"MISSING"})))))
+          print("AXIOM_CLOSURE|%s|json=0" % ("EXPECTED" if ok else "UNEXPECTED"))
+          sys.exit(0 if ok else 1)
+          PY
 
       - name: Comparator (statement equality + permitted axioms, sandboxed)
-        if: steps.build.outputs.rc == '0'
+        id: comparator
+        if: steps.build.outputs.rc == '0' && steps.check.outcome == 'success'
         run: |
           set -o pipefail
           tc=$(cat lean-toolchain)
@@ -99,6 +132,16 @@ jobs:
           GOBIN=/tmp/gobin go install github.com/zouuup/landrun/cmd/landrun@ec104f6edc1e
           export PATH=/tmp/lean4export/.lake/build/bin:/tmp/gobin:$PATH
           lake env /tmp/comparator/.lake/build/bin/comparator comparator.json 2>&1 | tee comparator.txt
+
+      - name: Verdict (fail-closed conjunction)
+        if: always()
+        run: |
+          b='${{ steps.build.outputs.rc }}'; c='${{ steps.check.outcome }}'; k='${{ steps.comparator.outcome }}'
+          if [ "$b" = "0" ] && [ "$c" = "success" ] && [ "$k" = "success" ]; then v=COMPLETE
+          elif [ "$b" = "124" ]; then v=CONTINUES
+          else v=NOT_CERTIFIED; fi
+          echo "VERDICT|leg=$LEG|run=$GITHUB_RUN_ID|prev_run=$PREV_RUN|build_rc=${b:-none}|check=${c:-skipped}|comparator=${k:-skipped}|status=$v|json=0" | tee verdict.hbp
+          [ "$v" != NOT_CERTIFIED ]
 
       - name: Upload receipts
         if: always()
@@ -112,4 +155,5 @@ jobs:
             audits/eth-378/build.log
             audits/eth-378/axioms.txt
             audits/eth-378/comparator.txt
+            audits/eth-378/verdict.hbp
           if-no-files-found: ignore

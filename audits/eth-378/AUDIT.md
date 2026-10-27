@@ -97,11 +97,37 @@ The first three are proved now. Their axioms are `propext`, `Classical.choice` a
 ```text
 FORMAL_BUILD:                    PENDING (bounded legs on GitHub Actions)
 AXIOM_CLOSURE:                   PENDING
-THEOREM_STATEMENT:               MATCHES (canonical-encoding input; polynomial blow-up proved in E)
-RUNTIME_MODEL:                   ETH_REFUTING as stated (multi-tape TM; implication to 2^(δn) proved in E,
-                                 tie to the proved theorem pending Check.lean)
+THEOREM_STATEMENT:               SOURCE-LEVEL MATCH (canonical-encoding input; polynomial blow-up proved in E);
+                                 kernel tie pending Check.lean
+RUNTIME_MODEL:                   ETH_REFUTING AS STATED, conditional on the formal build (multi-tape TM;
+                                 implication to 2^(δn) proved in E)
 INDEPENDENT_MATHEMATICAL_REVIEW: PENDING (Impagliazzo, Paturi, Williams)
 ```
+
+### How the final verdict is read
+
+The build runs as a chain of workflow runs, one per bounded leg. Each leg records
+its predecessor (`prev_run`) and the workflow commit. The verdict comes only from the leg
+whose `verdict.hbp` reads
+
+```text
+VERDICT|…|build_rc=0|check=success|comparator=success|status=COMPLETE
+```
+
+and that leg must run the fail-closed workflow from commit `bdd0c40`-or-later (see below), never
+from a green badge. The workflow is fail-closed:
+
+- A build that exits with anything other than `0` (complete) or `124` (the bounded
+  timeout, which starts the next leg) fails the job with `FORMAL_BUILD|FAIL`.
+- `Check.lean` runs under `pipefail`. Its `#print axioms` output must be exactly four lines,
+  one for each of the four named theorems, each within `propext`, `Quot.sound` and
+  `Classical.choice`. Any other line fails it, including a warning, a missing theorem or
+  an extra axiom.
+- The comparator runs only after that check passes, also under `pipefail`.
+- A last step writes the conjunction. `NOT_CERTIFIED` fails the job.
+
+A clean comparator result is reported with the qualification in B: the solution was
+first compiled outside the sandbox that comparator's trust model assumes.
 
 Only when the first two pass and `Check.lean` is accepted will this audit state that
 the Lean artifact appears to formalise an ETH-refuting theorem. Even that is a formal
