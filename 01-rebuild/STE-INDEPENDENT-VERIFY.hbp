@@ -1,0 +1,4 @@
+STE|points=627|pairs=196251|distinct=196251|collisions=0|min=37349|max=2617523875674652731|json=0
+STE_SEPARATION|max_intra=76572227551|min_inter=2415627046223872|holds=1|json=0
+STE_BOUND|2p^2<q^3_for_all_p<q=1|json=0
+STE_VERDICT|CERTIFIED|json=0

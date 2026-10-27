@@ -1,3 +1,10 @@
+// FIRST PROBE, kept for the record. Its CROSS-TOWER part uses a constant scale (x*BIG)
+// with BIG-multiple anchors, which cancels out: run as written it gives
+//   CROSS-TOWER total_points=627 pairs=196251 distinct_dist=75198 collisions=121053
+// The Sidon-Tower Embedding (STE) that carries the certificate scales tower t by p_t^3
+// and separates towers with GUARD = 2^40: see sidon-cross-fix.mjs, which gives
+//   CROSS-FIX towers=11 points=627 pairs=196251 distinct_dist=196251 collisions=0
+// Independent recomputation: ../STE-INDEPENDENT-VERIFY.py (receipt alongside).
 // Verify a PROVABLE all-distinct-distance construction (B2 / Sidon set).
 // Erdos-Turan: a(k) = 2*p*k + (k^2 mod p) for k=0..p-1 is a Sidon set mod 2p^2.
 // All pairwise DIFFERENCES are distinct => all pairwise DISTANCES distinct.
@@ -31,3 +38,4 @@ let acc=0;
 for(const t of towers){ t.anchor=acc; acc += (t.span+1)*BIG; for(const x of t.s) all.push(t.anchor + x*BIG /*expand to keep difference sets disjoint*/); }
 const rr=allDistinctDistances(all);
 console.log(`CROSS-TOWER total_points=${all.length} pairs=${rr.tot} distinct_dist=${rr.distinct} collisions=${rr.coll}`);
+console.log('NOTE: first probe (constant scale). The STE certificate is sidon-cross-fix.mjs: 196251/196251/0.');
