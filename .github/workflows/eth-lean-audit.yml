@@ -58,12 +58,19 @@ jobs:
           lean --version | tee toolchain.txt
           lake exe cache get
 
+      - name: Swap (leg 1 lost its runner at 2.5 h, consistent with memory exhaustion)
+        run: |
+          sudo swapoff -a || true
+          sudo fallocate -l 24G /mnt/swapfile && sudo chmod 600 /mnt/swapfile && sudo mkswap /mnt/swapfile && sudo swapon /mnt/swapfile
+          free -m
+
       - name: Build (bounded; a timeout here is not completion)
         id: build
         run: |
           set +e
           start=$(date +%s)
-          timeout 315m lake build OAI.Algorithms.SubexponentialSAT.Main ComparatorChallenges.SubexponentialSAT EthAudit.Bridge > build.log 2>&1
+          ( while true; do echo "MEM|t=$(( $(date +%s) - start ))|$(free -m | awk '/Mem:/{print "used_mb="$3"|avail_mb="$7} /Swap:/{print "|swap_used_mb="$3}' | tr -d '\n')|json=0"; sleep 300; done ) > mem.log &
+          timeout 170m lake build OAI.Algorithms.SubexponentialSAT.Main ComparatorChallenges.SubexponentialSAT EthAudit.Bridge > build.log 2>&1
           rc=$?
           echo "BUILD_LEG|leg=$LEG|run=$GITHUB_RUN_ID|prev_run=$PREV_RUN|workflow_sha=$GITHUB_SHA|rc=$rc|seconds=$(( $(date +%s) - start ))|built=$(grep -c 'Built' build.log)|json=0" | tee build-leg.hbp
           grep -E '^(error|✖)' build.log | head -50 || true
@@ -156,4 +163,5 @@ jobs:
             audits/eth-378/axioms.txt
             audits/eth-378/comparator.txt
             audits/eth-378/verdict.hbp
+            audits/eth-378/mem.log
           if-no-files-found: ignore

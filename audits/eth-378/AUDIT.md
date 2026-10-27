@@ -134,3 +134,10 @@ the Lean artifact appears to formalise an ETH-refuting theorem. Even that is a f
 check, not the independent mathematical certification being organised. The result stays
 out of the Yang–Mills certification. A runnable counter derived from it could only ever
 enter as an optional shadow behind the CNF-hash and exact-count cross-checks.
+
+## Build legs
+
+| leg | run | workflow | outcome |
+|---|---|---|---|
+| 1 | 40522825642 | `764944c` (before the fail-closed fix) | **Lost.** The runner received a shutdown signal 2 h 30 min into the build (exit 143). The cache save was skipped, so nothing carried over. This is consistent with memory exhaustion: a Lean process here peaks at about 4.5 GB, and the runner builds 4 at a time in 16 GB. No verdict follows from it. |
+| 1 (again) | see run list | this commit | Adds a 24 GB swap file, a memory log every 5 minutes, and legs bounded at 170 min, so the partial build is saved well before the 355-minute job limit. |
