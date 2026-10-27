@@ -110,7 +110,17 @@ jobs:
                   "EthAudit.statement_is_solution", "EthAudit.eth_refuted_3sat",
                   "EthAudit.halted_of_answer"]
           ok_ax = {"propext", "Quot.sound", "Classical.choice"}
-          lines = [l for l in open("axioms.txt").read().splitlines() if l.strip()]
+          # Lean wraps a long axiom list over several lines; a continuation line never
+          # starts with a quote, so it is joined to the line before. Acceptance is unchanged:
+          # exactly the four named theorems, each within the permitted set, nothing else.
+          lines = []
+          for l in open("axioms.txt").read().splitlines():
+              if not l.strip():
+                  continue
+              if lines and not l.startswith("'"):
+                  lines[-1] += " " + l.strip()
+              else:
+                  lines.append(l)
           got = {}
           bad = []
           for l in lines:
