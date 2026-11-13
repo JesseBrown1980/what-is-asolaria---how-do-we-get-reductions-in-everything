@@ -52,3 +52,7 @@ bec55be2297bdce5ad7a48e79344751184d02b2483176c72e20323dfbe58b961 *./switches/SPE
 c05b2393479aed7b6985b728edbbd116ecb45769dfcf6bb6503f204c5a876c29 *./unpump-container/SPEC-UNPUMP-V25.hbp
 a42bc9c48bc15f51fe999ee577987b1adcd855ba722bb67187e6f57aee50eeff *./unpump-container/hrm_call.mjs
 499511e69233d51c886f9e837369f3c17befb19361ca0c137fa9b30cce3c0c31 *./unpump-container/unpump_v25.py
+96016c78d5edf1fb9cd71307799696394d89b6ad7dd3259d4c1d28d8fe71ebad *./v32/README.md
+257d3445931ad5f0166a9c6c6087354beb912968949753e3ea530607b9a6ac77 *./v32/RESULT-V32.hbp
+a1db7cfcf4639d5db3141e1de1e19a7571dd1a95367c53300c82010f3b53c617 *./v32/panel_decode_v32.mjs
+fc8a612c722b1d083c5d7aaa0494acaf4d54abbb3dcae363a6fcf040d30eb3eb *./v32/wall_witness_v32.py
