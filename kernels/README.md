@@ -7,7 +7,7 @@
 ### 1. Asolaria-OS-on-metal kernel (Rust `no_std`) — [`asolaria-os-metal-kernel/`](asolaria-os-metal-kernel/)
 - **Source:** `C:/asolaria-acer/federation-remake-1024/kernel/core/` — crate `asolaria-kernel-core` v0.2.0-phase3-scaffold, `#![no_std]` `#![forbid(unsafe_code)]`, BEHCS-1024 native, anchor PID `ASOLARIA-FEDERATION-REMAKE-1024-PID-2026-05-11`.
 - **20 modules:** pid · envelope · crypto · hookwall · syscall · vfs · frame_alloc · agent_runtime · atlas · bus_and_kick · bus_fabric · cosign_chain · cycle_orch · glyph_genesis · gnn · highway · sign_gate · tier · tier_gate · transit.
-- **Examples here:** `Cargo.toml` (deps ed25519-dalek · sha2 · zeroize · crossbeam-queue) · `lib.rs` (module map + version) · `pid-mod.rs` (the BEHCS-1024 PID minter — Rust port of liris's `liris-pid-mint-reference.mjs`, 11/11 vectors; format `<ROLE>-PID-<REGION><HOST4hex>-A<2hex>-W<3hex>`).
+- **Examples here:** `Cargo.toml.example` (the crate's manifest as an example: it inherits from the federation workspace, which is not in this repository, so it is filed under a name the Rust gate does not build; deps ed25519-dalek · sha2 · zeroize · crossbeam-queue) · `lib.rs` (module map + version) · `pid-mod.rs` (the BEHCS-1024 PID minter — Rust port of liris's `liris-pid-mint-reference.mjs`, 11/11 vectors; format `<ROLE>-PID-<REGION><HOST4hex>-A<2hex>-W<3hex>`).
 
 ### 2. The 5-primitive kernel (JS spine) — [`asolaria-kernel-5primitive.mjs`](asolaria-kernel-5primitive.mjs)
 - **Source:** `D:/bigpickle-rebuild/src/asolaria-kernel.mjs`. Exposes ADDRESS / CONTENT / INTEGRITY / SCORE / ROUTE as one `KERNEL` API (see [`../ASOLARIA-LIVE-ENGINE-ARCHITECTURE.md`](../ASOLARIA-LIVE-ENGINE-ARCHITECTURE.md)).
