@@ -1,0 +1,5 @@
+SWITCHDECODE|target_bytes=2359296|stream_bytes=887942|decoder_inputs=stream_and_the_nine_tables_only|switch_choices_equal=2359296_of_2359296|decoded_sha256=bd38e292e3e1e5233c21d88e5b56d8e3|original_sha256=bd38e292e3e1e5233c21d88e5b56d8e3|byte_exact=1|json=0
+OVERHEAD|the_decoder_must_hold_nine_tables_trained_from=161338026_bytes_of_corpora|each_table_raw_bytes=33554432|not_counted_in_stream_bytes=1|json=0
+PATTERN|cells=48|box=6x6x6|largest_coefficient=1|negative_cells=24|nonzero_line_sums=0|json=0
+WITNESS|body=asolaria-corpus|true_cells=13198|found=1|translation=(8, 8, 8)|sign=+1|second_body_min_value=0|cells_that_differ=48|walls_identical=9_of_9|mass_equal=1|meaning=two_different_non-negative_whole-number_bodies_share_all_nine_walls|json=0
+WITNESS|body=mythos-seed|true_cells=398|found=0|translations_tried=205379|meaning=this_one_pattern_does_not_fit;_ambiguity_among_non-negative_bodies_is_NOT_shown_by_this_test|json=0
