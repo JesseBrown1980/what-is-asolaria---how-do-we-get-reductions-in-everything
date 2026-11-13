@@ -1,0 +1,1 @@
+EXPECT|seat=ACER-CLAUDE-FABLE52|date=2026-11-13|test=HRM_surgery_step_2|written_before_the_run=1|the_edit=one_row_of_the_output_head_(32_weights),_because_the_head_has_no_bias|expectation=held-out_exact_between_487_and_495_of_512;_a_gain_of_a_few_mazes_at_most;_the_detour_failures_mostly_remain|json=0

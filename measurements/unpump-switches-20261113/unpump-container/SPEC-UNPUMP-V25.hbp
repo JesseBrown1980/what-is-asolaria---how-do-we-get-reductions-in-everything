@@ -1,0 +1,8 @@
+SPECHDR|test=UNPUMP-V25|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE|written_before_the_run=1|json=0
+METHOD|codex=a_list_of_handle8_(first_16_hex_of_sha256)_with_nothing_else|store=D:/asolaria-gguf/ASOLARIA-SYSTEM-2026-08-08.gguf|resolve=manifest_row_whose_sha256_starts_with_the_handle|unpump=read_the_body_at_its_offset_and_length|check=sha256_of_the_body_equals_the_manifest_sha256_AND_the_sha256_computed_today_from_the_live_file|outcome=RESOLVED_or_HELD|writes_to_store=0|json=0
+PREDICT|id=P1|office_rows_written_before_2026-08-08_(4_of_4)=RESOLVED_byte_exact|json=0
+PREDICT|id=P2|foundation_and_BROWN-HILBERT_(2_of_2)=RESOLVED_or_HELD_if_edited_since_2026-08-08|json=0
+PREDICT|id=P3|tribit_mod.rs_(published_2026-10-08)=HELD|json=0
+PREDICT|id=P4|the_269_MB_Mythos_glyph_GGUF=HELD_(over_the_8_MiB_inline_limit)|json=0
+PREDICT|id=P5|every_RESOLVED_body_hashes_to_its_manifest_sha256|falsifier=one_body_that_does_not|json=0
+NOPREDICT|items=boot.js,the_two_emissions,the_key,the_Blue_star,the_constellation_GGUF,fischer-kernel,pump_program|reason=the_container_roots_row_lists_no_asolaria-absorb_files_but_copies_may_sit_under_other_roots|json=0

@@ -1,0 +1,8 @@
+UNPUMPV26|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE|folder=D:/asolaria-unpump-20261113|spec_written_first=1|originals_untouched=1|json=0
+REGEN|k=ASOLARIA-MYTHOS-SELF-GLYPHS-256.gguf|codex=MYTHOS-SELF-EMISSION.txt_3796B|program=pump_glyphs_mythos.py|bytes=269604512|sha256=f29d4b9427252b17cc6151cd5f5627d080b5a021f009e46125cef5479db0d299|equals_july=1|seconds_about=9|prediction_U1=HELD|json=0
+REGEN|k=ASOLARIA-STARS-SHELLS.gguf|codex=same_seed|program=stars_shells.py|bytes=4596880|sha256=ae23392ad473718e2196e525a4355af20cdbd57bbb5dc3e85a8719b62552784d|equals_july=1|seconds_about=1|prediction_U2=HELD|json=0
+REGEN|k=KIMI-K3-STAR-256.gguf|codex=KIMI-K3-STAR.txt_3110B|program=divide_kimi_k3.py|bytes=202115456|sha256=56d08746a77efd9ea30345ada15bab3fc2c36e09647d1e77156a96b9a4b83a18|equals_recorded=1|seconds_about=3|prediction_U3=HELD|json=0
+PROGRAMFAULT|program=pump_glyphs_mythos.py|after_the_gguf_is_written_and_hashed=1|error=NameError_inner_not_defined_at_line_366|cause=the_manifold_branch_is_skipped_when_0_glyphs_are_measurable_and_the_receipt_code_still_reads_its_variables|exit=1|json=0
+DIAGNOSIS|glyph_tensors=256|voxels_each=262144|nonzero_voxels_per_glyph_min=1|median=5|max=29|fill_ppm=27|mass_per_glyph=8..179_of_1265_seed_triples|glyphs_with_one_distinct_value=55|values_are_whole_numbers=1|json=0
+DIAGNOSIS|cv=nan_for_256_of_256_glyphs|program_message=cube_too_sparse_for_a_CV|roundest_glyph_PPPP_is_index_0_of_an_all_nan_argmin|census_MET_means_only_sum_greater_than_zero|json=0
+NOTREGEN|k=three_pumped_spheres|reason=their_input_is_the_office_glob_FABLE5-*_as_of_2026-07-27_(153_files_3365318_bytes);_the_office_now_holds_543|needs=the_pinned_153_file_set|json=0

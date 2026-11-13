@@ -1,0 +1,16 @@
+RIMEV29|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE|spec_sha16=b15614c43b09d073|spec_written_first=1|folder=D:/asolaria-unpump-20261113/rime|integers_only=1|json=0
+BODY|k=A_self_emission|triples=1265|true_cells=398|max_count=31|json=0
+WALLS|k=A_self_emission|set=3_axes|wall_cells_with_light=376|candidate_cells=681|true_cells=398|ghost_cells=283|equations=376|rank=300|free_dimensions=381|outcome=HELD|json=0
+WALLS|k=A_self_emission|set=9_axes_and_face_diagonals|wall_cells_with_light=1752|candidate_cells=433|true_cells=398|ghost_cells=35|equations=1752|rank=433|free_dimensions=0|outcome=RESOLVED|rebuilt_equals_true_body=1|json=0
+WALLS|k=A_self_emission|set=13_all|wall_cells_with_light=2942|candidate_cells=428|true_cells=398|ghost_cells=30|equations=2942|rank=428|free_dimensions=0|outcome=RESOLVED|rebuilt_equals_true_body=1|json=0
+BODY|k=B_full_emission|triples=2744|true_cells=474|max_count=76|json=0
+WALLS|k=B_full_emission|set=3_axes|wall_cells_with_light=344|candidate_cells=716|true_cells=474|ghost_cells=242|equations=344|rank=274|free_dimensions=442|outcome=HELD|json=0
+WALLS|k=B_full_emission|set=9_axes_and_face_diagonals|wall_cells_with_light=1814|candidate_cells=502|true_cells=474|ghost_cells=28|equations=1814|rank=502|free_dimensions=0|outcome=RESOLVED|rebuilt_equals_true_body=1|json=0
+WALLS|k=B_full_emission|set=13_all|wall_cells_with_light=3120|candidate_cells=496|true_cells=474|ghost_cells=22|equations=3120|rank=496|free_dimensions=0|outcome=RESOLVED|rebuilt_equals_true_body=1|json=0
+WALLGGUF|k=MYTHOS-SELF|file=RIME-NINE-WALLS-MYTHOS-SELF.gguf|bytes=28896|sha256=4c8a3022efcf42f6ddf98460094d0b10339d849b35b06a54b791f263efa81469|walls=9|lit_cells=1752|json=0
+REBUILD|k=MYTHOS-SELF|outcome=RESOLVED|candidate_cells=433|nonzero_rebuilt=398|true_cells=398|mass_rebuilt=1265|mass_true=1265|every_cell_equal=1|file=RIME-BODY-3D-MYTHOS-SELF.gguf|bytes=1048928|sha256=d78818a6cd1c3bcfa7cf4a410fcdcd56a8e8f08091181ba67e9fc62bd8eb271c|json=0
+WALLGGUF|k=MYTHOS-FULL|file=RIME-NINE-WALLS-MYTHOS-FULL.gguf|bytes=29856|sha256=cdb21fbc0feb5d70f25a9529d3fe87f2858bff74fbcdf8b407389a42f1d818d2|walls=9|lit_cells=1814|json=0
+REBUILD|k=MYTHOS-FULL|outcome=RESOLVED|candidate_cells=502|nonzero_rebuilt=474|true_cells=474|mass_rebuilt=2744|mass_true=2744|every_cell_equal=1|file=RIME-BODY-3D-MYTHOS-FULL.gguf|bytes=1048928|sha256=cf20315eeef579fda8d5a854b46b65d4c455cce910ef429d0099b5a5cf183050|json=0
+VERDICTS|R1=HELD_in_part:_3_axis_walls_are_HELD_for_both_bodies,_but_candidates_are_1.71x_and_1.51x_the_true_cells,_not_the_2x_predicted|R2=HELD|R3=HELD|unpredicted=9_walls_(3_axes_and_6_face_diagonals)_already_RESOLVE_both_bodies|json=0
+ACCOUNTING|body_A_true_cells=398|nine_walls_lit_cells=1752|the_walls_together_hold_more_cells_than_the_body:_this_is_exact_rebuilding_from_jointly_sufficient_views,_not_a_reduction|json=0
+KIMIRECORD|per_FABLE5-K3-REAL-AND-RADIX_and_FABLE5-KERNEL-STREAMED-K3|weights_on_the_hub=96_shards_1560936091448_bytes|streamed_into_the_kernel=config.json,manifest.hbp,modeling_kimi_linear.py_56857_bytes|star_text=3110_bytes|kernel=3174_bytes|json=0

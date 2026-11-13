@@ -1,0 +1,5 @@
+HRMV28HDR|train=2048|test=512|params=58850|test_cells=12800|baseline_off_path_correct=8074|json=0
+HRMV28|arm=real|loss_last_milli=10|seconds=63|train_cells_correct=51112_of_51200|train_exact=1996_of_2048|test_cells_correct=12760_of_12800|test_exact=489_of_512|json=0
+HRMV28CKPT|file=D:/asolaria-unpump-20261113/hrm\hrm-tiny-maze-v28.pt|bytes=242440|sha256=ca548efadab18bfacef0cc15e6a9438166cda0e84e3619cc939669da43bdc24c|reloaded_predictions_equal=1|json=0
+HRMV28EXACT|values=58914|not_a_number=0|file=hrm-tiny-maze-v28.exact-int.hbp|json=0
+HRMV28|arm=shuffled_labels|test_cells_correct=9098_of_12800|test_exact=0_of_512|json=0

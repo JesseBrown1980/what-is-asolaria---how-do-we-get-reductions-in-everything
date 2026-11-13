@@ -1,0 +1,8 @@
+SPECHDR|test=RIME-2D-TO-3D-V29|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE(the 2D GGUF on the wall gets transitioned into a three-dimensional RIME sphere)|written_before_the_run=1|json=0
+QUESTION|how_many_2D_walls_does_it_take_to_rebuild_the_3D_body_exactly|a_wall_is_the_body_summed_along_one_direction|the_27-cell_neighbourhood_has_13_line_directions:_3_axes,_6_face_diagonals,_4_space_diagonals|json=0
+BODIES|A=MYTHOS-SELF-EMISSION.txt_(3796_bytes,_1265_triples)|B=MYTHOS-FULL-EMISSION.txt_(8233_bytes,_2744_triples)|cube=64x64x64,_coordinate=byte_shifted_right_2,_value=count_of_triples_(exact_integers)|json=0
+METHOD|walls_used=3_(axes),_then_9_(axes_and_face_diagonals),_then_13_(all)|candidate_cells=cells_whose_every_wall_line_has_a_positive_sum|unique=the_wall_equations_on_the_candidate_cells_have_full_column_rank_(Gaussian_elimination_mod_1000081,_integers_only)|rebuilt=solve_and_compare_with_the_true_body_cell_by_cell|outcome=RESOLVED_or_HELD|json=0
+PREDICT|id=R1|with_the_3_axis_walls_both_bodies_are_HELD_and_the_candidate_cells_number_at_least_twice_the_true_cells|json=0
+PREDICT|id=R2|with_all_13_walls_body_A_is_RESOLVED_exactly|json=0
+PREDICT|id=R3|with_all_13_walls_body_B_is_RESOLVED_exactly|json=0
+NOPREDICT|whether_9_walls_already_suffice|json=0

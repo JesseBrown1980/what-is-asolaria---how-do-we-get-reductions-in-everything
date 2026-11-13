@@ -1,0 +1,9 @@
+QRV27|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE("the codexes are color QR codes that are supposed to be unquanted before the HRM agents even work on them")|folder=D:/asolaria-unpump-20261113/qr|json=0
+WRITER|found=_horizon/roundtrip/drill3k.mjs_inside_ASOLARIA-WORKS-20260726.tar.gz|method=order-2_bit-tree_counts_over_the_whole_stream,_then_800_lanes_x_32_bits_folded|output_bytes=3200_fixed|closes=DISKWALK-2026-10-17_CONFLICT_item_qr_writer|json=0
+REDRILL|qr=wiki.qr|corpus=enwik8_100000000B|sha256=3e2570928edf8648809b290716e7f0f2d75b93e38b0951d18aeba91671ca4b19|equals_qr_on_disk=1|visited_nodes=606695|json=0
+REDRILL|qr=code-corpus.txt.qr|corpus=code-corpus.txt_14704340B|sha256=c20c783922639c53103317665c06b9bbe2fc163ec0d2ddb66d59ed6b9f8925cd|equals_qr_on_disk=1|visited_nodes=251108|json=0
+REDRILL|qr=asolaria-corpus.txt.qr|corpus=asolaria-corpus.txt_8695247B|sha256=2b4ba9df637796eee75e7db9b51b0b6f70c9055ff3c00c6c95d3ff7dbe838934|equals_qr_on_disk=1|visited_nodes=248605|json=0
+PREDICTION|Q1=HELD_3_of_3|written_first=1|json=0
+NOTFOUND|qr=fotoC.bin.qr|corpus=fotoC.bin_not_located_on_this_host|json=0
+UNQUANTED|saved=D:/asolaria-unpump-20261113/qr/unquanted|enwik8_sha16=2b49720ec4d78c3c|code-corpus_sha16=f9cddef17afafd69|asolaria-corpus_sha16=f9ee10c1733c3915|route=the_QR_names_its_corpus;_the_corpus_is_fetched_from_the_store_and_proven_by_re-drilling|json=0
+UNDRILL|program=_horizon/roundtrip/undrill.mjs_(path_edited_only)|input=wiki.qr_alone|bytes_generated=4194304|exact_matches=0|baseline_most_common_byte_permille=133|lanes_closed=0_of_800|bits_per_lane_available=32|bits_per_lane_needed=251664|json=0

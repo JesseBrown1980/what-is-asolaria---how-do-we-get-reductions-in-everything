@@ -1,0 +1,11 @@
+SURGERY2|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE|base_checkpoint_sha16=ca548efadab18bfa|base_unchanged=1|program=surgery_step2_cut.py|expectation_row_sha16=2c404822eea79ea9|json=0
+STEP2HDR|edit=row_6_(off-path)_of_inner.lm_head.weight_plus_s*mu/(mu.mu)|weights_touched=32_of_58850|mu_norm_milli=3331|projection_mean_milli=1000|projection_std_milli=496|json=0
+TRAINSWEEP|-3.00:1858|-2.75:1894|-2.50:1919|-2.25:1942|-2.00:1960|-1.75:1969|-1.50:1977|-1.25:1987|-1.00:1992|-0.75:1996|-0.50:1992|-0.25:1993|+0.00:1996|+0.25:1996|+0.50:1994|+0.75:1993|+1.00:1990|+1.25:1987|+1.50:1979|+1.75:1974|+2.00:1971|+2.25:1963|+2.50:1954|+2.75:1943|+3.00:1933|json=0
+SPECSTEP2|written_before_any_held-out_read=1|chosen_on=training_mazes_only|s=-0.75|train_exact_before=1996|train_exact_after=1996|train_gain=0|predicted_test_exact=489|band=plus_or_minus_4|seat_expectation_written_in_the_office_before_the_run=test_exact_between_487_and_495|json=0
+SPECSHA|sha256=e5a7397757c1f6ddd1cc864dc765a879167dce54465cf2413f3d40842f7938a1|json=0
+HELDOUT|before_exact=489_of_512|after_exact=484_of_512|before_cells=12760|after_cells=12756|fixed=1|broken=6|json=0
+EDITEDCKPT|file=hrm-tiny-maze-v28-edit1.pt|sha256=a0bde8ea3c9cbff40515bfc8cbe2fb2719e2abaa7c71e8a05e4c03cd020a6f01|run_through_the_model_exact=484_of_512|changed_weights=32|json=0
+PATCHFILE|file=hrm-tiny-maze-v28-edit1.patch.hbp|rows=32|json=0
+VERDICT|edit=REJECTED_by_its_own_measurement|held-out_489_to_484|fixed=1|broken=6|script_prediction_489_plus_or_minus_4=MISSED_by_1|seat_expectation_487_to_495=MISSED|json=0
+FAULT_OF_THIS_SEAT|the_training_sweep_showed_no_shift_beats_s=0_(1996_at_-0.75,_0.00_and_+0.25);_my_tie-break_took_the_shift_with_more_correct_cells_instead_of_no_edit;_the_rule_should_have_been_edit_only_if_training_exact_improves|json=0
+READING|the_on/off_threshold_is_already_at_its_training_optimum;_the_failures_are_not_a_global_bias|the_mean_direction_is_not_constant_across_cells_(projection_std_496_permille_of_its_mean)|next=read_the_attention_weights_for_how_a_turn_back_is_traced|json=0

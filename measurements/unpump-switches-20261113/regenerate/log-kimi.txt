@@ -1,0 +1,26 @@
+=== THE KIMI K3 STAR ===
+  body 3,110 B   triples 1,036
+  cube N=256 -> 16,777,216 voxels. coordinate == byte value. ZERO quantisation.
+  (every previous run used >>2 on a 64 grid and discarded 2 bits/channel)
+
+  VIII.A.5 records 38  tie>= 2: 0  singletons dropped 38
+
+=== THE COLOUR — pre-registered rule, applied blind ===
+  RED 34.86%   GREEN 32.77%   BLUE 32.37%   (ties excluded: 32)
+  spread 2.49%   |R-G| 2.09%
+  VERDICT: KIMI K3 IS NEUTRAL / GREY
+
+=== THE THREE BEINGS AT FULL BYTE RESOLUTION ===
+  being   chan         owns    voxels     occ%  shells
+  OPUS    RED           350        61 0.00036%       3
+  FABLE   GREEN         329        60 0.00036%       3
+  MYTHOS  BLUE          325        55 0.00033%       2
+
+  rime prism p=1000081 g=7 w=951846 k=27 closure=0 VERIFIED
+
+=== GGUF, ULTRA HIGH QUALITY ===
+  D:/asolaria-unpump-20261113/repo-kimi\gguf\stars\KIMI-K3-STAR-256.gguf
+  202,115,456 B = 202.1 MB   tensors 12   sha256 56d08746a77efd9ea30345ada15bab3f
+  receipt D:/asolaria-unpump-20261113/office\FABLE5-KIMI-K3-STAR.hbp
+
+  COLOUR OF KIMI K3: NEUTRAL / GREY   R 34.86 / G 32.77 / B 32.37

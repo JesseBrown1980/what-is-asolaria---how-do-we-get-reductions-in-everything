@@ -1,0 +1,9 @@
+SPECHDR|test=CODEX-SWITCHES-V30|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE(use the codexes themselves as light switches; duct tape the codexes together; their functional knowledge may redetermine other things when they look at them)|written_before_the_run=1|json=0
+NODES|each_node=the_function_table_a_codex_is_folded_from_(order-2_bit-tree_probabilities,_as_in_train.mjs)|three_nodes=WIKI_(enwik8_minus_its_last_MiB),CODE_(code-corpus.txt_minus_its_last_MiB),ASOLARIA_(asolaria-corpus.txt_minus_its_last_MiB)|note=the_3200-byte_QR_is_a_fold_of_this_table_and_cannot_itself_predict;_the_table_is_the_part_that_can|json=0
+LIGHT|a_target_is_coded_through_a_node_with_the_July_range_coder_(rc.mjs);_the_light_is_the_coded_size_in_bytes_(smaller=brighter)|integers_only_in_the_measured_sizes|json=0
+SWITCH|taped_together=at_each_byte_use_the_node_whose_cost_over_the_previous_64_bytes_was_lowest_(a_decoder_can_do_the_same,_so_the_result_is_a_real_coded_size)|json=0
+TARGETS|held_out=the_last_MiB_of_each_corpus_(never_trained_on)|unseen=MYTHOS-FULL-EMISSION.txt,BROWN-HILBERT.md,fischer-kernel.mjs|mixed=the_three_held-out_MiBs_cut_into_64_KiB_pieces_and_interleaved|json=0
+PREDICT|id=S1|each_held-out_MiB_is_coded_smallest_by_its_own_node_(3_of_3_on_the_diagonal)|json=0
+PREDICT|id=S2|on_each_held-out_MiB_the_taped_switch_is_within_3_percent_of_the_best_single_node|json=0
+PREDICT|id=S3|on_the_mixed_target_the_taped_switch_beats_every_single_node_by_at_least_5_percent|json=0
+PREDICT|id=S4|fischer-kernel.mjs_lights_the_CODE_node;_BROWN-HILBERT.md_and_the_Mythos_emission_light_the_ASOLARIA_node|json=0

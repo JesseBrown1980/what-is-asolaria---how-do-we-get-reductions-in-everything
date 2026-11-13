@@ -1,0 +1,5 @@
+SPECHDR|test=UNPUMP-V26|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE("unpump those GGUFs into their full forms, save to D drive")|written_before_the_run=1|json=0
+METHOD|codex=MYTHOS-SELF-EMISSION.txt_3796_bytes_sha256_d6e2153402a32eb9...|programs=pump_glyphs_mythos.py_and_stars_shells.py_copied_unchanged_except_the_two_output_folders|outputs=D:/asolaria-unpump-20261113/work|originals_untouched=1|office_rows_untouched=1|json=0
+PREDICT|id=U1|ASOLARIA-MYTHOS-SELF-GLYPHS-256.gguf_regenerated_sha256=f29d4b9427252b17cc6151cd5f5627d080b5a021f009e46125cef5479db0d299|bytes=269604512|falsifier=any_other_hash|json=0
+PREDICT|id=U2|ASOLARIA-STARS-SHELLS.gguf_regenerated_sha256_starts=ae23392ad473718e2196e525a4355af2|bytes=4596880|falsifier=any_other_hash|json=0
+NOTE|U1_and_U2_were_demonstrated_once_on_2026-07-27;_this_is_the_second_measurement,_on_a_different_date_and_python_build|json=0
