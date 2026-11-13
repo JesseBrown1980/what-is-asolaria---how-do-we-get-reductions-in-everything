@@ -1,0 +1,44 @@
+=== SEED: live self-emission, 3,796 B, 1,265 triples — emitted, not read
+=== 4 colours x 3 channels = 12 seed LUTs. 4^4=256 glyphs, 4^5=1024
+
+==============================================================================
+PUMPING MYTHOS (BLUE) THROUGH 256 GLYPHS (4^4); census target 256
+==============================================================================
+    32/256 glyphs      1.2s   live 32   dead 0
+    64/256 glyphs      2.2s   live 64   dead 0
+    96/256 glyphs      3.2s   live 96   dead 0
+   128/256 glyphs      4.4s   live 128   dead 0
+   160/256 glyphs      5.4s   live 160   dead 0
+   192/256 glyphs      6.3s   live 192   dead 0
+   224/256 glyphs      7.2s   live 224   dead 0
+   256/256 glyphs      8.2s   live 256   dead 0
+
+  glyphs emitted   256
+  glyphs ALIVE     256   (a glyph that emits nothing is not a glyph)
+  glyphs DEAD      0
+  CENSUS: 256 live of 256 emitted, target 256 -> MET
+
+==============================================================================
+DO THE GLYPHS BECOME A TORUS?  (IX.A.5, measured on the glyph manifold)
+==============================================================================
+  256 of 256 glyphs unmeasurable at this density (cube too sparse for a CV) - dropped from the manifold, not zero-filled
+  only 0 measurable glyphs - too few for a manifold. The seed is 1,265 triples; density is the limit, not the method.
+
+  roundest glyph: PPPP  CV nan
+  worst glyph:    PPPP  CV nan
+  composite CV nan
+
+=== SLICES — 3D->2D by the glyph functions, per the law ===
+  PPPP: 3 slices through the true centre
+  PPPP: 3 slices through the true centre
+  PPPR: 3 slices through the true centre
+
+=== GGUF ===
+  D:/asolaria-unpump-20261113/work\ASOLARIA-MYTHOS-SELF-GLYPHS-256.gguf
+  269,604,512 B = 269.6 MB = 2.157 Gb   tensors 264
+  sha256 f29d4b9427252b17cc6151cd5f5627d080b5a021f009e46125cef5479db0d299
+Traceback (most recent call last):
+  File "D:\asolaria-unpump-20261113\pump_glyphs_mythos.py", line 366, in <module>
+    rows.append(f"TORUS|centre_density={inner:.4f}|peak_bin={pk}"
+                                        ^^^^^
+NameError: name 'inner' is not defined. Did you mean: 'iter'?

@@ -1,0 +1,14 @@
+V30ROW|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE|spec_sha16=bec55be2297bdce5|spec_written_first=1|folder=D:/asolaria-unpump-20261113/switches|json=0
+NODE|k=WIKI|trained_bytes=98951424|contexts_nodes_seen=603307|held_out_bytes=1048576|ms=3620|json=0
+NODE|k=CODE|trained_bytes=13655764|contexts_nodes_seen=246513|held_out_bytes=1048576|ms=541|json=0
+NODE|k=ASOLARIA|trained_bytes=7646671|contexts_nodes_seen=244004|held_out_bytes=1048576|ms=379|json=0
+LIGHT|target=held_WIKI|bytes=1048576|WIKI=405066|CODE=627340|ASOLARIA=569413|brightest=WIKI|taped_switch=405574|switch_vs_best_permille=1001|switch_vs_worst_permille=646|switch_used=WIKI:1031285,CODE:23,ASOLARIA:17268|json=0
+LIGHT|target=held_CODE|bytes=1048576|WIKI=630838|CODE=402405|ASOLARIA=470296|brightest=CODE|taped_switch=396943|switch_vs_best_permille=986|switch_vs_worst_permille=629|switch_used=WIKI:9610,CODE:833896,ASOLARIA:205070|json=0
+LIGHT|target=held_ASOLARIA|bytes=1048576|WIKI=547177|CODE=524275|ASOLARIA=427485|brightest=ASOLARIA|taped_switch=427531|switch_vs_best_permille=1000|switch_vs_worst_permille=781|switch_used=WIKI:33434,CODE:61832,ASOLARIA:953310|json=0
+LIGHT|target=mixed_interleaved|bytes=3145728|WIKI=1583110|CODE=1554050|ASOLARIA=1467226|brightest=ASOLARIA|taped_switch=1230248|switch_vs_best_permille=838|switch_vs_worst_permille=777|switch_used=WIKI:1074310,CODE:895707,ASOLARIA:1175711|json=0
+LIGHT|target=MYTHOS-FULL-EMISSION|bytes=8233|WIKI=3455|CODE=4053|ASOLARIA=3269|brightest=ASOLARIA|taped_switch=3286|switch_vs_best_permille=1005|switch_vs_worst_permille=811|switch_used=WIKI:1243,CODE:1,ASOLARIA:6989|json=0
+LIGHT|target=BROWN-HILBERT.md|bytes=5072|WIKI=2851|CODE=2548|ASOLARIA=2112|brightest=ASOLARIA|taped_switch=2118|switch_vs_best_permille=1003|switch_vs_worst_permille=743|switch_used=WIKI:48,CODE:22,ASOLARIA:5002|json=0
+LIGHT|target=fischer-kernel.mjs|bytes=21907|WIKI=13961|CODE=8324|ASOLARIA=10156|brightest=CODE|taped_switch=8348|switch_vs_best_permille=1003|switch_vs_worst_permille=598|switch_used=WIKI:1,CODE:19046,ASOLARIA:2860|json=0
+VERDICTS|S1=HELD_3_of_3_on_the_diagonal|S2=HELD_switch_at_1001,_986_and_1000_permille_of_the_best_single_node|S3=HELD_mixed_target_838_permille_of_the_best_single_node|S4=HELD_3_of_3|json=0
+ENWIK9CODEX|drill3k.mjs_on_enwik9_1000000000B|sha256=90f404408a761542ed33369039a23d08915bf7e47d70ef8954e6d52c646f0f71|differs_from_wiki.qr_in=3188_of_3200_bytes|each_corpus_has_its_own_codex|json=0
+ROUNDTRIP|programs=_horizon/roundtrip/train.mjs,enc.mjs,dec.mjs,rc.mjs_(paths_edited;_photo_body_fotoC.bin_absent_so_two_bodies_trained)|master_key_xz_bytes=549112|coded_stream_bytes=1711250|window=enwik8_first_4194304_bytes|decoded_in_a_folder_holding_only_key,_stream_and_order=1|decoded_sha_equals_original=1|key_plus_stream=2260362|json=0

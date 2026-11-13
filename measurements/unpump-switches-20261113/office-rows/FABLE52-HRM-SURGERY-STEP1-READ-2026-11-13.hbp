@@ -1,0 +1,22 @@
+SURGERY1|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE|checkpoint_sha16=ca548efadab18bfa|checkpoint_changed=0|program=surgery_step1_read.py|json=0
+STEP1HDR|test=512|solved=489|failed=23|json=0
+FEATURE|k=plen|failed_mean_milli=9391|solved_mean_milli=8175|failed_min=8|failed_max=12|solved_min=8|solved_max=12|json=0
+FEATURE|k=walls|failed_mean_milli=7869|solved_mean_milli=7550|failed_min=4|failed_max=10|solved_min=4|solved_max=13|json=0
+FEATURE|k=turns|failed_mean_milli=3695|solved_mean_milli=2533|failed_min=1|failed_max=4|solved_min=1|solved_max=6|json=0
+FEATURE|k=side|failed_mean_milli=5956|solved_mean_milli=7523|failed_min=3|failed_max=12|solved_min=1|solved_max=12|json=0
+FEATURE|k=back|failed_mean_milli=695|solved_mean_milli=87|failed_min=0|failed_max=2|solved_min=0|solved_max=2|json=0
+RATE|by=plen|8:9_of_458_failed|10:12_of_49_failed|12:2_of_5_failed|json=0
+RATE|by=back|0:9_of_458_failed|1:12_of_49_failed|2:2_of_5_failed|json=0
+RATE|by=side|1:0_of_9_failed|2:0_of_12_failed|3:2_of_23_failed|4:5_of_24_failed|5:3_of_32_failed|6:5_of_54_failed|7:3_of_72_failed|8:3_of_86_failed|9:1_of_97_failed|10:0_of_69_failed|11:0_of_29_failed|12:1_of_5_failed|json=0
+TRAINDIST|plen|8:1864|10:167|12:16|14:1|json=0
+ERRORS|wrong_cells_total=40|missed_path_cells=13|extra_path_cells=27|wrong_cells_per_failed_maze={1: 16, 2: 3, 3: 2, 5: 1, 7: 1}|json=0
+ERRORPOS|cell_index:count|2:1|3:1|5:3|6:2|7:3|8:1|9:2|10:3|11:2|12:4|13:5|14:3|15:1|16:3|17:3|18:1|19:2|json=0
+MARGIN|wrong_cells_mean_milli=3079|right_cells_mean_milli=10116|wrong_below_1.0=8_of_40|json=0
+ALTPATH|failed_predictions_that_are_a_connected_wall-free_route_from_S_to_G=11_of_23|json=0
+MAZE|test_index=19|plen=8|back=0|rows=ooMoo/...#o/..#.o/.#..o/...#o|key=o_correct_path,M_missed,X_extra,#_wall|json=0
+MAZE|test_index=48|plen=8|back=0|rows=o#.../oo##./#ooMo/##.#o/.##.o|key=o_correct_path,M_missed,X_extra,#_wall|json=0
+MAZE|test_index=86|plen=10|back=1|rows=o.#../o#.##/oX##./o#ooo/ooo#o|key=o_correct_path,M_missed,X_extra,#_wall|json=0
+MAZE|test_index=101|plen=8|back=0|rows=o#.../ooo#./##MMo/#..#o/.##.o|key=o_correct_path,M_missed,X_extra,#_wall|json=0
+MAZE|test_index=146|plen=12|back=2|rows=ooo.#/##o.#/ooo##/o##X./ooooo|key=o_correct_path,M_missed,X_extra,#_wall|json=0
+MAZE|test_index=153|plen=10|back=1|rows=oo#../#o#.#/oo##./o#X../ooooo|key=o_correct_path,M_missed,X_extra,#_wall|json=0
+READING|failures_concentrate_on_paths_that_must_step_up_or_left:_2_percent_failed_with_no_such_step,_24_percent_with_one,_40_percent_with_two|training_holds_1864_direct_paths_and_184_with_a_detour|16_of_23_failures_are_one_wrong_cell|wrong_cells_carry_about_a_third_of_the_margin_of_right_cells|tag=MEASURED|json=0

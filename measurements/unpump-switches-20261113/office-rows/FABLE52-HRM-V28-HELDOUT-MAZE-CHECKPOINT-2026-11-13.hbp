@@ -1,0 +1,8 @@
+HRMV28ROW|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE|spec_sha16=548fcceb5573a444|spec_written_first=1|folder=D:/asolaria-unpump-20261113/hrm|json=0
+HRMV28HDR|train=2048|test=512|params=58850|test_cells=12800|baseline_off_path_correct=8074|json=0
+HRMV28|arm=real|loss_last_milli=10|seconds=63|train_cells_correct=51112_of_51200|train_exact=1996_of_2048|test_cells_correct=12760_of_12800|test_exact=489_of_512|json=0
+HRMV28CKPT|file=D:/asolaria-unpump-20261113/hrm\hrm-tiny-maze-v28.pt|bytes=242440|sha256=ca548efadab18bfacef0cc15e6a9438166cda0e84e3619cc939669da43bdc24c|reloaded_predictions_equal=1|json=0
+HRMV28EXACT|values=58914|not_a_number=0|file=hrm-tiny-maze-v28.exact-int.hbp|json=0
+HRMV28|arm=shuffled_labels|test_cells_correct=9098_of_12800|test_exact=0_of_512|json=0
+VERDICTS|H1=HELD_test_cells_9969_permyriad_vs_baseline_6308|H2=FAILED_predicted_exact_below_20_percent_measured_489_of_512|H3=FAILED_as_posed_shuffled_control_7108_permyriad_exceeds_the_off-path_baseline_(it_learns_which_positions_are_usually_on_a_path)_exact_0_of_512|H4=HELD|json=0
+SCOPE|float32_training_(HRM_is_a_float_model)|weights_also_exported_as_exact_integer_pairs_58914_values_0_not-a-number|HRM_repo_D:/Asolaria-HRM_untouched|json=0

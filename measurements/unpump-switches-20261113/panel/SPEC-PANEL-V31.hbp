@@ -1,0 +1,10 @@
+SPECHDR|test=CODEX-PANEL-V31|seat=ACER-CLAUDE-FABLE52|pid=61089a99becaa89b|date=2026-11-13|directed_by=OP-JESSE(Run the test and try.)|written_before_the_run=1|json=0
+NODES|nine_function_tables_(order-2,_as_in_train.mjs)|WIKI=enwik8|CODE=code-corpus.txt|ASOLARIA=asolaria-corpus.txt|HBP=office_rows_FABLE5-*.hbp_(FABLE52-*_excluded)|RUST=*.rs_under_asolaria-federation-1024|MJS=Asolaria/tools/behcs/*.mjs|LAWS=ALL-assistant-messages.md_plus_COMBINED-BOOK-OF-LAWS.md|CERT=the_six_r9_certificates_of_cutoffs_11_and_12|PY=Python_3.13_standard_library_*.py|each_capped_at_16_MiB_except_WIKI|each_trained_without_its_last_256_KiB|json=0
+LIGHT|coded_size_through_a_node_with_the_July_range_coder;_smaller=brighter|TAPE|at_each_byte_the_node_cheapest_over_the_previous_64_bytes|json=0
+Q1|mixed_target=the_nine_held-out_256_KiB_tails_cut_into_64_KiB_pieces_and_interleaved|panels=first_1,_3,_5,_7,_9_nodes_in_the_order_listed|json=0
+Q2|labels=the_brightest_node_names_the_kind|held=the_nine_tails|unseen=tribit/mod.rs(RUST),fischer-kernel.mjs(MJS),an_office_row_written_today(HBP),hrm_v28.py(PY),BROWN-HILBERT.md(ASOLARIA),enwik9_at_600_MB(WIKI),the_r9_cutoff-13_certificate_f1(CERT),MYTHOS-FULL-EMISSION.txt(LAWS)|json=0
+Q3|can_a_dense_body_travel_as_nine_walls|body=the_64-cube_of_asolaria-corpus.txt_byte_triples|json=0
+PREDICT|id=N1|all_9_held-out_tails_light_their_own_node|json=0
+PREDICT|id=N2|at_least_6_of_the_8_unseen_files_light_the_node_named_above|json=0
+PREDICT|id=N3|on_the_mixed_target_the_taped_size_falls_at_every_panel_step_1_3_5_7_9,_and_the_9-node_panel_is_at_least_25_percent_below_the_best_single_node|json=0
+PREDICT|id=N4|the_dense_body_is_HELD_by_nine_walls_(nine_walls_of_a_64-cube_carry_at_most_61056_sums;_the_cube_has_262144_cells)|json=0

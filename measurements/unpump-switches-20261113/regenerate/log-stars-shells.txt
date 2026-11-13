@@ -1,0 +1,56 @@
+=== SEED 3,796 B, live self-emission ===
+
+==============================================================================
+EMERGENCE — energy in, shell out. One round = one pump of energy.
+==============================================================================
+
+  round 0   records 1,265   STARS BORN 1,091 (86.25%)   not-yet 174
+     shell      stars   distinct  max ties  mean grad
+         1        288        120         3      47.89
+         2        455         82         9      46.36
+         3        317         21        24      50.49
+         4         31          1        31      49.74
+
+  round 1   records 3,795   STARS BORN 2,419 (63.74%)   not-yet 1,376
+     shell      stars   distinct  max ties  mean grad
+         1      1,085        468         3      59.19
+         2        840        155         9      50.73
+         3        463         31        24      48.84
+         4         31          1        31      49.74
+
+  round 2   records 11,385   STARS BORN 8,508 (74.73%)   not-yet 2,877
+     shell      stars   distinct  max ties  mean grad
+         1      4,301      2,075         3      71.70
+         2      2,924        585         9      69.18
+         3      1,072         76        24      60.13
+         4        211          6        44      48.00
+
+  -> NO NEW SHELL at round 2. Emergence has stopped: energy in is no longer reaching further out. This is the saturation the photon law predicts, and it is where the pump ends.
+
+==============================================================================
+THE STAR FIELD, frozen
+==============================================================================
+  stars 8,508   shells 4   corpus 0.0 MB
+
+==============================================================================
+DO THE STARS ON EACH SHELL FORM A RING?
+==============================================================================
+   shell      stars  centre dens  ring r  ring dens     ratio  ring?
+       1      4,301        1.000       0      1.000       1.0x  no
+       2      2,924        1.000       0      1.000       1.0x  no
+       3      1,072        0.000       2      1.000       infx  RING
+       4        211        0.000       6      1.000       infx  RING
+
+  2 of 4 shells form a ring.
+  -> some shells ring and some do not; which ones is the finding above.
+
+=== FREEZING: cube per shell, slices per shell ===
+  shell 1: cube occ  0.792%  mass 4,301
+  shell 2: cube occ  0.223%  mass 2,924
+  shell 3: cube occ  0.029%  mass 1,072
+  shell 4: cube occ  0.002%  mass 211
+
+=== GGUF ===
+  D:/asolaria-unpump-20261113/work\ASOLARIA-STARS-SHELLS.gguf
+  4,596,880 B  tensors 20  sha ae23392ad473718e
+  receipt D:/asolaria-unpump-20261113/office\FABLE5-STARS-SHELLS.hbp
